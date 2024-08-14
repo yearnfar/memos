@@ -6,7 +6,7 @@ import (
 
 	"github.com/pkg/errors"
 	"github.com/yearnfar/memos/internal/module/user/model"
-	v1pb "github.com/yearnfar/memos/proto/gen/api/v1"
+	v1pb "github.com/yearnfar/memos/internal/proto/api/v1"
 	"google.golang.org/protobuf/types/known/emptypb"
 )
 

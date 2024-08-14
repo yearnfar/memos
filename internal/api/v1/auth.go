@@ -5,44 +5,44 @@ import (
 	"fmt"
 	"time"
 
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/types/known/emptypb"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 
 	"github.com/yearnfar/memos/internal/api"
-	"github.com/yearnfar/memos/internal/module/user"
 	"github.com/yearnfar/memos/internal/module/user/model"
+	usermodel "github.com/yearnfar/memos/internal/module/user/model"
 	v1pb "github.com/yearnfar/memos/internal/proto/api/v1"
 )
 
 type AuthService struct {
 	api.BaseService
+	v1pb.UnimplementedAuthServiceServer
 }
 
 func (s *AuthService) GetAuthStatus(ctx context.Context, _ *v1pb.GetAuthStatusRequest) (*v1pb.User, error) {
-	user, err := s.GetCurrentUser(ctx)
-	if err != nil {
-		return nil, status.Errorf(codes.Unauthenticated, "failed to get current user: %v", err)
-	}
-	if user == nil {
-		// Set the cookie header to expire access token.
-		if err := s.ClearAccessTokenCookie(ctx); err != nil {
-			return nil, status.Errorf(codes.Internal, "failed to set grpc header: %v", err)
-		}
-		return nil, status.Errorf(codes.Unauthenticated, "user not found")
-	}
-	return convertUserFromStore(user), nil
+	return nil, nil
 }
 
 func (s *AuthService) SignIn(ctx context.Context, request *v1pb.SignInRequest) (*v1pb.User, error) {
-
-	return convertUserFromStore(user), nil
+	return nil, nil
 }
 
-func convertUserFromStore(user *user.UserInfo) *v1pb.User {
+func (s *AuthService) SignInWithSSO(ctx context.Context, request *v1pb.SignInWithSSORequest) (*v1pb.User, error) {
+	return nil, nil
+}
+
+func (s *AuthService) SignUp(ctx context.Context, req *v1pb.SignUpRequest) (*v1pb.User, error) {
+	return nil, nil
+}
+
+func (s *AuthService) SignOut(ctx context.Context, request *v1pb.SignOutRequest) (*emptypb.Empty, error) {
+	return nil, nil
+}
+
+func convertUserFromStore(user *usermodel.User) *v1pb.User {
 	userpb := &v1pb.User{
 		Name:        fmt.Sprintf("%s%d", api.UserNamePrefix, user.ID),
-		Id:          user.ID,
+		Id:          int32(user.ID),
 		RowStatus:   convertRowStatusFromStore(user.RowStatus),
 		CreateTime:  timestamppb.New(time.Unix(user.CreatedTs, 0)),
 		UpdateTime:  timestamppb.New(time.Unix(user.UpdatedTs, 0)),
@@ -60,7 +60,7 @@ func convertUserFromStore(user *user.UserInfo) *v1pb.User {
 	return userpb
 }
 
-func convertRowStatusFromStore(rowStatus model.RowStatus) v1pb.RowStatus {
+func convertRowStatusFromStore(rowStatus usermodel.RowStatus) v1pb.RowStatus {
 	switch rowStatus {
 	case model.Normal:
 		return v1pb.RowStatus_ACTIVE
@@ -71,7 +71,7 @@ func convertRowStatusFromStore(rowStatus model.RowStatus) v1pb.RowStatus {
 	}
 }
 
-func convertUserRoleFromStore(role model.Role) v1pb.User_Role {
+func convertUserRoleFromStore(role usermodel.Role) v1pb.User_Role {
 	switch role {
 	case model.RoleHost:
 		return v1pb.User_HOST

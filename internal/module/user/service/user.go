@@ -6,6 +6,7 @@ import (
 
 	"github.com/pkg/errors"
 	"github.com/yearnfar/memos/internal/module/user/model"
+	"github.com/yearnfar/memos/internal/pkg/util"
 	"golang.org/x/crypto/bcrypt"
 )
 

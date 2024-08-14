@@ -14,9 +14,7 @@ import (
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
 	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials/insecure"
 
-	"github.com/yearnfar/memos/internal/api"
 	// "github.com/yearnfar/memos/internal/api/interceptor"
 	"github.com/yearnfar/memos/internal/config"
 )
@@ -33,7 +31,6 @@ func NewService(ctx context.Context) *Server {
 	echoServer.HidePort = true
 	echoServer.Use(middleware.Recover())
 
-	cfg := config.GetApp().Server
 	grpcServer := grpc.NewServer(
 		// Override the maximum receiving message size to 100M for uploading large resources.
 		grpc.MaxRecvMsgSize(100*1024*1024),
@@ -43,19 +40,13 @@ func NewService(ctx context.Context) *Server {
 			// interceptor.NewGRPCAuthInterceptor(nil, cfg.Secret).AuthenticationInterceptor,
 		))
 
-	conn, _ := grpc.NewClient(
-		fmt.Sprintf("%s:%d", cfg.Host, cfg.Port),
-		grpc.WithTransportCredentials(insecure.NewCredentials()),
-		grpc.WithDefaultCallOptions(grpc.MaxCallRecvMsgSize(100*1024*1024)),
-	)
-
-	api.Register(grpcServer)
-	api.RegisterGateway(ctx, conn, echoServer)
-
 	s := &Server{
 		echoServer: echoServer,
 		grpcServer: grpcServer,
 	}
+
+	registerGRPC(s)
+	registerGateway(ctx, s)
 	return s
 }
 

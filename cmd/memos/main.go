@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"log"
 	"os"
 	"os/signal"
@@ -10,6 +11,7 @@ import (
 	"github.com/urfave/cli/v2"
 	"github.com/yearnfar/memos/internal/api"
 	"github.com/yearnfar/memos/internal/config"
+	"github.com/yearnfar/memos/server"
 )
 
 // 版本信息，在编译时自动生成
@@ -54,9 +56,23 @@ func main() {
 		Action: func(c *cli.Context) error {
 			config.UpTime = time.Now()
 
+			ctx, cancel := context.WithCancel(context.Background())
+			srv := server.NewService(ctx)
+			if err := srv.Start(ctx); err != nil {
+				cancel()
+				return err
+			}
+
 			quit := make(chan os.Signal, 1)
 			signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
-			<-quit
+
+			go func() {
+				<-quit
+				srv.Shutdown(ctx)
+				cancel()
+			}()
+
+			<-ctx.Done()
 			return nil
 		},
 	}
