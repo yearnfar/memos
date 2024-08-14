@@ -78,6 +78,7 @@ func Init(runDir string, cfgFiles ...string) {
 	if len(cfgFiles) > 0 {
 		cfgFile = cfgFiles[0]
 	}
+	// syslog.Printf("app_path: %s\n", appPath)
 	err = initConfig(app, cfgFile)
 	if err != nil {
 		syslog.Fatal("初始化配置失败", err)
@@ -107,6 +108,7 @@ func initConfig(app *App, cfgFile string) (err error) {
 			cfgFile = defCfgFile
 		}
 	}
+	// syslog.Printf("config_path: %s\n", cfgFile)
 	if cfgFile != "" {
 		if _, err := toml.DecodeFile(cfgFile, app); err != nil {
 			return errors.Wrap(err, "解析配置文件失败")

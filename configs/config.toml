@@ -1,7 +1,8 @@
 
 [server]
-addr = "localhost"
-post = 8010
+host = "localhost"
+port = 8010
+secret = "asdfa"
 
 [logger]
 level = "debug"

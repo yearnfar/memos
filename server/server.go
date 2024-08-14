@@ -56,6 +56,7 @@ func (s *Server) Start(ctx context.Context) error {
 		Addr:    fmt.Sprintf("%s:%d", cfg.Host, cfg.Port),
 		Handler: grpcHandlerFunc(s.grpcServer, s.echoServer),
 	}
+	log.Printf("host: %s, port: %d", cfg.Host, cfg.Port)
 	go func() {
 		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 			log.Fatal(err)

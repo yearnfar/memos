@@ -68,11 +68,14 @@ func main() {
 
 			go func() {
 				<-quit
+				log.Println("shutdown...")
 				srv.Shutdown(ctx)
 				cancel()
 			}()
 
+			log.Println("running")
 			<-ctx.Done()
+			log.Println("closed")
 			return nil
 		},
 	}
