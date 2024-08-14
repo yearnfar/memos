@@ -1,0 +1,11 @@
+
+[server]
+addr = "localhost"
+post = 8010
+
+[logger]
+level = "debug"
+
+[database]
+dsn = ".air/memos_dev.db?_pragma=foreign_keys(0)&_pragma=busy_timeout(10000)&_pragma=journal_mode(WAL)"
+type = "sqlite"
