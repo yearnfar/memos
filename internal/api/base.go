@@ -10,8 +10,8 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/metadata"
 
-	userMod "github.com/yearnfar/memos/internal/module/user"
-	userModel "github.com/yearnfar/memos/internal/module/user/model"
+	usermod "github.com/yearnfar/memos/internal/module/user"
+	usermodel "github.com/yearnfar/memos/internal/module/user/model"
 )
 
 const (
@@ -44,12 +44,12 @@ const (
 type BaseService struct {
 }
 
-func (s *BaseService) GetCurrentUser(ctx context.Context) (userInfo *userModel.User, err error) {
+func (s *BaseService) GetCurrentUser(ctx context.Context) (userInfo *usermodel.User, err error) {
 	username, ok := ctx.Value(usernameContextKey).(string)
 	if !ok {
 		return nil, nil
 	}
-	userInfo, err = userMod.GetUserByUsername(ctx, username)
+	userInfo, err = usermod.GetUserByUsername(ctx, username)
 	return
 }
 

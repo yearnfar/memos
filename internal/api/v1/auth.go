@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"time"
 
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/emptypb"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 
@@ -19,8 +21,21 @@ type AuthService struct {
 	v1pb.UnimplementedAuthServiceServer
 }
 
-func (s *AuthService) GetAuthStatus(ctx context.Context, _ *v1pb.GetAuthStatusRequest) (*v1pb.User, error) {
-	return nil, nil
+func (s *AuthService) GetAuthStatus(ctx context.Context, _ *v1pb.GetAuthStatusRequest) (userInfo *v1pb.User, err error) {
+	user, err := s.GetCurrentUser(ctx)
+	if err != nil {
+		err = status.Errorf(codes.Unauthenticated, "failed to get current user: %v", err)
+		return
+	}
+	if user == nil {
+		if err = s.ClearAccessTokenCookie(ctx); err != nil {
+			err = status.Errorf(codes.Internal, "failed to set grpc header: %v", err)
+		} else {
+			err = status.Errorf(codes.Unauthenticated, "user not found")
+		}
+		return
+	}
+	return convertUserFromStore(user), nil
 }
 
 func (s *AuthService) SignIn(ctx context.Context, request *v1pb.SignInRequest) (*v1pb.User, error) {
