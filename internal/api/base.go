@@ -10,6 +10,8 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/metadata"
 
+	authmod "github.com/yearnfar/memos/internal/module/auth"
+	authmodel "github.com/yearnfar/memos/internal/module/auth/model"
 	usermod "github.com/yearnfar/memos/internal/module/user"
 	usermodel "github.com/yearnfar/memos/internal/module/user/model"
 )
@@ -54,7 +56,7 @@ func (s *BaseService) GetCurrentUser(ctx context.Context) (userInfo *usermodel.U
 }
 
 func (s *BaseService) ClearAccessTokenCookie(ctx context.Context) error {
-	cookie, err := s.BuildAccessTokenCookie(ctx, "", time.Time{})
+	cookie, err := s.buildAccessTokenCookie(ctx, "", time.Time{})
 	if err != nil {
 		return errors.Wrap(err, "failed to build access token cookie")
 	}
@@ -66,7 +68,29 @@ func (s *BaseService) ClearAccessTokenCookie(ctx context.Context) error {
 	return nil
 }
 
-func (s *BaseService) BuildAccessTokenCookie(ctx context.Context, accessToken string, expireTime time.Time) (string, error) {
+func (s *BaseService) DoSignIn(ctx context.Context, username, password string) (err error) {
+	resp, err := authmod.SignIn(ctx, &authmodel.SignInRequest{
+		Username: username,
+		Password: password,
+	})
+	if err != nil {
+		return
+	}
+	cookie, err := s.buildAccessTokenCookie(ctx, resp.AccessToken, resp.ExpireTime)
+	if err != nil {
+		err = errors.Errorf("failed to build access token cookie, err: %s", err)
+		return
+	}
+	if err = grpc.SetHeader(ctx, metadata.New(map[string]string{
+		"Set-Cookie": cookie,
+	})); err != nil {
+		err = errors.Errorf("failed to set grpc header, error: %v", err)
+		return
+	}
+	return nil
+}
+
+func (s *BaseService) buildAccessTokenCookie(ctx context.Context, accessToken string, expireTime time.Time) (string, error) {
 	attrs := []string{
 		fmt.Sprintf("%s=%s", AccessTokenCookieName, accessToken),
 		"Path=/",

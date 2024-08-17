@@ -79,6 +79,21 @@ func (mr *MockServiceMockRecorder) GetUserByUsername(ctx, username interface{}) 
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetUserByUsername", reflect.TypeOf((*MockService)(nil).GetUserByUsername), ctx, username)
 }
 
+// SignUp mocks base method.
+func (m *MockService) SignUp(ctx context.Context, req *model.SignUpRequest) (*model.User, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "SignUp", ctx, req)
+	ret0, _ := ret[0].(*model.User)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// SignUp indicates an expected call of SignUp.
+func (mr *MockServiceMockRecorder) SignUp(ctx, req interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SignUp", reflect.TypeOf((*MockService)(nil).SignUp), ctx, req)
+}
+
 // UpsertAccessToken mocks base method.
 func (m *MockService) UpsertAccessToken(ctx context.Context, userId int, accessToken, description string) error {
 	m.ctrl.T.Helper()

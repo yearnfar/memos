@@ -2,6 +2,7 @@ package db
 
 import (
 	"context"
+	"log"
 
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
@@ -13,6 +14,7 @@ var dbConn *gorm.DB
 
 func Init() {
 	cfg := config.GetApp().Database
+	log.Printf("db cfg: %+v", cfg)
 	var err error
 	switch cfg.Type {
 	case "sqlite":

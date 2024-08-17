@@ -47,3 +47,11 @@ type UpdateUserRequest struct {
 	Password    string
 	Description string
 }
+
+type SignUpRequest struct {
+	Username string
+	Password string
+}
+type ListUsersRequest struct {
+	Role Role
+}

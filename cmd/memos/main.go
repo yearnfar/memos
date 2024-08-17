@@ -11,6 +11,7 @@ import (
 	"github.com/urfave/cli/v2"
 	"github.com/yearnfar/memos/internal/api"
 	"github.com/yearnfar/memos/internal/config"
+	"github.com/yearnfar/memos/internal/pkg/db"
 	"github.com/yearnfar/memos/server"
 )
 
@@ -30,14 +31,14 @@ func main() {
 			&cli.StringFlag{
 				Name:    "d",
 				Aliases: []string{"dir"},
-				Value:   ".",
+				Value:   "",
 				Usage:   "程序运行目录",
 			},
 			&cli.StringFlag{
 				Name:    "c",
 				Aliases: []string{"config"},
 				Usage:   "配置文件地址",
-				Value:   "./configs/config.toml",
+				Value:   "",
 				EnvVars: []string{"MEMOS_CONFIG_FILE"},
 			},
 		},
@@ -50,6 +51,7 @@ func main() {
 			configFile := c.String("c")
 			config.Init(runPath, configFile)
 
+			db.Init()
 			api.Init()
 			return nil
 		},

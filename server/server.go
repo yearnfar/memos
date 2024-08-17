@@ -15,8 +15,8 @@ import (
 	"golang.org/x/net/http2/h2c"
 	"google.golang.org/grpc"
 
-	// "github.com/yearnfar/memos/internal/api/interceptor"
 	"github.com/yearnfar/memos/internal/config"
+	"github.com/yearnfar/memos/server/interceptor"
 )
 
 type Server struct {
@@ -35,7 +35,7 @@ func NewService(ctx context.Context) *Server {
 		// Override the maximum receiving message size to 100M for uploading large resources.
 		grpc.MaxRecvMsgSize(100*1024*1024),
 		grpc.ChainUnaryInterceptor(
-			// interceptor.NewLoggerInterceptor().LoggerInterceptor,
+			interceptor.NewLoggerInterceptor().LoggerInterceptor,
 			grpc_recovery.UnaryServerInterceptor(),
 			// interceptor.NewGRPCAuthInterceptor(nil, cfg.Secret).AuthenticationInterceptor,
 		))

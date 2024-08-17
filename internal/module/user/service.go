@@ -10,6 +10,8 @@ import (
 
 type Service interface {
 	CreateUser(ctx context.Context, req *model.CreateUserRequest) (*model.User, error)
+	SignUp(ctx context.Context, req *model.SignUpRequest) (*model.User, error)
+
 	GetUserByUsername(ctx context.Context, username string) (*model.User, error)
 
 	UpsertAccessToken(ctx context.Context, userId int, accessToken, description string) error

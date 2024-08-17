@@ -40,3 +40,12 @@ func (Dao) UpdateUser(ctx context.Context, user *model.User, update map[string]a
 	err = db.GetDB(ctx).Model(user).Updates(update).Error
 	return
 }
+
+func (Dao) ListUsers(ctx context.Context, req *model.ListUsersRequest) (list []*model.User, err error) {
+	conn := db.GetDB(ctx)
+	if req.Role != "" {
+		conn = conn.Where("role=?", req.Role)
+	}
+	err = conn.Find(&list).Error
+	return
+}

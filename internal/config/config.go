@@ -60,6 +60,9 @@ var appPath string // 项目运行目录
 
 // Init 初始化配置
 func Init(runDir string, cfgFiles ...string) {
+	syslog.Printf("dir: %s", runDir)
+	syslog.Printf("cfg_file: %v", cfgFiles)
+
 	var err error
 	if runDir == "" {
 		runDir, err = os.Getwd()
@@ -78,7 +81,7 @@ func Init(runDir string, cfgFiles ...string) {
 	if len(cfgFiles) > 0 {
 		cfgFile = cfgFiles[0]
 	}
-	// syslog.Printf("app_path: %s\n", appPath)
+	syslog.Printf("app_path: %s\n", appPath)
 	err = initConfig(app, cfgFile)
 	if err != nil {
 		syslog.Fatal("初始化配置失败", err)
@@ -108,7 +111,7 @@ func initConfig(app *App, cfgFile string) (err error) {
 			cfgFile = defCfgFile
 		}
 	}
-	// syslog.Printf("config_path: %s\n", cfgFile)
+	syslog.Printf("config_path: %s\n", cfgFile)
 	if cfgFile != "" {
 		if _, err := toml.DecodeFile(cfgFile, app); err != nil {
 			return errors.Wrap(err, "解析配置文件失败")

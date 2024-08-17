@@ -29,6 +29,7 @@ func (s *WorkspaceService) GetWorkspaceProfile(ctx context.Context, _ *v1pb.GetW
 	// workspaceProfile.Owner = owner.Name
 	// } else {
 	// If owner is not found, set Public/PasswordAuth to true.
+	workspaceProfile.Owner = "yearnfar"
 	workspaceProfile.Public = true
 	workspaceProfile.PasswordAuth = true
 	// }

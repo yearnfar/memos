@@ -3,12 +3,25 @@
 
 package auth
 
-import "time"
+import (
+	"context"
+	"time"
+
+	"github.com/yearnfar/memos/internal/module/auth/model"
+)
 
 var defaultService Service
 
 func Register(s Service) {
 	defaultService = s
+}
+
+func SignIn(ctx context.Context, req *model.SignInRequest) (resp *model.SignInResponse, err error) {
+	if defaultService == nil {
+		panic("调用模块方法: auth.SignIn 失败，服务未注册")
+	}
+	v1, v2 := defaultService.SignIn(ctx, req)
+	return v1, v2
 }
 
 func GenerateAccessToken(username string, userID int32, expirationTime time.Time, secret []byte) (string, error) {

@@ -23,6 +23,14 @@ func CreateUser(ctx context.Context, req *model.CreateUserRequest) (*model.User,
 	return v1, v2
 }
 
+func SignUp(ctx context.Context, req *model.SignUpRequest) (*model.User, error) {
+	if defaultService == nil {
+		panic("调用模块方法: user.SignUp 失败，服务未注册")
+	}
+	v1, v2 := defaultService.SignUp(ctx, req)
+	return v1, v2
+}
+
 func GetUserByUsername(ctx context.Context, username string) (*model.User, error) {
 	if defaultService == nil {
 		panic("调用模块方法: user.GetUserByUsername 失败，服务未注册")

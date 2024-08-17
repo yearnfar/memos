@@ -26,3 +26,5 @@ dist
 
 # VSCode settings
 /.vscode
+
+memos_dev.db-*

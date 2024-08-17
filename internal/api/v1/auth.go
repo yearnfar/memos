@@ -11,7 +11,7 @@ import (
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 
 	"github.com/yearnfar/memos/internal/api"
-	"github.com/yearnfar/memos/internal/module/user/model"
+	usermod "github.com/yearnfar/memos/internal/module/user"
 	usermodel "github.com/yearnfar/memos/internal/module/user/model"
 	v1pb "github.com/yearnfar/memos/internal/proto/api/v1"
 )
@@ -46,8 +46,19 @@ func (s *AuthService) SignInWithSSO(ctx context.Context, request *v1pb.SignInWit
 	return nil, nil
 }
 
-func (s *AuthService) SignUp(ctx context.Context, req *v1pb.SignUpRequest) (*v1pb.User, error) {
-	return nil, nil
+func (s *AuthService) SignUp(ctx context.Context, request *v1pb.SignUpRequest) (userInfo *v1pb.User, err error) {
+	req := &usermodel.SignUpRequest{
+		Username: request.Username,
+		Password: request.Password,
+	}
+	user, err := usermod.SignUp(ctx, req)
+	if err != nil {
+		return
+	}
+	if err = s.DoSignIn(ctx, req.Username, req.Password); err != nil {
+		return
+	}
+	return convertUserFromStore(user), nil
 }
 
 func (s *AuthService) SignOut(ctx context.Context, request *v1pb.SignOutRequest) (*emptypb.Empty, error) {
@@ -77,9 +88,9 @@ func convertUserFromStore(user *usermodel.User) *v1pb.User {
 
 func convertRowStatusFromStore(rowStatus usermodel.RowStatus) v1pb.RowStatus {
 	switch rowStatus {
-	case model.Normal:
+	case usermodel.Normal:
 		return v1pb.RowStatus_ACTIVE
-	case model.Archived:
+	case usermodel.Archived:
 		return v1pb.RowStatus_ARCHIVED
 	default:
 		return v1pb.RowStatus_ROW_STATUS_UNSPECIFIED
@@ -88,11 +99,11 @@ func convertRowStatusFromStore(rowStatus usermodel.RowStatus) v1pb.RowStatus {
 
 func convertUserRoleFromStore(role usermodel.Role) v1pb.User_Role {
 	switch role {
-	case model.RoleHost:
+	case usermodel.RoleHost:
 		return v1pb.User_HOST
-	case model.RoleAdmin:
+	case usermodel.RoleAdmin:
 		return v1pb.User_ADMIN
-	case model.RoleUser:
+	case usermodel.RoleUser:
 		return v1pb.User_USER
 	default:
 		return v1pb.User_ROLE_UNSPECIFIED

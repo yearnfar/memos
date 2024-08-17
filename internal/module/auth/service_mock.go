@@ -5,10 +5,12 @@
 package auth
 
 import (
+	context "context"
 	reflect "reflect"
 	time "time"
 
 	gomock "github.com/golang/mock/gomock"
+	model "github.com/yearnfar/memos/internal/module/auth/model"
 )
 
 // MockService is a mock of Service interface.
@@ -47,4 +49,19 @@ func (m *MockService) GenerateAccessToken(username string, userID int32, expirat
 func (mr *MockServiceMockRecorder) GenerateAccessToken(username, userID, expirationTime, secret interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GenerateAccessToken", reflect.TypeOf((*MockService)(nil).GenerateAccessToken), username, userID, expirationTime, secret)
+}
+
+// SignIn mocks base method.
+func (m *MockService) SignIn(ctx context.Context, req *model.SignInRequest) (*model.SignInResponse, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "SignIn", ctx, req)
+	ret0, _ := ret[0].(*model.SignInResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// SignIn indicates an expected call of SignIn.
+func (mr *MockServiceMockRecorder) SignIn(ctx, req interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SignIn", reflect.TypeOf((*MockService)(nil).SignIn), ctx, req)
 }
