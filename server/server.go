@@ -31,13 +31,15 @@ func NewService(ctx context.Context) *Server {
 	echoServer.HidePort = true
 	echoServer.Use(middleware.Recover())
 
+	cfg := config.GetApp().JWT
+
 	grpcServer := grpc.NewServer(
 		// Override the maximum receiving message size to 100M for uploading large resources.
 		grpc.MaxRecvMsgSize(100*1024*1024),
 		grpc.ChainUnaryInterceptor(
 			interceptor.NewLoggerInterceptor().LoggerInterceptor,
 			grpc_recovery.UnaryServerInterceptor(),
-			// interceptor.NewGRPCAuthInterceptor(nil, cfg.Secret).AuthenticationInterceptor,
+			interceptor.NewGRPCAuthInterceptor(cfg.Key).AuthenticationInterceptor,
 		))
 
 	s := &Server{
