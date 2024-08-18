@@ -24,10 +24,10 @@ func SignIn(ctx context.Context, req *model.SignInRequest) (resp *model.SignInRe
 	return v1, v2
 }
 
-func GenerateAccessToken(username string, userID int32, expirationTime time.Time, secret []byte) (string, error) {
+func GenerateAccessToken(username string, userId int, expirationTime time.Time, secret []byte) (string, error) {
 	if defaultService == nil {
 		panic("调用模块方法: auth.GenerateAccessToken 失败，服务未注册")
 	}
-	v1, v2 := defaultService.GenerateAccessToken(username, userID, expirationTime, secret)
+	v1, v2 := defaultService.GenerateAccessToken(username, userId, expirationTime, secret)
 	return v1, v2
 }

@@ -1,9 +1,9 @@
 package model
 
 type UserSetting struct {
-	UserId int
-	Key    UserSettingKey
-	Value  string
+	UserId int            `json:"user_id"`
+	Key    UserSettingKey `json:"key"`
+	Value  string         `json:"value"`
 }
 
 func (UserSetting) TableName() string {
@@ -11,6 +11,6 @@ func (UserSetting) TableName() string {
 }
 
 type AccessToken struct {
-	Token       string
-	Description string
+	Token       string `json:"token"`
+	Description string `json:"description"`
 }

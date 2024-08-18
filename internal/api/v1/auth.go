@@ -38,8 +38,15 @@ func (s *AuthService) GetAuthStatus(ctx context.Context, _ *v1pb.GetAuthStatusRe
 	return convertUserFromStore(user), nil
 }
 
-func (s *AuthService) SignIn(ctx context.Context, request *v1pb.SignInRequest) (*v1pb.User, error) {
-	return nil, nil
+func (s *AuthService) SignIn(ctx context.Context, request *v1pb.SignInRequest) (userInfo *v1pb.User, err error) {
+	if err = s.DoSignIn(ctx, request.Username, request.Password); err != nil {
+		return
+	}
+	user, err := usermod.GetUserByUsername(ctx, request.Username)
+	if err != nil {
+		return
+	}
+	return convertUserFromStore(user), nil
 }
 
 func (s *AuthService) SignInWithSSO(ctx context.Context, request *v1pb.SignInWithSSORequest) (*v1pb.User, error) {

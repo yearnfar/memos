@@ -37,18 +37,18 @@ func (m *MockService) EXPECT() *MockServiceMockRecorder {
 }
 
 // GenerateAccessToken mocks base method.
-func (m *MockService) GenerateAccessToken(username string, userID int32, expirationTime time.Time, secret []byte) (string, error) {
+func (m *MockService) GenerateAccessToken(username string, userId int, expirationTime time.Time, secret []byte) (string, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GenerateAccessToken", username, userID, expirationTime, secret)
+	ret := m.ctrl.Call(m, "GenerateAccessToken", username, userId, expirationTime, secret)
 	ret0, _ := ret[0].(string)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // GenerateAccessToken indicates an expected call of GenerateAccessToken.
-func (mr *MockServiceMockRecorder) GenerateAccessToken(username, userID, expirationTime, secret interface{}) *gomock.Call {
+func (mr *MockServiceMockRecorder) GenerateAccessToken(username, userId, expirationTime, secret interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GenerateAccessToken", reflect.TypeOf((*MockService)(nil).GenerateAccessToken), username, userID, expirationTime, secret)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GenerateAccessToken", reflect.TypeOf((*MockService)(nil).GenerateAccessToken), username, userId, expirationTime, secret)
 }
 
 // SignIn mocks base method.
