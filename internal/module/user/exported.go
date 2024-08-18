@@ -39,6 +39,14 @@ func GetUserByUsername(ctx context.Context, username string) (*model.User, error
 	return v1, v2
 }
 
+func GetUserById(ctx context.Context, id int) (*model.User, error) {
+	if defaultService == nil {
+		panic("调用模块方法: user.GetUserById 失败，服务未注册")
+	}
+	v1, v2 := defaultService.GetUserById(ctx, id)
+	return v1, v2
+}
+
 func UpsertAccessToken(ctx context.Context, userId int, accessToken, description string) error {
 	if defaultService == nil {
 		panic("调用模块方法: user.UpsertAccessToken 失败，服务未注册")
@@ -53,4 +61,12 @@ func DeleteAccessToken(ctx context.Context, userId int, accessToken string) erro
 	}
 	v1 := defaultService.DeleteAccessToken(ctx, userId, accessToken)
 	return v1
+}
+
+func GetAccessTokens(ctx context.Context, userId int) ([]*model.AccessToken, error) {
+	if defaultService == nil {
+		panic("调用模块方法: user.GetAccessTokens 失败，服务未注册")
+	}
+	v1, v2 := defaultService.GetAccessTokens(ctx, userId)
+	return v1, v2
 }

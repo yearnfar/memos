@@ -13,7 +13,9 @@ type Service interface {
 	SignUp(ctx context.Context, req *model.SignUpRequest) (*model.User, error)
 
 	GetUserByUsername(ctx context.Context, username string) (*model.User, error)
+	GetUserById(ctx context.Context, id int) (*model.User, error)
 
 	UpsertAccessToken(ctx context.Context, userId int, accessToken, description string) error
 	DeleteAccessToken(ctx context.Context, userId int, accessToken string) error
+	GetAccessTokens(ctx context.Context, userId int) ([]*model.AccessToken, error)
 }

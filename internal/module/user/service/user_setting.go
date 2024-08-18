@@ -26,6 +26,10 @@ func (s *Service) ListUserAccessTokens(ctx context.Context, request *v1pb.ListUs
 	return nil, nil
 }
 
+func (s *Service) GetAccessTokens(ctx context.Context, userId int) (tokens []*model.AccessToken, err error) {
+	return s.dao.GetUserAccessTokens(ctx, userId)
+}
+
 func (s *Service) UpsertAccessToken(ctx context.Context, userId int, accessToken, description string) (err error) {
 	tokens, err := s.dao.GetUserAccessTokens(ctx, userId)
 	if err != nil {

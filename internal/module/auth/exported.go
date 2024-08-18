@@ -31,3 +31,11 @@ func GenerateAccessToken(username string, userId int, expirationTime time.Time, 
 	v1, v2 := defaultService.GenerateAccessToken(username, userId, expirationTime, secret)
 	return v1, v2
 }
+
+func Authenticate(ctx context.Context, accessToken, secret string) (userId int, err error) {
+	if defaultService == nil {
+		panic("调用模块方法: auth.Authenticate 失败，服务未注册")
+	}
+	v1, v2 := defaultService.Authenticate(ctx, accessToken, secret)
+	return v1, v2
+}

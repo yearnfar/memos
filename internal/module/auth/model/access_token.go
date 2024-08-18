@@ -2,8 +2,6 @@ package model
 
 import (
 	"time"
-
-	"github.com/golang-jwt/jwt/v5"
 )
 
 const (
@@ -22,11 +20,6 @@ const (
 	// AccessTokenCookieName is the cookie name of access token.
 	AccessTokenCookieName = "memos.access-token"
 )
-
-type ClaimsMessage struct {
-	Name string `json:"name"`
-	jwt.RegisteredClaims
-}
 
 type AccessToken struct {
 	AccessToken string

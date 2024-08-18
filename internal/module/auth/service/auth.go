@@ -48,7 +48,7 @@ func (s *Service) SignIn(ctx context.Context, req *model.SignInRequest) (resp *m
 
 func (s *Service) doSignIn(ctx context.Context, user *usermodel.User, expireTime time.Time) (accessToken string, err error) {
 	cfg := config.GetApp().JWT
-	accessToken, err = s.GenerateAccessToken(user.Email, user.ID, expireTime, []byte(cfg.Key))
+	accessToken, err = s.GenerateAccessToken(user.ID, expireTime, []byte(cfg.Key))
 	if err != nil {
 		err = errors.Errorf("failed to generate tokens, err: %s", err)
 		return

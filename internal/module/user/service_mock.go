@@ -64,6 +64,36 @@ func (mr *MockServiceMockRecorder) DeleteAccessToken(ctx, userId, accessToken in
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteAccessToken", reflect.TypeOf((*MockService)(nil).DeleteAccessToken), ctx, userId, accessToken)
 }
 
+// GetAccessTokens mocks base method.
+func (m *MockService) GetAccessTokens(ctx context.Context, userId int) ([]*model.AccessToken, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetAccessTokens", ctx, userId)
+	ret0, _ := ret[0].([]*model.AccessToken)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetAccessTokens indicates an expected call of GetAccessTokens.
+func (mr *MockServiceMockRecorder) GetAccessTokens(ctx, userId interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAccessTokens", reflect.TypeOf((*MockService)(nil).GetAccessTokens), ctx, userId)
+}
+
+// GetUserById mocks base method.
+func (m *MockService) GetUserById(ctx context.Context, id int) (*model.User, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetUserById", ctx, id)
+	ret0, _ := ret[0].(*model.User)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetUserById indicates an expected call of GetUserById.
+func (mr *MockServiceMockRecorder) GetUserById(ctx, id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetUserById", reflect.TypeOf((*MockService)(nil).GetUserById), ctx, id)
+}
+
 // GetUserByUsername mocks base method.
 func (m *MockService) GetUserByUsername(ctx context.Context, username string) (*model.User, error) {
 	m.ctrl.T.Helper()
