@@ -39,7 +39,7 @@ type ContextKey int
 const (
 	// The key name used to store username in the context
 	// user id is extracted from the jwt token subject field.
-	usernameContextKey ContextKey = iota
+	userContextKey ContextKey = iota
 	accessTokenContextKey
 )
 
@@ -47,11 +47,11 @@ type BaseService struct {
 }
 
 func (s *BaseService) GetCurrentUser(ctx context.Context) (userInfo *usermodel.User, err error) {
-	username, ok := ctx.Value(usernameContextKey).(string)
+	userId, ok := ctx.Value(userContextKey).(int)
 	if !ok {
 		return nil, nil
 	}
-	userInfo, err = usermod.GetUserByUsername(ctx, username)
+	userInfo, err = usermod.GetUserById(ctx, userId)
 	return
 }
 
@@ -118,4 +118,10 @@ func (s *BaseService) buildAccessTokenCookie(ctx context.Context, accessToken st
 		attrs = append(attrs, "SameSite=Strict")
 	}
 	return strings.Join(attrs, "; "), nil
+}
+
+func SetContext(ctx context.Context, userId int, accessToken string) context.Context {
+	ctx = context.WithValue(ctx, userContextKey, userId)
+	ctx = context.WithValue(ctx, accessTokenContextKey, accessToken)
+	return ctx
 }

@@ -11,21 +11,9 @@ import (
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
 
+	"github.com/yearnfar/memos/internal/api"
 	authmod "github.com/yearnfar/memos/internal/module/auth"
 	usermodel "github.com/yearnfar/memos/internal/module/user/model"
-)
-
-// ContextKey is the key type of context value.
-type ContextKey int
-
-const (
-	// The key name used to store username in the context
-	// user id is extracted from the jwt token subject field.
-	userIdContextKey ContextKey = iota
-	accessTokenContextKey
-)
-const (
-	AccessTokenCookieName = "memos.access-token"
 )
 
 // GRPCAuthInterceptor is the auth interceptor for gRPC server.
@@ -61,8 +49,7 @@ func (in *GRPCAuthInterceptor) AuthenticationInterceptor(ctx context.Context, re
 		return nil, errors.Errorf("user %d is not admin", user.ID)
 	}
 
-	ctx = context.WithValue(ctx, userIdContextKey, user.ID)
-	ctx = context.WithValue(ctx, accessTokenContextKey, accessToken)
+	api.SetContext(ctx, user.ID, accessToken)
 	return handler(ctx, request)
 }
 
@@ -82,7 +69,7 @@ func getTokenFromMetadata(md metadata.MD) (string, error) {
 		header := http.Header{}
 		header.Add("Cookie", t)
 		request := http.Request{Header: header}
-		if v, _ := request.Cookie(AccessTokenCookieName); v != nil {
+		if v, _ := request.Cookie(api.AccessTokenCookieName); v != nil {
 			accessToken = v.Value
 		}
 	}

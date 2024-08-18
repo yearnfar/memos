@@ -161,7 +161,7 @@ paths:
         "200":
           description: A successful response.
           schema:
-            $ref: '#/definitions/v1IdentityProvider'
+            $ref: '#/definitions/apiv1IdentityProvider'
         default:
           description: An unexpected error response.
           schema:
@@ -172,7 +172,7 @@ paths:
           in: body
           required: true
           schema:
-            $ref: '#/definitions/v1IdentityProvider'
+            $ref: '#/definitions/apiv1IdentityProvider'
       tags:
         - IdentityProviderService
   /api/v1/inboxes:
@@ -661,7 +661,7 @@ paths:
         "200":
           description: A successful response.
           schema:
-            $ref: '#/definitions/v1WorkspaceSetting'
+            $ref: '#/definitions/apiv1WorkspaceSetting'
         default:
           description: An unexpected error response.
           schema:
@@ -685,7 +685,7 @@ paths:
         "200":
           description: A successful response.
           schema:
-            $ref: '#/definitions/v1WorkspaceSetting'
+            $ref: '#/definitions/apiv1WorkspaceSetting'
         default:
           description: An unexpected error response.
           schema:
@@ -707,11 +707,11 @@ paths:
             type: object
             properties:
               generalSetting:
-                $ref: '#/definitions/v1WorkspaceGeneralSetting'
+                $ref: '#/definitions/apiv1WorkspaceGeneralSetting'
               storageSetting:
-                $ref: '#/definitions/v1WorkspaceStorageSetting'
+                $ref: '#/definitions/apiv1WorkspaceStorageSetting'
               memoRelatedSetting:
-                $ref: '#/definitions/v1WorkspaceMemoRelatedSetting'
+                $ref: '#/definitions/apiv1WorkspaceMemoRelatedSetting'
             title: setting is the setting to update.
       tags:
         - WorkspaceSettingService
@@ -723,7 +723,7 @@ paths:
         "200":
           description: A successful response.
           schema:
-            $ref: '#/definitions/v1IdentityProvider'
+            $ref: '#/definitions/apiv1IdentityProvider'
         default:
           description: An unexpected error response.
           schema:
@@ -745,13 +745,13 @@ paths:
             type: object
             properties:
               type:
-                $ref: '#/definitions/v1IdentityProviderType'
+                $ref: '#/definitions/apiv1IdentityProviderType'
               title:
                 type: string
               identifierFilter:
                 type: string
               config:
-                $ref: '#/definitions/v1IdentityProviderConfig'
+                $ref: '#/definitions/apiv1IdentityProviderConfig'
             title: The identityProvider to update.
       tags:
         - IdentityProviderService
@@ -957,7 +957,7 @@ paths:
         "200":
           description: A successful response.
           schema:
-            $ref: '#/definitions/v1IdentityProvider'
+            $ref: '#/definitions/apiv1IdentityProvider'
         default:
           description: An unexpected error response.
           schema:
@@ -1497,7 +1497,7 @@ paths:
         "200":
           description: A successful response.
           schema:
-            $ref: '#/definitions/v1UserSetting'
+            $ref: '#/definitions/apiv1UserSetting'
         default:
           description: An unexpected error response.
           schema:
@@ -1670,7 +1670,7 @@ paths:
         "200":
           description: A successful response.
           schema:
-            $ref: '#/definitions/v1UserSetting'
+            $ref: '#/definitions/apiv1UserSetting'
         default:
           description: An unexpected error response.
           schema:
@@ -1891,18 +1891,6 @@ definitions:
       bucket:
         type: string
     title: 'Reference: https://developers.cloudflare.com/r2/examples/aws/aws-sdk-go/'
-  WorkspaceStorageSettingStorageType:
-    type: string
-    enum:
-      - STORAGE_TYPE_UNSPECIFIED
-      - DATABASE
-      - LOCAL
-      - S3
-    default: STORAGE_TYPE_UNSPECIFIED
-    description: |2-
-       - DATABASE: DATABASE is the database storage type.
-       - LOCAL: LOCAL is the local storage type.
-       - S3: S3 is the S3 storage type.
   apiHttpBody:
     type: object
     properties:
@@ -1965,6 +1953,194 @@ definitions:
 
       Use of this type only changes how the request and response bodies are
       handled, all other features will continue to work unchanged.
+  apiv1ActivityMemoCommentPayload:
+    type: object
+    properties:
+      memoId:
+        type: integer
+        format: int32
+        description: The memo id of comment.
+      relatedMemoId:
+        type: integer
+        format: int32
+        description: The memo id of related memo.
+    description: ActivityMemoCommentPayload represents the payload of a memo comment activity.
+  apiv1ActivityPayload:
+    type: object
+    properties:
+      memoComment:
+        $ref: '#/definitions/apiv1ActivityMemoCommentPayload'
+      versionUpdate:
+        $ref: '#/definitions/apiv1ActivityVersionUpdatePayload'
+  apiv1ActivityVersionUpdatePayload:
+    type: object
+    properties:
+      version:
+        type: string
+        description: The updated version of memos.
+  apiv1FieldMapping:
+    type: object
+    properties:
+      identifier:
+        type: string
+      displayName:
+        type: string
+      email:
+        type: string
+  apiv1IdentityProvider:
+    type: object
+    properties:
+      name:
+        type: string
+        title: |-
+          The name of the identityProvider.
+          Format: identityProviders/{id}
+      type:
+        $ref: '#/definitions/apiv1IdentityProviderType'
+      title:
+        type: string
+      identifierFilter:
+        type: string
+      config:
+        $ref: '#/definitions/apiv1IdentityProviderConfig'
+  apiv1IdentityProviderConfig:
+    type: object
+    properties:
+      oauth2Config:
+        $ref: '#/definitions/apiv1OAuth2Config'
+  apiv1IdentityProviderType:
+    type: string
+    enum:
+      - TYPE_UNSPECIFIED
+      - OAUTH2
+    default: TYPE_UNSPECIFIED
+  apiv1OAuth2Config:
+    type: object
+    properties:
+      clientId:
+        type: string
+      clientSecret:
+        type: string
+      authUrl:
+        type: string
+      tokenUrl:
+        type: string
+      userInfoUrl:
+        type: string
+      scopes:
+        type: array
+        items:
+          type: string
+      fieldMapping:
+        $ref: '#/definitions/apiv1FieldMapping'
+  apiv1UserSetting:
+    type: object
+    properties:
+      name:
+        type: string
+        title: |-
+          The name of the user.
+          Format: users/{id}
+      locale:
+        type: string
+        description: The preferred locale of the user.
+      appearance:
+        type: string
+        description: The preferred appearance of the user.
+      memoVisibility:
+        type: string
+        description: The default visibility of the memo.
+  apiv1WorkspaceCustomProfile:
+    type: object
+    properties:
+      title:
+        type: string
+      description:
+        type: string
+      logoUrl:
+        type: string
+      locale:
+        type: string
+      appearance:
+        type: string
+  apiv1WorkspaceGeneralSetting:
+    type: object
+    properties:
+      additionalScript:
+        type: string
+        description: additional_script is the additional script.
+      additionalStyle:
+        type: string
+        description: additional_style is the additional style.
+      customProfile:
+        $ref: '#/definitions/apiv1WorkspaceCustomProfile'
+        description: custom_profile is the custom profile.
+  apiv1WorkspaceMemoRelatedSetting:
+    type: object
+    properties:
+      disallowPublicVisibility:
+        type: boolean
+        description: disallow_public_visibility disallows set memo as public visibility.
+      displayWithUpdateTime:
+        type: boolean
+        description: display_with_update_time orders and displays memo with update time.
+      contentLengthLimit:
+        type: integer
+        format: int32
+        description: content_length_limit is the limit of content length. Unit is byte.
+      enableAutoCompact:
+        type: boolean
+        description: enable_auto_compact enables auto compact for large content.
+      enableDoubleClickEdit:
+        type: boolean
+        description: enable_double_click_edit enables editing on double click.
+      enableLinkPreview:
+        type: boolean
+        description: enable_link_preview enables links preview.
+  apiv1WorkspaceSetting:
+    type: object
+    properties:
+      name:
+        type: string
+        title: |-
+          name is the name of the setting.
+          Format: settings/{setting}
+      generalSetting:
+        $ref: '#/definitions/apiv1WorkspaceGeneralSetting'
+      storageSetting:
+        $ref: '#/definitions/apiv1WorkspaceStorageSetting'
+      memoRelatedSetting:
+        $ref: '#/definitions/apiv1WorkspaceMemoRelatedSetting'
+  apiv1WorkspaceStorageSetting:
+    type: object
+    properties:
+      storageType:
+        $ref: '#/definitions/apiv1WorkspaceStorageSettingStorageType'
+        description: storage_type is the storage type.
+      filepathTemplate:
+        type: string
+        title: |-
+          The template of file path.
+          e.g. assets/{timestamp}_{filename}
+      uploadSizeLimitMb:
+        type: string
+        format: int64
+        description: The max upload size in megabytes.
+      s3Config:
+        $ref: '#/definitions/WorkspaceStorageSettingS3Config'
+        description: The S3 config.
+  apiv1WorkspaceStorageSettingStorageType:
+    type: string
+    enum:
+      - STORAGE_TYPE_UNSPECIFIED
+      - DATABASE
+      - LOCAL
+      - S3
+    default: STORAGE_TYPE_UNSPECIFIED
+    description: |2-
+       - DATABASE: DATABASE is the database storage type.
+       - LOCAL: LOCAL is the local storage type.
+       - S3: S3 is the S3 storage type.
   googlerpcStatus:
     type: object
     properties:
@@ -2123,33 +2299,8 @@ definitions:
         description: The create time of the activity.
         readOnly: true
       payload:
-        $ref: '#/definitions/v1ActivityPayload'
+        $ref: '#/definitions/apiv1ActivityPayload'
         description: The payload of the activity.
-  v1ActivityMemoCommentPayload:
-    type: object
-    properties:
-      memoId:
-        type: integer
-        format: int32
-        description: The memo id of comment.
-      relatedMemoId:
-        type: integer
-        format: int32
-        description: The memo id of related memo.
-    description: ActivityMemoCommentPayload represents the payload of a memo comment activity.
-  v1ActivityPayload:
-    type: object
-    properties:
-      memoComment:
-        $ref: '#/definitions/v1ActivityMemoCommentPayload'
-      versionUpdate:
-        $ref: '#/definitions/v1ActivityVersionUpdatePayload'
-  v1ActivityVersionUpdatePayload:
-    type: object
-    properties:
-      version:
-        type: string
-        description: The updated version of memos.
   v1AutoLinkNode:
     type: object
     properties:
@@ -2232,15 +2383,6 @@ definitions:
       content:
         type: string
         format: byte
-  v1FieldMapping:
-    type: object
-    properties:
-      identifier:
-        type: string
-      displayName:
-        type: string
-      email:
-        type: string
   v1HTMLElementNode:
     type: object
     properties:
@@ -2271,33 +2413,6 @@ definitions:
     properties:
       symbol:
         type: string
-  v1IdentityProvider:
-    type: object
-    properties:
-      name:
-        type: string
-        title: |-
-          The name of the identityProvider.
-          Format: identityProviders/{id}
-      type:
-        $ref: '#/definitions/v1IdentityProviderType'
-      title:
-        type: string
-      identifierFilter:
-        type: string
-      config:
-        $ref: '#/definitions/v1IdentityProviderConfig'
-  v1IdentityProviderConfig:
-    type: object
-    properties:
-      oauth2Config:
-        $ref: '#/definitions/v1OAuth2Config'
-  v1IdentityProviderType:
-    type: string
-    enum:
-      - TYPE_UNSPECIFIED
-      - OAUTH2
-    default: TYPE_UNSPECIFIED
   v1ImageNode:
     type: object
     properties:
@@ -2375,7 +2490,7 @@ definitions:
         type: array
         items:
           type: object
-          $ref: '#/definitions/v1IdentityProvider'
+          $ref: '#/definitions/apiv1IdentityProvider'
   v1ListInboxesResponse:
     type: object
     properties:
@@ -2721,25 +2836,6 @@ definitions:
       - SPOILER
       - HTML_ELEMENT
     default: NODE_UNSPECIFIED
-  v1OAuth2Config:
-    type: object
-    properties:
-      clientId:
-        type: string
-      clientSecret:
-        type: string
-      authUrl:
-        type: string
-      tokenUrl:
-        type: string
-      userInfoUrl:
-        type: string
-      scopes:
-        type: array
-        items:
-          type: string
-      fieldMapping:
-        $ref: '#/definitions/v1FieldMapping'
   v1OrderedListNode:
     type: object
     properties:
@@ -3009,23 +3105,6 @@ definitions:
       expiresAt:
         type: string
         format: date-time
-  v1UserSetting:
-    type: object
-    properties:
-      name:
-        type: string
-        title: |-
-          The name of the user.
-          Format: users/{id}
-      locale:
-        type: string
-        description: The preferred locale of the user.
-      appearance:
-        type: string
-        description: The preferred appearance of the user.
-      memoVisibility:
-        type: string
-        description: The default visibility of the memo.
   v1Visibility:
     type: string
     enum:
@@ -3055,53 +3134,6 @@ definitions:
         type: string
       url:
         type: string
-  v1WorkspaceCustomProfile:
-    type: object
-    properties:
-      title:
-        type: string
-      description:
-        type: string
-      logoUrl:
-        type: string
-      locale:
-        type: string
-      appearance:
-        type: string
-  v1WorkspaceGeneralSetting:
-    type: object
-    properties:
-      additionalScript:
-        type: string
-        description: additional_script is the additional script.
-      additionalStyle:
-        type: string
-        description: additional_style is the additional style.
-      customProfile:
-        $ref: '#/definitions/v1WorkspaceCustomProfile'
-        description: custom_profile is the custom profile.
-  v1WorkspaceMemoRelatedSetting:
-    type: object
-    properties:
-      disallowPublicVisibility:
-        type: boolean
-        description: disallow_public_visibility disallows set memo as public visibility.
-      displayWithUpdateTime:
-        type: boolean
-        description: display_with_update_time orders and displays memo with update time.
-      contentLengthLimit:
-        type: integer
-        format: int32
-        description: content_length_limit is the limit of content length. Unit is byte.
-      enableAutoCompact:
-        type: boolean
-        description: enable_auto_compact enables auto compact for large content.
-      enableDoubleClickEdit:
-        type: boolean
-        description: enable_double_click_edit enables editing on double click.
-      enableLinkPreview:
-        type: boolean
-        description: enable_link_preview enables links preview.
   v1WorkspaceProfile:
     type: object
     properties:
@@ -3122,35 +3154,3 @@ definitions:
       passwordAuth:
         type: boolean
         description: password_auth is a flag whether the instance allows password authentication.
-  v1WorkspaceSetting:
-    type: object
-    properties:
-      name:
-        type: string
-        title: |-
-          name is the name of the setting.
-          Format: settings/{setting}
-      generalSetting:
-        $ref: '#/definitions/v1WorkspaceGeneralSetting'
-      storageSetting:
-        $ref: '#/definitions/v1WorkspaceStorageSetting'
-      memoRelatedSetting:
-        $ref: '#/definitions/v1WorkspaceMemoRelatedSetting'
-  v1WorkspaceStorageSetting:
-    type: object
-    properties:
-      storageType:
-        $ref: '#/definitions/WorkspaceStorageSettingStorageType'
-        description: storage_type is the storage type.
-      filepathTemplate:
-        type: string
-        title: |-
-          The template of file path.
-          e.g. assets/{timestamp}_{filename}
-      uploadSizeLimitMb:
-        type: string
-        format: int64
-        description: The max upload size in megabytes.
-      s3Config:
-        $ref: '#/definitions/WorkspaceStorageSettingS3Config'
-        description: The S3 config.
