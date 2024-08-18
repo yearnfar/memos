@@ -44,7 +44,7 @@ func (s *Service) generateToken(userID int, audience string, expirationTime time
 	return tokenString, nil
 }
 
-func (in *Service) Authenticate(ctx context.Context, accessToken, secret string) (userId int, err error) {
+func (in *Service) Authenticate(ctx context.Context, accessToken, secret string) (user *usermodel.User, err error) {
 	if accessToken == "" {
 		err = errors.New("access token not found")
 		return
@@ -65,11 +65,11 @@ func (in *Service) Authenticate(ctx context.Context, accessToken, secret string)
 		err = errors.New("Invalid or expired access token")
 		return
 	}
-	userId, err = strconv.Atoi(claims.Subject)
+	userId, err := strconv.Atoi(claims.Subject)
 	if err != nil {
 		return
 	}
-	user, err := usermod.GetUserById(ctx, userId)
+	user, err = usermod.GetUserById(ctx, userId)
 	if err != nil {
 		return
 	}

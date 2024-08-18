@@ -11,6 +11,7 @@ import (
 
 	gomock "github.com/golang/mock/gomock"
 	model "github.com/yearnfar/memos/internal/module/auth/model"
+	model0 "github.com/yearnfar/memos/internal/module/user/model"
 )
 
 // MockService is a mock of Service interface.
@@ -37,10 +38,10 @@ func (m *MockService) EXPECT() *MockServiceMockRecorder {
 }
 
 // Authenticate mocks base method.
-func (m *MockService) Authenticate(ctx context.Context, accessToken, secret string) (int, error) {
+func (m *MockService) Authenticate(ctx context.Context, accessToken, secret string) (*model0.User, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Authenticate", ctx, accessToken, secret)
-	ret0, _ := ret[0].(int)
+	ret0, _ := ret[0].(*model0.User)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -52,18 +53,18 @@ func (mr *MockServiceMockRecorder) Authenticate(ctx, accessToken, secret interfa
 }
 
 // GenerateAccessToken mocks base method.
-func (m *MockService) GenerateAccessToken(username string, userId int, expirationTime time.Time, secret []byte) (string, error) {
+func (m *MockService) GenerateAccessToken(userId int, expirationTime time.Time, secret []byte) (string, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GenerateAccessToken", username, userId, expirationTime, secret)
+	ret := m.ctrl.Call(m, "GenerateAccessToken", userId, expirationTime, secret)
 	ret0, _ := ret[0].(string)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // GenerateAccessToken indicates an expected call of GenerateAccessToken.
-func (mr *MockServiceMockRecorder) GenerateAccessToken(username, userId, expirationTime, secret interface{}) *gomock.Call {
+func (mr *MockServiceMockRecorder) GenerateAccessToken(userId, expirationTime, secret interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GenerateAccessToken", reflect.TypeOf((*MockService)(nil).GenerateAccessToken), username, userId, expirationTime, secret)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GenerateAccessToken", reflect.TypeOf((*MockService)(nil).GenerateAccessToken), userId, expirationTime, secret)
 }
 
 // SignIn mocks base method.

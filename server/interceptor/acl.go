@@ -12,7 +12,7 @@ import (
 	"google.golang.org/grpc/status"
 
 	authmod "github.com/yearnfar/memos/internal/module/auth"
-	"github.com/yearnfar/memos/internal/module/user/model"
+	usermodel "github.com/yearnfar/memos/internal/module/user/model"
 )
 
 // ContextKey is the key type of context value.
@@ -21,8 +21,11 @@ type ContextKey int
 const (
 	// The key name used to store username in the context
 	// user id is extracted from the jwt token subject field.
-	usernameContextKey ContextKey = iota
+	userIdContextKey ContextKey = iota
 	accessTokenContextKey
+)
+const (
+	AccessTokenCookieName = "memos.access-token"
 )
 
 // GRPCAuthInterceptor is the auth interceptor for gRPC server.
@@ -47,25 +50,18 @@ func (in *GRPCAuthInterceptor) AuthenticationInterceptor(ctx context.Context, re
 	if err != nil {
 		return nil, status.Errorf(codes.Unauthenticated, err.Error())
 	}
-
-	userId, err := authmod.Authenticate(ctx, accessToken, "")
-	if err != nil {
-		return nil, err
-	}
-
-	username, err := in.authenticate(ctx, accessToken)
+	user, err := authmod.Authenticate(ctx, accessToken, "")
 	if err != nil {
 		if isUnauthorizeAllowedMethod(serverInfo.FullMethod) {
 			return handler(ctx, request)
 		}
 		return nil, err
 	}
-
-	if isOnlyForAdminAllowedMethod(serverInfo.FullMethod) && user.Role != store.RoleHost && user.Role != store.RoleAdmin {
-		return nil, errors.Errorf("user %q is not admin", username)
+	if isOnlyForAdminAllowedMethod(serverInfo.FullMethod) && user.Role != usermodel.RoleHost && user.Role != usermodel.RoleAdmin {
+		return nil, errors.Errorf("user %d is not admin", user.ID)
 	}
 
-	ctx = context.WithValue(ctx, usernameContextKey, username)
+	ctx = context.WithValue(ctx, userIdContextKey, user.ID)
 	ctx = context.WithValue(ctx, accessTokenContextKey, accessToken)
 	return handler(ctx, request)
 }
@@ -91,13 +87,4 @@ func getTokenFromMetadata(md metadata.MD) (string, error) {
 		}
 	}
 	return accessToken, nil
-}
-
-func validateAccessToken(token string, userAccessTokens []*model.AccessToken) bool {
-	for _, userAccessToken := range userAccessTokens {
-		if token == userAccessToken.Token {
-			return true
-		}
-	}
-	return false
 }

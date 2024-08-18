@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/yearnfar/memos/internal/module/auth/model"
+	usermodel "github.com/yearnfar/memos/internal/module/user/model"
 )
 
 var defaultService Service
@@ -24,15 +25,15 @@ func SignIn(ctx context.Context, req *model.SignInRequest) (resp *model.SignInRe
 	return v1, v2
 }
 
-func GenerateAccessToken(username string, userId int, expirationTime time.Time, secret []byte) (string, error) {
+func GenerateAccessToken(userId int, expirationTime time.Time, secret []byte) (string, error) {
 	if defaultService == nil {
 		panic("调用模块方法: auth.GenerateAccessToken 失败，服务未注册")
 	}
-	v1, v2 := defaultService.GenerateAccessToken(username, userId, expirationTime, secret)
+	v1, v2 := defaultService.GenerateAccessToken(userId, expirationTime, secret)
 	return v1, v2
 }
 
-func Authenticate(ctx context.Context, accessToken, secret string) (userId int, err error) {
+func Authenticate(ctx context.Context, accessToken, secret string) (user *usermodel.User, err error) {
 	if defaultService == nil {
 		panic("调用模块方法: auth.Authenticate 失败，服务未注册")
 	}
