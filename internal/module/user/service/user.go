@@ -21,7 +21,7 @@ func (s *Service) SignUp(ctx context.Context, req *model.SignUpRequest) (user *m
 		return
 	}
 	hostUserType := model.RoleHost
-	existedHostUsers, err := s.dao.ListUsers(ctx, &model.ListUsersRequest{
+	existedHostUsers, err := s.dao.FindUsers(ctx, &model.FindUsersRequest{
 		Role: hostUserType,
 	})
 	if err != nil {
@@ -76,7 +76,7 @@ func (s *Service) CreateUser(ctx context.Context, req *model.CreateUserRequest) 
 }
 
 func (s *Service) UpdateUser(ctx context.Context, req *model.UpdateUserRequest) (user *model.User, err error) {
-	user, err = s.dao.GetUserById(ctx, req.UserId)
+	user, err = s.dao.FindUserById(ctx, req.UserId)
 	if err != nil {
 		err = errors.Errorf("failed to get user: %v", err)
 		return
@@ -127,9 +127,9 @@ func (s *Service) UpdateUser(ctx context.Context, req *model.UpdateUserRequest) 
 }
 
 func (s *Service) GetUserById(ctx context.Context, id int) (*model.User, error) {
-	return s.dao.GetUserById(ctx, id)
+	return s.dao.FindUserById(ctx, id)
 }
 
 func (s *Service) GetUserByUsername(ctx context.Context, username string) (*model.User, error) {
-	return s.dao.GetUser(ctx, &model.GetUserRequest{Username: username})
+	return s.dao.FindUserByUsername(ctx, username)
 }

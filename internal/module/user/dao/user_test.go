@@ -34,7 +34,7 @@ func TestDao_GetUserById(t *testing.T) {
 	db.Init()
 
 	ctx := context.Background()
-	user, err := New().GetUserById(ctx, 1)
+	user, err := New().FindUserById(ctx, 1)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -46,7 +46,7 @@ func TestDao_GetUserByUsername(t *testing.T) {
 	db.Init()
 
 	ctx := context.Background()
-	user, err := New().GetUserByUsername(ctx, "yearnfar")
+	user, err := New().FindUserByUsername(ctx, "yearnfar")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -58,7 +58,7 @@ func TestDao_GetUser(t *testing.T) {
 	db.Init()
 
 	ctx := context.Background()
-	user, err := New().GetUser(ctx, &model.GetUserRequest{Username: "yearnfar"})
+	user, err := New().FindUser(ctx, &model.FindUserRequest{Username: "yearnfar"})
 	if err != nil {
 		t.Fatal(err)
 	}

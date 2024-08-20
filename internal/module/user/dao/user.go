@@ -11,19 +11,19 @@ func (Dao) CreateUser(ctx context.Context, user *model.User) error {
 	return db.GetDB(ctx).Create(user).Error
 }
 
-func (Dao) GetUserById(ctx context.Context, id int) (user *model.User, err error) {
+func (Dao) FindUserById(ctx context.Context, id int) (user *model.User, err error) {
 	user = &model.User{}
 	err = db.GetDB(ctx).Where("id=?", id).First(&user).Error
 	return
 }
 
-func (Dao) GetUserByUsername(ctx context.Context, username string) (user *model.User, err error) {
+func (Dao) FindUserByUsername(ctx context.Context, username string) (user *model.User, err error) {
 	user = &model.User{}
 	err = db.GetDB(ctx).Where("username=?", username).First(&user).Error
 	return
 }
 
-func (Dao) GetUser(ctx context.Context, req *model.GetUserRequest) (user *model.User, err error) {
+func (Dao) FindUser(ctx context.Context, req *model.FindUserRequest) (user *model.User, err error) {
 	conn := db.GetDB(ctx)
 	if req.Id != 0 {
 		conn = conn.Where("id=?", req.Id)
@@ -41,7 +41,7 @@ func (Dao) UpdateUser(ctx context.Context, user *model.User, update map[string]a
 	return
 }
 
-func (Dao) ListUsers(ctx context.Context, req *model.ListUsersRequest) (list []*model.User, err error) {
+func (Dao) FindUsers(ctx context.Context, req *model.FindUsersRequest) (list []*model.User, err error) {
 	conn := db.GetDB(ctx)
 	if req.Role != "" {
 		conn = conn.Where("role=?", req.Role)

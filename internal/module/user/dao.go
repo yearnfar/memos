@@ -9,14 +9,13 @@ import (
 
 type DAO interface {
 	CreateUser(ctx context.Context, user *model.User) error
-	GetUserById(ctx context.Context, id int) (*model.User, error)
-	GetUserByUsername(ctx context.Context, username string) (*model.User, error)
-	GetUser(ctx context.Context, req *model.GetUserRequest) (*model.User, error)
+	FindUserById(ctx context.Context, id int) (*model.User, error)
+	FindUserByUsername(ctx context.Context, username string) (*model.User, error)
+	FindUser(ctx context.Context, req *model.FindUserRequest) (*model.User, error)
+	FindUsers(ctx context.Context, req *model.FindUsersRequest) ([]*model.User, error)
 	UpdateUser(ctx context.Context, user *model.User, update map[string]any) error
 
-	ListUsers(ctx context.Context, req *model.ListUsersRequest) ([]*model.User, error)
-
-	GetUserSettings(ctx context.Context, req *model.GetUserSettingsRequest) ([]*model.UserSetting, error)
+	FindUserSettings(ctx context.Context, req *model.FindUserSettingsRequest) ([]*model.UserSetting, error)
 	UpsertUserSetting(ctx context.Context, m *model.UserSetting) (err error)
-	GetUserAccessTokens(ctx context.Context, userId int) ([]*model.AccessToken, error)
+	FindUserAccessTokens(ctx context.Context, userId int) ([]*model.AccessToken, error)
 }

@@ -22,7 +22,7 @@ func (User) TableName() string {
 	return TableUser
 }
 
-type GetUserRequest struct {
+type FindUserRequest struct {
 	Id       int
 	Username string
 }
@@ -52,6 +52,6 @@ type SignUpRequest struct {
 	Username string
 	Password string
 }
-type ListUsersRequest struct {
+type FindUsersRequest struct {
 	Role Role
 }

@@ -49,94 +49,94 @@ func (mr *MockDAOMockRecorder) CreateUser(ctx, user interface{}) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateUser", reflect.TypeOf((*MockDAO)(nil).CreateUser), ctx, user)
 }
 
-// GetUser mocks base method.
-func (m *MockDAO) GetUser(ctx context.Context, req *model.GetUserRequest) (*model.User, error) {
+// FindUser mocks base method.
+func (m *MockDAO) FindUser(ctx context.Context, req *model.FindUserRequest) (*model.User, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetUser", ctx, req)
+	ret := m.ctrl.Call(m, "FindUser", ctx, req)
 	ret0, _ := ret[0].(*model.User)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// GetUser indicates an expected call of GetUser.
-func (mr *MockDAOMockRecorder) GetUser(ctx, req interface{}) *gomock.Call {
+// FindUser indicates an expected call of FindUser.
+func (mr *MockDAOMockRecorder) FindUser(ctx, req interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetUser", reflect.TypeOf((*MockDAO)(nil).GetUser), ctx, req)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindUser", reflect.TypeOf((*MockDAO)(nil).FindUser), ctx, req)
 }
 
-// GetUserAccessTokens mocks base method.
-func (m *MockDAO) GetUserAccessTokens(ctx context.Context, userId int) ([]*model.AccessToken, error) {
+// FindUserAccessTokens mocks base method.
+func (m *MockDAO) FindUserAccessTokens(ctx context.Context, userId int) ([]*model.AccessToken, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetUserAccessTokens", ctx, userId)
+	ret := m.ctrl.Call(m, "FindUserAccessTokens", ctx, userId)
 	ret0, _ := ret[0].([]*model.AccessToken)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// GetUserAccessTokens indicates an expected call of GetUserAccessTokens.
-func (mr *MockDAOMockRecorder) GetUserAccessTokens(ctx, userId interface{}) *gomock.Call {
+// FindUserAccessTokens indicates an expected call of FindUserAccessTokens.
+func (mr *MockDAOMockRecorder) FindUserAccessTokens(ctx, userId interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetUserAccessTokens", reflect.TypeOf((*MockDAO)(nil).GetUserAccessTokens), ctx, userId)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindUserAccessTokens", reflect.TypeOf((*MockDAO)(nil).FindUserAccessTokens), ctx, userId)
 }
 
-// GetUserById mocks base method.
-func (m *MockDAO) GetUserById(ctx context.Context, id int) (*model.User, error) {
+// FindUserById mocks base method.
+func (m *MockDAO) FindUserById(ctx context.Context, id int) (*model.User, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetUserById", ctx, id)
+	ret := m.ctrl.Call(m, "FindUserById", ctx, id)
 	ret0, _ := ret[0].(*model.User)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// GetUserById indicates an expected call of GetUserById.
-func (mr *MockDAOMockRecorder) GetUserById(ctx, id interface{}) *gomock.Call {
+// FindUserById indicates an expected call of FindUserById.
+func (mr *MockDAOMockRecorder) FindUserById(ctx, id interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetUserById", reflect.TypeOf((*MockDAO)(nil).GetUserById), ctx, id)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindUserById", reflect.TypeOf((*MockDAO)(nil).FindUserById), ctx, id)
 }
 
-// GetUserByUsername mocks base method.
-func (m *MockDAO) GetUserByUsername(ctx context.Context, username string) (*model.User, error) {
+// FindUserByUsername mocks base method.
+func (m *MockDAO) FindUserByUsername(ctx context.Context, username string) (*model.User, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetUserByUsername", ctx, username)
+	ret := m.ctrl.Call(m, "FindUserByUsername", ctx, username)
 	ret0, _ := ret[0].(*model.User)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// GetUserByUsername indicates an expected call of GetUserByUsername.
-func (mr *MockDAOMockRecorder) GetUserByUsername(ctx, username interface{}) *gomock.Call {
+// FindUserByUsername indicates an expected call of FindUserByUsername.
+func (mr *MockDAOMockRecorder) FindUserByUsername(ctx, username interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetUserByUsername", reflect.TypeOf((*MockDAO)(nil).GetUserByUsername), ctx, username)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindUserByUsername", reflect.TypeOf((*MockDAO)(nil).FindUserByUsername), ctx, username)
 }
 
-// GetUserSettings mocks base method.
-func (m *MockDAO) GetUserSettings(ctx context.Context, req *model.GetUserSettingsRequest) ([]*model.UserSetting, error) {
+// FindUserSettings mocks base method.
+func (m *MockDAO) FindUserSettings(ctx context.Context, req *model.FindUserSettingsRequest) ([]*model.UserSetting, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetUserSettings", ctx, req)
+	ret := m.ctrl.Call(m, "FindUserSettings", ctx, req)
 	ret0, _ := ret[0].([]*model.UserSetting)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// GetUserSettings indicates an expected call of GetUserSettings.
-func (mr *MockDAOMockRecorder) GetUserSettings(ctx, req interface{}) *gomock.Call {
+// FindUserSettings indicates an expected call of FindUserSettings.
+func (mr *MockDAOMockRecorder) FindUserSettings(ctx, req interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetUserSettings", reflect.TypeOf((*MockDAO)(nil).GetUserSettings), ctx, req)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindUserSettings", reflect.TypeOf((*MockDAO)(nil).FindUserSettings), ctx, req)
 }
 
-// ListUsers mocks base method.
-func (m *MockDAO) ListUsers(ctx context.Context, req *model.ListUsersRequest) ([]*model.User, error) {
+// FindUsers mocks base method.
+func (m *MockDAO) FindUsers(ctx context.Context, req *model.FindUsersRequest) ([]*model.User, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ListUsers", ctx, req)
+	ret := m.ctrl.Call(m, "FindUsers", ctx, req)
 	ret0, _ := ret[0].([]*model.User)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// ListUsers indicates an expected call of ListUsers.
-func (mr *MockDAOMockRecorder) ListUsers(ctx, req interface{}) *gomock.Call {
+// FindUsers indicates an expected call of FindUsers.
+func (mr *MockDAOMockRecorder) FindUsers(ctx, req interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListUsers", reflect.TypeOf((*MockDAO)(nil).ListUsers), ctx, req)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindUsers", reflect.TypeOf((*MockDAO)(nil).FindUsers), ctx, req)
 }
 
 // UpdateUser mocks base method.

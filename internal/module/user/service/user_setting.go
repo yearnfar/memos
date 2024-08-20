@@ -27,11 +27,11 @@ func (s *Service) ListUserAccessTokens(ctx context.Context, request *v1pb.ListUs
 }
 
 func (s *Service) GetAccessTokens(ctx context.Context, userId int) (tokens []*model.AccessToken, err error) {
-	return s.dao.GetUserAccessTokens(ctx, userId)
+	return s.dao.FindUserAccessTokens(ctx, userId)
 }
 
 func (s *Service) UpsertAccessToken(ctx context.Context, userId int, accessToken, description string) (err error) {
-	tokens, err := s.dao.GetUserAccessTokens(ctx, userId)
+	tokens, err := s.dao.FindUserAccessTokens(ctx, userId)
 	if err != nil {
 		err = errors.Wrap(err, "failed to get user access tokens")
 		return
@@ -55,7 +55,7 @@ func (s *Service) UpsertAccessToken(ctx context.Context, userId int, accessToken
 }
 
 func (s *Service) DeleteAccessToken(ctx context.Context, userId int, accessToken string) (err error) {
-	tokens, err := s.dao.GetUserAccessTokens(ctx, userId)
+	tokens, err := s.dao.FindUserAccessTokens(ctx, userId)
 	if err != nil {
 		err = errors.Wrap(err, "failed to get user access tokens")
 		return
@@ -83,5 +83,5 @@ func (s *Service) DeleteAccessToken(ctx context.Context, userId int, accessToken
 }
 
 func (s *Service) GetUserSettings(ctx context.Context, userId int) ([]*model.UserSetting, error) {
-	return s.dao.GetUserSettings(ctx, &model.GetUserSettingsRequest{UserId: userId})
+	return s.dao.FindUserSettings(ctx, &model.FindUserSettingsRequest{UserId: userId})
 }

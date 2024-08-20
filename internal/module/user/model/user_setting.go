@@ -15,10 +15,10 @@ type AccessToken struct {
 	Description string `json:"description"`
 }
 
-type GetUserSettingRequest struct {
+type FindUserSettingRequest struct {
 	Id int
 }
 
-type GetUserSettingsRequest struct {
+type FindUserSettingsRequest struct {
 	UserId int
 }

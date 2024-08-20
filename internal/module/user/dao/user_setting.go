@@ -9,7 +9,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func (Dao) GetUserSetting(ctx context.Context, req *model.GetUserSettingRequest) (setting *model.UserSetting, err error) {
+func (Dao) GetUserSetting(ctx context.Context, req *model.FindUserSettingRequest) (setting *model.UserSetting, err error) {
 	conn := db.GetDB(ctx)
 	if req.Id != 0 {
 		conn = conn.Where("id=?", req.Id)
@@ -19,7 +19,7 @@ func (Dao) GetUserSetting(ctx context.Context, req *model.GetUserSettingRequest)
 	return
 }
 
-func (Dao) GetUserSettings(ctx context.Context, req *model.GetUserSettingsRequest) (list []*model.UserSetting, err error) {
+func (Dao) FindUserSettings(ctx context.Context, req *model.FindUserSettingsRequest) (list []*model.UserSetting, err error) {
 	conn := db.GetDB(ctx)
 	if req.UserId != 0 {
 		conn = conn.Where("user_id=?", req.UserId)
@@ -36,7 +36,7 @@ func (dao *Dao) UpsertUserSetting(ctx context.Context, m *model.UserSetting) (er
 	return
 }
 
-func (dao *Dao) GetUserAccessTokens(ctx context.Context, userId int) (tokens []*model.AccessToken, err error) {
+func (dao *Dao) FindUserAccessTokens(ctx context.Context, userId int) (tokens []*model.AccessToken, err error) {
 	var setting model.UserSetting
 	err = db.GetDB(ctx).Where("user_id=? and key=?", userId, model.UserSettingKeyAccessToken).First(&setting).Error
 	if err == gorm.ErrRecordNotFound {
