@@ -3,8 +3,22 @@
 
 package memo
 
+import (
+	"context"
+
+	"github.com/yearnfar/memos/internal/module/memo/model"
+)
+
 var defaultService Service
 
 func Register(s Service) {
 	defaultService = s
+}
+
+func ListInboxes(ctx context.Context, req *model.ListInboxesRequest) ([]*model.Inbox, error) {
+	if defaultService == nil {
+		panic("调用模块方法: memo.ListInboxes 失败，服务未注册")
+	}
+	v1, v2 := defaultService.ListInboxes(ctx, req)
+	return v1, v2
 }

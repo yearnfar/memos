@@ -15,3 +15,23 @@ const (
 func (v Visibility) String() string {
 	return string(v)
 }
+
+type InboxStatus string
+
+const (
+	InboxStatusUnspecified InboxStatus = "STATUS_UNSPECIFIED"
+	InboxStatusUnread      InboxStatus = "UNREAD"
+	InboxStatusArchived    InboxStatus = "ARCHIVED"
+)
+
+type InboxMsgType int32
+
+const (
+	InboxMsgTypeUnspecified   InboxMsgType = 0
+	InboxMsgTypeMemoComment   InboxMsgType = 1
+	InboxMsgTypeVersionUpdate InboxMsgType = 2
+)
+
+const (
+	TableInbox = "inbox"
+)

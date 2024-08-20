@@ -5,7 +5,11 @@
 package memo
 
 import (
+	context "context"
+	reflect "reflect"
+
 	gomock "github.com/golang/mock/gomock"
+	model "github.com/yearnfar/memos/internal/module/memo/model"
 )
 
 // MockDAO is a mock of DAO interface.
@@ -29,4 +33,19 @@ func NewMockDAO(ctrl *gomock.Controller) *MockDAO {
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockDAO) EXPECT() *MockDAOMockRecorder {
 	return m.recorder
+}
+
+// FindInboxes mocks base method.
+func (m *MockDAO) FindInboxes(ctx context.Context, req *model.FindInboxesRequest) ([]*model.Inbox, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "FindInboxes", ctx, req)
+	ret0, _ := ret[0].([]*model.Inbox)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// FindInboxes indicates an expected call of FindInboxes.
+func (mr *MockDAOMockRecorder) FindInboxes(ctx, req interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindInboxes", reflect.TypeOf((*MockDAO)(nil).FindInboxes), ctx, req)
 }
