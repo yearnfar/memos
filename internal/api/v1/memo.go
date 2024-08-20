@@ -6,6 +6,9 @@ import (
 
 	"github.com/pkg/errors"
 	"github.com/yearnfar/memos/internal/api"
+	memomod "github.com/yearnfar/memos/internal/module/memo"
+	memomodel "github.com/yearnfar/memos/internal/module/memo/model"
+
 	v1pb "github.com/yearnfar/memos/internal/proto/api/v1"
 )
 
@@ -21,7 +24,12 @@ func (s *MemoService) ListMemos(ctx context.Context, req *v1pb.ListMemosRequest)
 		return
 	}
 
-	slog.Info("user", user)
+	list, err := memomod.ListMemos(ctx, &memomodel.ListMemosRequest{CreatorId: user.ID})
+	if err != nil {
+		return
+	}
+
+	slog.Info("list", list)
 	return
 }
 

@@ -49,3 +49,18 @@ func (mr *MockServiceMockRecorder) ListInboxes(ctx, req interface{}) *gomock.Cal
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListInboxes", reflect.TypeOf((*MockService)(nil).ListInboxes), ctx, req)
 }
+
+// ListMemos mocks base method.
+func (m *MockService) ListMemos(ctx context.Context, req *model.ListMemosRequest) ([]*model.Memo, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ListMemos", ctx, req)
+	ret0, _ := ret[0].([]*model.Memo)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListMemos indicates an expected call of ListMemos.
+func (mr *MockServiceMockRecorder) ListMemos(ctx, req interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListMemos", reflect.TypeOf((*MockService)(nil).ListMemos), ctx, req)
+}

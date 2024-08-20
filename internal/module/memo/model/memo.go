@@ -7,7 +7,7 @@ type Memo struct {
 	UID string
 
 	// Standard fields
-	// RowStatus RowStatus
+	RowStatus RowStatus
 	CreatorID int32
 	CreatedTs int64
 	UpdatedTs int64
@@ -15,9 +15,27 @@ type Memo struct {
 	// Domain specific fields
 	Content    string
 	Visibility Visibility
-	// Payload    *storepb.MemoPayload
+	Payload    *PayloadProperty `gorm:"serializer:json"`
 
 	// Composed fields
 	Pinned   bool
 	ParentID *int32
+}
+
+func (Memo) TableName() string {
+	return TableMemo
+}
+
+type PayloadProperty struct {
+	Tags               []string
+	HasLink            bool
+	HasTaskList        bool
+	HasCode            bool
+	HasIncompleteTasks bool
+}
+
+type FindMemosRequest struct {
+}
+type ListMemosRequest struct {
+	CreatorId int
 }
