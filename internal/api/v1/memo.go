@@ -11,10 +11,32 @@ import (
 
 type MemoService struct {
 	api.BaseService
-	v1pb.UnimplementedInboxServiceServer
+	v1pb.UnimplementedMemoServiceServer
 }
 
 func (s *MemoService) ListMemos(ctx context.Context, req *v1pb.ListMemosRequest) (response *v1pb.ListMemosResponse, err error) {
+	user, err := s.GetCurrentUser(ctx)
+	if err != nil {
+		err = errors.Errorf("failed to get current user: %v", err)
+		return
+	}
+
+	slog.Info("user", user)
+	return
+}
+
+func (s *MemoService) ListMemoTags(ctx context.Context, request *v1pb.ListMemoTagsRequest) (response *v1pb.ListMemoTagsResponse, err error) {
+	user, err := s.GetCurrentUser(ctx)
+	if err != nil {
+		err = errors.Errorf("failed to get current user: %v", err)
+		return
+	}
+
+	slog.Info("user", user)
+	return
+}
+
+func (s *MemoService) ListMemoProperties(ctx context.Context, request *v1pb.ListMemoPropertiesRequest) (response *v1pb.ListMemoPropertiesResponse, err error) {
 	user, err := s.GetCurrentUser(ctx)
 	if err != nil {
 		err = errors.Errorf("failed to get current user: %v", err)
