@@ -16,6 +16,7 @@ type DAO interface {
 
 	ListUsers(ctx context.Context, req *model.ListUsersRequest) ([]*model.User, error)
 
+	GetUserSettings(ctx context.Context, req *model.GetUserSettingsRequest) ([]*model.UserSetting, error)
 	UpsertUserSetting(ctx context.Context, m *model.UserSetting) (err error)
 	GetUserAccessTokens(ctx context.Context, userId int) ([]*model.AccessToken, error)
 }

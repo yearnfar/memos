@@ -18,4 +18,5 @@ type Service interface {
 	UpsertAccessToken(ctx context.Context, userId int, accessToken, description string) error
 	DeleteAccessToken(ctx context.Context, userId int, accessToken string) error
 	GetAccessTokens(ctx context.Context, userId int) ([]*model.AccessToken, error)
+	GetUserSettings(ctx context.Context, userId int) ([]*model.UserSetting, error)
 }

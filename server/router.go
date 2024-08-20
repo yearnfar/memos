@@ -20,6 +20,7 @@ func registerGRPC(s *Server) {
 	v1pb.RegisterAuthServiceServer(s.grpcServer, &v1.AuthService{})
 	v1pb.RegisterWorkspaceServiceServer(s.grpcServer, &v1.WorkspaceService{})
 	v1pb.RegisterWorkspaceSettingServiceServer(s.grpcServer, &v1.WorkspaceSettingService{})
+	v1pb.RegisterUserServiceServer(s.grpcServer, &v1.UserService{})
 	reflection.Register(s.grpcServer)
 }
 
@@ -39,6 +40,9 @@ func registerGateway(ctx context.Context, s *Server) error {
 		return err
 	}
 	if err := v1pb.RegisterWorkspaceSettingServiceHandler(ctx, gwMux, conn); err != nil {
+		return err
+	}
+	if err := v1pb.RegisterUserServiceHandler(ctx, gwMux, conn); err != nil {
 		return err
 	}
 

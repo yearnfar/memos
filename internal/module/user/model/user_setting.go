@@ -14,3 +14,11 @@ type AccessToken struct {
 	Token       string `json:"token"`
 	Description string `json:"description"`
 }
+
+type GetUserSettingRequest struct {
+	Id int
+}
+
+type GetUserSettingsRequest struct {
+	UserId int
+}

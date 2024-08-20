@@ -9,6 +9,25 @@ import (
 	"gorm.io/gorm"
 )
 
+func (Dao) GetUserSetting(ctx context.Context, req *model.GetUserSettingRequest) (setting *model.UserSetting, err error) {
+	conn := db.GetDB(ctx)
+	if req.Id != 0 {
+		conn = conn.Where("id=?", req.Id)
+	}
+	setting = &model.UserSetting{}
+	err = conn.First(&setting).Error
+	return
+}
+
+func (Dao) GetUserSettings(ctx context.Context, req *model.GetUserSettingsRequest) (list []*model.UserSetting, err error) {
+	conn := db.GetDB(ctx)
+	if req.UserId != 0 {
+		conn = conn.Where("user_id=?", req.UserId)
+	}
+	err = conn.Find(&list).Error
+	return
+}
+
 func (dao *Dao) UpsertUserSetting(ctx context.Context, m *model.UserSetting) (err error) {
 	err = db.GetDB(ctx).
 		Where("user_id=? and key=?", m.UserId, m.Key).

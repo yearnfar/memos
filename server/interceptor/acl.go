@@ -49,7 +49,7 @@ func (in *GRPCAuthInterceptor) AuthenticationInterceptor(ctx context.Context, re
 		return nil, errors.Errorf("user %d is not admin", user.ID)
 	}
 
-	api.SetContext(ctx, user.ID, accessToken)
+	ctx = api.SetContext(ctx, user.ID, accessToken)
 	return handler(ctx, request)
 }
 

@@ -81,3 +81,7 @@ func (s *Service) DeleteAccessToken(ctx context.Context, userId int, accessToken
 	}
 	return
 }
+
+func (s *Service) GetUserSettings(ctx context.Context, userId int) ([]*model.UserSetting, error) {
+	return s.dao.GetUserSettings(ctx, &model.GetUserSettingsRequest{UserId: userId})
+}

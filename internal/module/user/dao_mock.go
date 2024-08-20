@@ -109,6 +109,21 @@ func (mr *MockDAOMockRecorder) GetUserByUsername(ctx, username interface{}) *gom
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetUserByUsername", reflect.TypeOf((*MockDAO)(nil).GetUserByUsername), ctx, username)
 }
 
+// GetUserSettings mocks base method.
+func (m *MockDAO) GetUserSettings(ctx context.Context, req *model.GetUserSettingsRequest) ([]*model.UserSetting, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetUserSettings", ctx, req)
+	ret0, _ := ret[0].([]*model.UserSetting)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetUserSettings indicates an expected call of GetUserSettings.
+func (mr *MockDAOMockRecorder) GetUserSettings(ctx, req interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetUserSettings", reflect.TypeOf((*MockDAO)(nil).GetUserSettings), ctx, req)
+}
+
 // ListUsers mocks base method.
 func (m *MockDAO) ListUsers(ctx context.Context, req *model.ListUsersRequest) ([]*model.User, error) {
 	m.ctrl.T.Helper()

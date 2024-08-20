@@ -70,3 +70,11 @@ func GetAccessTokens(ctx context.Context, userId int) ([]*model.AccessToken, err
 	v1, v2 := defaultService.GetAccessTokens(ctx, userId)
 	return v1, v2
 }
+
+func GetUserSettings(ctx context.Context, userId int) ([]*model.UserSetting, error) {
+	if defaultService == nil {
+		panic("调用模块方法: user.GetUserSettings 失败，服务未注册")
+	}
+	v1, v2 := defaultService.GetUserSettings(ctx, userId)
+	return v1, v2
+}
