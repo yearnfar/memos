@@ -19,7 +19,7 @@ func TestService_UpsertAccessToken(t *testing.T) {
 	daoMock := usermod.NewMockDAO(ctl)
 	daoMock.
 		EXPECT().
-		GetUserAccessTokens(ctx, 1).
+		FindUserAccessTokens(ctx, 1).
 		Return([]*model.AccessToken{}, nil)
 
 	daoMock.
