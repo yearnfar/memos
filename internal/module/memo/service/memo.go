@@ -37,6 +37,7 @@ func (s *Service) CreateMemo(ctx context.Context, req *model.CreateMemoRequest) 
 		CreatorID:  int32(req.UserId),
 		Content:    req.Content,
 		Visibility: req.Visibility,
+		RowStatus:  model.Normal,
 		Payload: &model.MemoPayload{
 			Property: property,
 		},

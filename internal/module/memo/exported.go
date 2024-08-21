@@ -30,3 +30,11 @@ func ListMemos(ctx context.Context, req *model.ListMemosRequest) ([]*model.Memo,
 	v1, v2 := defaultService.ListMemos(ctx, req)
 	return v1, v2
 }
+
+func CreateMemo(ctx context.Context, req *model.CreateMemoRequest) (*model.Memo, error) {
+	if defaultService == nil {
+		panic("调用模块方法: memo.CreateMemo 失败，服务未注册")
+	}
+	v1, v2 := defaultService.CreateMemo(ctx, req)
+	return v1, v2
+}

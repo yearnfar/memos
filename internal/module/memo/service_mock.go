@@ -35,6 +35,21 @@ func (m *MockService) EXPECT() *MockServiceMockRecorder {
 	return m.recorder
 }
 
+// CreateMemo mocks base method.
+func (m *MockService) CreateMemo(ctx context.Context, req *model.CreateMemoRequest) (*model.Memo, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateMemo", ctx, req)
+	ret0, _ := ret[0].(*model.Memo)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateMemo indicates an expected call of CreateMemo.
+func (mr *MockServiceMockRecorder) CreateMemo(ctx, req interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateMemo", reflect.TypeOf((*MockService)(nil).CreateMemo), ctx, req)
+}
+
 // ListInboxes mocks base method.
 func (m *MockService) ListInboxes(ctx context.Context, req *model.ListInboxesRequest) ([]*model.Inbox, error) {
 	m.ctrl.T.Helper()

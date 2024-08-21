@@ -11,7 +11,7 @@ func (WorkspaceSetting) TableName() string {
 }
 
 type WorkspaceSettingCache struct {
-	Key   string
+	Key   WorkspaceSettingKey
 	Value any
 }
 

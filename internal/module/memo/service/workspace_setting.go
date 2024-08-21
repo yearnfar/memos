@@ -9,18 +9,26 @@ import (
 	"github.com/yearnfar/memos/internal/module/memo/model"
 )
 
+const (
+	// DefaultContentLengthLimit is the default limit of content length in bytes. 8KB.
+	DefaultContentLengthLimit = 8 * 1024
+)
+
 func (s *Service) getWorkspaceMemoRelatedSetting(ctx context.Context) (*model.WorkspaceMemoRelatedSetting, error) {
 	settingCache, err := s.getWorkspaceSettingCache(ctx, string(model.WorkspaceSettingKeyMemoRelated))
 	if err != nil {
 		return nil, err
-	} else if settingCache == nil {
-		return nil, nil
 	}
-	if val, ok := settingCache.Value.(*model.WorkspaceMemoRelatedSetting); !ok {
-		return nil, errors.New("type error")
-	} else {
-		return val, nil
+	setting := &model.WorkspaceMemoRelatedSetting{}
+	if settingCache != nil {
+		var ok bool
+		if setting, ok = settingCache.Value.(*model.WorkspaceMemoRelatedSetting); !ok {
+			return nil, errors.New("type error")
+		}
 	}
+	setting.ContentLengthLimit = max(setting.ContentLengthLimit, DefaultContentLengthLimit)
+	return setting, nil
+
 }
 func (s *Service) getWorkspaceSettingCache(ctx context.Context, name string) (*model.WorkspaceSettingCache, error) {
 	if cache, ok := s.workspaceSettingCache.Load(name); ok {
@@ -56,7 +64,7 @@ func (s *Service) getWorkspaceSettingCache(ctx context.Context, name string) (*m
 
 func (s *Service) convertWorkspaceSettingCache(wsSetting *model.WorkspaceSetting) (settingCache *model.WorkspaceSettingCache, err error) {
 	settingCache = &model.WorkspaceSettingCache{
-		Key: wsSetting.Name,
+		Key: model.WorkspaceSettingKey(wsSetting.Name),
 	}
 	switch wsSetting.Name {
 	case string(model.WorkspaceSettingKeyBasic):
