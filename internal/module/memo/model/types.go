@@ -46,7 +46,34 @@ func (r RowStatus) String() string {
 	return string(r)
 }
 
+type WorkspaceSettingKey string
+
 const (
-	TableInbox = "inbox"
-	TableMemo  = "memo"
+	WorkspaceSettingKeyUnspecified WorkspaceSettingKey = "WORKSPACE_SETTING_KEY_UNSPECIFIED"
+	// BASIC is the key for basic settings.
+	WorkspaceSettingKeyBasic WorkspaceSettingKey = "BASIC"
+	// GENERAL is the key for general settings.
+	WorkspaceSettingKeyGeneral WorkspaceSettingKey = "GENERAL"
+	// STORAGE is the key for storage settings.
+	WorkspaceSettingKeyStorage WorkspaceSettingKey = "STORAGE"
+	// MEMO_RELATED is the key for memo related settings.
+	WorkspaceSettingKeyMemoRelated WorkspaceSettingKey = "MEMO_RELATED"
+)
+
+type StorageType string
+
+const (
+	StorageTypeUnspecified StorageType = "STORAGE_TYPE_UNSPECIFIED"
+	// StorageTypeDatabase is the database storage type.
+	StorageTypeDatabase StorageType = "DATABASE"
+	// StorageTypeLocal is the local storage type.
+	StorageTypeLocal StorageType = "LOCAL"
+	// StorageTypeS3 is the S3 storage type.
+	StorageTypeS3 StorageType = "S3"
+)
+
+const (
+	TableInbox            = "inbox"
+	TableMemo             = "memo"
+	TableWorkspaceSetting = "system_setting"
 )

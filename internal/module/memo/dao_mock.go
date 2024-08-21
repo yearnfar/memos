@@ -35,6 +35,20 @@ func (m *MockDAO) EXPECT() *MockDAOMockRecorder {
 	return m.recorder
 }
 
+// CreateMemo mocks base method.
+func (m *MockDAO) CreateMemo(ctx context.Context, memo *model.Memo) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateMemo", ctx, memo)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// CreateMemo indicates an expected call of CreateMemo.
+func (mr *MockDAOMockRecorder) CreateMemo(ctx, memo interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateMemo", reflect.TypeOf((*MockDAO)(nil).CreateMemo), ctx, memo)
+}
+
 // FindInboxes mocks base method.
 func (m *MockDAO) FindInboxes(ctx context.Context, req *model.FindInboxesRequest) ([]*model.Inbox, error) {
 	m.ctrl.T.Helper()
@@ -63,4 +77,19 @@ func (m *MockDAO) FindMemos(ctx context.Context, req *model.FindMemosRequest) ([
 func (mr *MockDAOMockRecorder) FindMemos(ctx, req interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindMemos", reflect.TypeOf((*MockDAO)(nil).FindMemos), ctx, req)
+}
+
+// FindWorkspaceSettings mocks base method.
+func (m *MockDAO) FindWorkspaceSettings(ctx context.Context, req *model.FindWorkspaceSettingsRequest) ([]*model.WorkspaceSetting, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "FindWorkspaceSettings", ctx, req)
+	ret0, _ := ret[0].([]*model.WorkspaceSetting)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// FindWorkspaceSettings indicates an expected call of FindWorkspaceSettings.
+func (mr *MockDAOMockRecorder) FindWorkspaceSettings(ctx, req interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindWorkspaceSettings", reflect.TypeOf((*MockDAO)(nil).FindWorkspaceSettings), ctx, req)
 }

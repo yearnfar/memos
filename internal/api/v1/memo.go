@@ -17,6 +17,10 @@ type MemoService struct {
 	v1pb.UnimplementedMemoServiceServer
 }
 
+func (s *MemoService) CreateMemo(ctx context.Context, request *v1pb.CreateMemoRequest) (response *v1pb.Memo, err error) {
+	return
+}
+
 func (s *MemoService) ListMemos(ctx context.Context, req *v1pb.ListMemosRequest) (response *v1pb.ListMemosResponse, err error) {
 	user, err := s.GetCurrentUser(ctx)
 	if err != nil {

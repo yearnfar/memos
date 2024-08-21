@@ -13,11 +13,12 @@ require (
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.21.0
 	github.com/improbable-eng/grpc-web v0.15.0
 	github.com/labstack/echo/v4 v4.12.0
+	github.com/lithammer/shortuuid/v4 v4.0.0
 	github.com/pkg/errors v0.9.1
 	github.com/stretchr/testify v1.9.0
 	github.com/subosito/gotenv v1.6.0
 	github.com/urfave/cli/v2 v2.27.4
-	github.com/usememos/memos v0.22.4
+	github.com/usememos/gomark v0.0.0-20240714122951-35ed01b21822
 	github.com/yearnfar/gokit v1.0.1
 	golang.org/x/crypto v0.25.0
 	golang.org/x/mod v0.19.0
@@ -29,25 +30,6 @@ require (
 )
 
 require (
-	github.com/aws/aws-sdk-go-v2 v1.30.3 // indirect
-	github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.6.3 // indirect
-	github.com/aws/aws-sdk-go-v2/config v1.27.27 // indirect
-	github.com/aws/aws-sdk-go-v2/credentials v1.17.27 // indirect
-	github.com/aws/aws-sdk-go-v2/feature/ec2/imds v1.16.11 // indirect
-	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.17.8 // indirect
-	github.com/aws/aws-sdk-go-v2/internal/configsources v1.3.15 // indirect
-	github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.6.15 // indirect
-	github.com/aws/aws-sdk-go-v2/internal/ini v1.8.0 // indirect
-	github.com/aws/aws-sdk-go-v2/internal/v4a v1.3.15 // indirect
-	github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.11.3 // indirect
-	github.com/aws/aws-sdk-go-v2/service/internal/checksum v1.3.17 // indirect
-	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.11.17 // indirect
-	github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.17.15 // indirect
-	github.com/aws/aws-sdk-go-v2/service/s3 v1.58.2 // indirect
-	github.com/aws/aws-sdk-go-v2/service/sso v1.22.4 // indirect
-	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.26.4 // indirect
-	github.com/aws/aws-sdk-go-v2/service/sts v1.30.3 // indirect
-	github.com/aws/smithy-go v1.20.3 // indirect
 	github.com/cenkalti/backoff/v4 v4.3.0 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.4 // indirect
 	github.com/desertbit/timer v0.0.0-20180107155436-c41aec40b27f // indirect
@@ -59,6 +41,7 @@ require (
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/mattn/go-sqlite3 v1.14.22 // indirect
+	github.com/rogpeppe/go-internal v1.11.0 // indirect
 	github.com/rs/cors v1.10.1 // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect

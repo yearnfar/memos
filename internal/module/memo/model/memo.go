@@ -15,7 +15,7 @@ type Memo struct {
 	// Domain specific fields
 	Content    string
 	Visibility Visibility
-	Payload    *PayloadProperty `gorm:"serializer:json"`
+	Payload    *MemoPayload `gorm:"serializer:json"`
 
 	// Composed fields
 	Pinned   bool
@@ -26,7 +26,12 @@ func (Memo) TableName() string {
 	return TableMemo
 }
 
-type PayloadProperty struct {
+type MemoPayload struct {
+	// property is the memo's property.
+	Property *MemoPayloadProperty
+}
+
+type MemoPayloadProperty struct {
 	Tags               []string
 	HasLink            bool
 	HasTaskList        bool
@@ -38,4 +43,10 @@ type FindMemosRequest struct {
 }
 type ListMemosRequest struct {
 	CreatorId int
+}
+
+type CreateMemoRequest struct {
+	UserId     int
+	Content    string
+	Visibility Visibility
 }
