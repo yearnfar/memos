@@ -15,7 +15,7 @@ const (
 )
 
 func (s *Service) getWorkspaceMemoRelatedSetting(ctx context.Context) (*model.WorkspaceMemoRelatedSetting, error) {
-	settingCache, err := s.getWorkspaceSettingCache(ctx, string(model.WorkspaceSettingKeyMemoRelated))
+	settingCache, err := s.getWorkspaceSettingCache(ctx, model.WorkspaceSettingKeyMemoRelated)
 	if err != nil {
 		return nil, err
 	}
@@ -30,14 +30,15 @@ func (s *Service) getWorkspaceMemoRelatedSetting(ctx context.Context) (*model.Wo
 	return setting, nil
 
 }
-func (s *Service) getWorkspaceSettingCache(ctx context.Context, name string) (*model.WorkspaceSettingCache, error) {
-	if cache, ok := s.workspaceSettingCache.Load(name); ok {
+
+func (s *Service) getWorkspaceSettingCache(ctx context.Context, key model.WorkspaceSettingKey) (*model.WorkspaceSettingCache, error) {
+	if cache, ok := s.workspaceSettingCache.Load(key); ok {
 		workspaceSetting, ok := cache.(*model.WorkspaceSettingCache)
 		if ok {
 			return workspaceSetting, nil
 		}
 	}
-	list, err := s.dao.FindWorkspaceSettings(ctx, &model.FindWorkspaceSettingsRequest{Name: name})
+	list, err := s.dao.FindWorkspaceSettings(ctx, &model.FindWorkspaceSettingsRequest{Name: string(key)})
 	if err != nil {
 		return nil, err
 	}
@@ -57,7 +58,7 @@ func (s *Service) getWorkspaceSettingCache(ctx context.Context, name string) (*m
 		return nil, nil
 	}
 	if len(settingCaches) > 1 {
-		return nil, errors.Errorf("found multiple workspace settings with key %s", name)
+		return nil, errors.Errorf("found multiple workspace settings with key %s", key)
 	}
 	return settingCaches[0], nil
 }
