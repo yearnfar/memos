@@ -94,6 +94,15 @@ func (r ReactionType) String() string {
 	return string(r)
 }
 
+type ResourceStorageType string
+
+const (
+	ResourceStorageTypeUnspecified ResourceStorageType = "UNSPECIFIED"
+	ResourceStorageTypeLocal       ResourceStorageType = "LOCAL"
+	ResourceStorageTypeS3          ResourceStorageType = "S3"
+	ResourceStorageTypeExternal    ResourceStorageType = "EXTERNAL"
+)
+
 const (
 	TableInbox            = "inbox"
 	TableMemo             = "memo"
