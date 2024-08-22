@@ -72,8 +72,33 @@ const (
 	StorageTypeS3 StorageType = "S3"
 )
 
+type ReactionType string
+
+const (
+	ReactionTypeUnspecified   ReactionType = "REACTION_TYPE_UNSPECIFIED"
+	ReactionTypeThumbsUp      ReactionType = "THUMBS_UP"
+	ReactionTypeThumbsDown    ReactionType = "THUMBS_DOWN"
+	ReactionTypeHeart         ReactionType = "HEART"
+	ReactionTypeFire          ReactionType = "FIRE"
+	ReactionTypeClappingHands ReactionType = "CLAPPING_HANDS"
+	ReactionTypeLaugh         ReactionType = "LAUGH"
+	ReactionTypeOkHand        ReactionType = "OK_HAND"
+	ReactionTypeRocket        ReactionType = "ROCKET"
+	ReactionTypeEyes          ReactionType = "EYES"
+	ReactionTypeThinkingFace  ReactionType = "THINKING_FACE"
+	ReactionTypeClownFace     ReactionType = "CLOWN_FACE"
+	ReactionTypeQuestionMark  ReactionType = "QUESTION_MARK"
+)
+
+func (r ReactionType) String() string {
+	return string(r)
+}
+
 const (
 	TableInbox            = "inbox"
 	TableMemo             = "memo"
+	TableMemoOrganizer    = "memo_organizer"
+	TableMemoRelation     = "memo_relation"
 	TableWorkspaceSetting = "system_setting"
+	TableReaction         = "reaction"
 )
