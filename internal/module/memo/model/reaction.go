@@ -20,7 +20,7 @@ type FindReactionsRequest struct {
 	ContentId string
 }
 
-type ListReactionRequest struct {
+type ListReactionsRequest struct {
 	Id        int
 	CreatorId int
 	ContentId string

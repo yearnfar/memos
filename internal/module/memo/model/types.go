@@ -110,4 +110,5 @@ const (
 	TableMemoRelation     = "memo_relation"
 	TableWorkspaceSetting = "system_setting"
 	TableReaction         = "reaction"
+	TableResource         = "resource"
 )

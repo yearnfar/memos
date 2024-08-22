@@ -50,6 +50,21 @@ func (mr *MockServiceMockRecorder) CreateMemo(ctx, req interface{}) *gomock.Call
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateMemo", reflect.TypeOf((*MockService)(nil).CreateMemo), ctx, req)
 }
 
+// GetMemo mocks base method.
+func (m *MockService) GetMemo(ctx context.Context, req *model.GetMemoRequest) (*model.Memo, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetMemo", ctx, req)
+	ret0, _ := ret[0].(*model.Memo)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetMemo indicates an expected call of GetMemo.
+func (mr *MockServiceMockRecorder) GetMemo(ctx, req interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetMemo", reflect.TypeOf((*MockService)(nil).GetMemo), ctx, req)
+}
+
 // ListInboxes mocks base method.
 func (m *MockService) ListInboxes(ctx context.Context, req *model.ListInboxesRequest) ([]*model.Inbox, error) {
 	m.ctrl.T.Helper()
@@ -96,7 +111,7 @@ func (mr *MockServiceMockRecorder) ListMemos(ctx, req interface{}) *gomock.Call 
 }
 
 // ListReactions mocks base method.
-func (m *MockService) ListReactions(ctx context.Context, req *model.ListReactionRequest) ([]*model.Reaction, error) {
+func (m *MockService) ListReactions(ctx context.Context, req *model.ListReactionsRequest) ([]*model.Reaction, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ListReactions", ctx, req)
 	ret0, _ := ret[0].([]*model.Reaction)
@@ -108,4 +123,19 @@ func (m *MockService) ListReactions(ctx context.Context, req *model.ListReaction
 func (mr *MockServiceMockRecorder) ListReactions(ctx, req interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListReactions", reflect.TypeOf((*MockService)(nil).ListReactions), ctx, req)
+}
+
+// ListResources mocks base method.
+func (m *MockService) ListResources(ctx context.Context, req *model.ListResourcesRequest) ([]*model.Resource, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ListResources", ctx, req)
+	ret0, _ := ret[0].([]*model.Resource)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListResources indicates an expected call of ListResources.
+func (mr *MockServiceMockRecorder) ListResources(ctx, req interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListResources", reflect.TypeOf((*MockService)(nil).ListResources), ctx, req)
 }

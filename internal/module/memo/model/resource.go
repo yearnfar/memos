@@ -23,7 +23,11 @@ type Resource struct {
 	Payload     ResourcePayload `gorm:"serializer:json"`
 
 	// The related memo ID.
-	MemoID *int32
+	MemoID int32
+}
+
+func (Resource) TableName() string {
+	return TableResource
 }
 
 type ResourcePayload struct {
@@ -37,4 +41,10 @@ type ResourcePayloadS3Object struct {
 	// last_presigned_time is the last time the object was presigned.
 	// This is used to determine if the presigned URL is still valid.
 	LastPresignedTime int64 `json:"last_presigned_time"`
+}
+
+type FindResourcesRequest struct {
+}
+
+type ListResourcesRequest struct {
 }

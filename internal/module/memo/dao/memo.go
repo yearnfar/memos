@@ -14,3 +14,7 @@ func (dao *Dao) CreateMemo(ctx context.Context, m *model.Memo) error {
 func (dao *Dao) FindMemos(ctx context.Context, req *model.FindMemosRequest) (memos []*model.Memo, err error) {
 	return
 }
+
+func (dao *Dao) FindMemo(ctx context.Context, req *model.FindMemoRequest) (memo *model.Memo, err error) {
+	return
+}

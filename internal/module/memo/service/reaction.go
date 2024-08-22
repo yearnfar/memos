@@ -6,7 +6,7 @@ import (
 	"github.com/yearnfar/memos/internal/module/memo/model"
 )
 
-func (s *Service) ListReactions(ctx context.Context, req *model.ListReactionRequest) (list []*model.Reaction, err error) {
+func (s *Service) ListReactions(ctx context.Context, req *model.ListReactionsRequest) (list []*model.Reaction, err error) {
 	return s.dao.FindReactions(ctx, &model.FindReactionsRequest{
 		Id:        req.Id,
 		CreatorId: req.CreatorId,

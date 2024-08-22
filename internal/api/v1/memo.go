@@ -53,10 +53,6 @@ func (s *MemoService) convertMemoFromStore(ctx context.Context, memo *model.Memo
 	// }
 
 	name := fmt.Sprintf("%s%d", api.MemoNamePrefix, memo.ID)
-	// listMemoRelationsResponse, err := s.ListMemoRelations(ctx, &v1pb.ListMemoRelationsRequest{Name: name})
-	// if err != nil {
-	// 	return nil, errors.Wrap(err, "failed to list memo relations")
-	// }
 	relations, err := memomod.ListMemoRelations(ctx, &model.ListMemoRelationsRequest{Id: 0})
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to list memo relations")
@@ -66,17 +62,16 @@ func (s *MemoService) convertMemoFromStore(ctx context.Context, memo *model.Memo
 		relationsList = append(relationsList, s.convertMemoRelationFromStore(relation))
 	}
 
-	// listMemoResourcesResponse, err := s.ListMemoResources(ctx, &v1pb.ListMemoResourcesRequest{Name: name})
-	// if err != nil {
-	// 	return nil, errors.Wrap(err, "failed to list memo resources")
-	// }
+	resources, err := memomod.ListResources(ctx, &model.ListResourcesRequest{})
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to list memo relations")
+	}
+	var resourcesList []*v1pb.Resource
+	for _, resource := range resources {
+		resourcesList = append(resourcesList, s.convertResourceFromStore(ctx, resource))
+	}
 
-	// listMemoReactionsResponse, err := s.ListMemoReactions(ctx, &v1pb.ListMemoReactionsRequest{Name: name})
-	// if err != nil {
-	// 	return nil, errors.Wrap(err, "failed to list memo reactions")
-	// }
-
-	reactions, err := memomod.ListReactions(ctx, &memomodel.ListReactionRequest{Id: 1})
+	reactions, err := memomod.ListReactions(ctx, &model.ListReactionsRequest{Id: 1})
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to list memo reactions")
 	}
@@ -110,17 +105,40 @@ func (s *MemoService) convertMemoFromStore(ctx context.Context, memo *model.Memo
 		Visibility: s.convertVisibilityFromStore(memo.Visibility),
 		// Pinned:     memo.Pinned,
 		Relations: relationsList,
-		// Resources:  listMemoResourcesResponse.Resources,
+		Resources: resourcesList,
 		Reactions: reactionList,
 	}
 	if memo.Payload != nil {
 		memoMessage.Property = s.convertMemoPropertyFromStore(memo.Payload.Property)
 	}
-	// if memo.ParentID != nil {
+	// if memo.ParentID != 0 {
 	// 	parent := fmt.Sprintf("%s%d", api.MemoNamePrefix, *memo.ParentID)
 	// 	memoMessage.Parent = &parent
 	// }
 	return memoMessage, nil
+}
+
+func (s *MemoService) convertResourceFromStore(ctx context.Context, resource *model.Resource) *v1pb.Resource {
+	resourceMessage := &v1pb.Resource{
+		Name:       fmt.Sprintf("%s%d", api.ResourceNamePrefix, resource.ID),
+		Uid:        resource.UID,
+		CreateTime: timestamppb.New(time.Unix(resource.CreatedTs, 0)),
+		Filename:   resource.Filename,
+		Type:       resource.Type,
+		Size:       resource.Size,
+	}
+	if resource.StorageType == model.ResourceStorageTypeExternal || resource.StorageType == model.ResourceStorageTypeS3 {
+		resourceMessage.ExternalLink = resource.Reference
+	}
+	if resource.MemoID != 0 {
+		memo, _ := memomod.GetMemo(ctx, &model.GetMemoRequest{Id: resource.MemoID})
+		if memo != nil {
+			memoName := fmt.Sprintf("%s%d", api.MemoNamePrefix, memo.ID)
+			resourceMessage.Memo = &memoName
+		}
+	}
+
+	return resourceMessage
 }
 
 func (s *MemoService) convertReactionFromStore(ctx context.Context, reaction *model.Reaction) (*v1pb.Reaction, error) {

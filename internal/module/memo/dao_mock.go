@@ -64,6 +64,21 @@ func (mr *MockDAOMockRecorder) FindInboxes(ctx, req interface{}) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindInboxes", reflect.TypeOf((*MockDAO)(nil).FindInboxes), ctx, req)
 }
 
+// FindMemo mocks base method.
+func (m *MockDAO) FindMemo(ctx context.Context, req *model.FindMemoRequest) (*model.Memo, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "FindMemo", ctx, req)
+	ret0, _ := ret[0].(*model.Memo)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// FindMemo indicates an expected call of FindMemo.
+func (mr *MockDAOMockRecorder) FindMemo(ctx, req interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindMemo", reflect.TypeOf((*MockDAO)(nil).FindMemo), ctx, req)
+}
+
 // FindMemoOrganizers mocks base method.
 func (m *MockDAO) FindMemoOrganizers(ctx context.Context, req *model.FindMemoOrganizersRequest) ([]*model.MemoOrganizer, error) {
 	m.ctrl.T.Helper()
@@ -122,6 +137,21 @@ func (m *MockDAO) FindReactions(ctx context.Context, req *model.FindReactionsReq
 func (mr *MockDAOMockRecorder) FindReactions(ctx, req interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindReactions", reflect.TypeOf((*MockDAO)(nil).FindReactions), ctx, req)
+}
+
+// FindResources mocks base method.
+func (m *MockDAO) FindResources(ctx context.Context, req *model.FindResourcesRequest) ([]*model.Resource, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "FindResources", ctx, req)
+	ret0, _ := ret[0].([]*model.Resource)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// FindResources indicates an expected call of FindResources.
+func (mr *MockDAOMockRecorder) FindResources(ctx, req interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindResources", reflect.TypeOf((*MockDAO)(nil).FindResources), ctx, req)
 }
 
 // FindWorkspaceSettings mocks base method.
