@@ -19,7 +19,7 @@ require (
 	github.com/subosito/gotenv v1.6.0
 	github.com/urfave/cli/v2 v2.27.4
 	github.com/usememos/gomark v0.0.0-20240714122951-35ed01b21822
-	github.com/yearnfar/gokit v1.0.1
+	github.com/yearnfar/gokit v1.0.2
 	golang.org/x/crypto v0.25.0
 	golang.org/x/mod v0.19.0
 	golang.org/x/net v0.27.0

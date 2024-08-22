@@ -97,6 +97,9 @@ github.com/urfave/cli/v2
 github.com/usememos/gomark/ast
 github.com/usememos/gomark/parser
 github.com/usememos/gomark/parser/tokenizer
+github.com/usememos/gomark/renderer
+github.com/usememos/gomark/renderer/html
+github.com/usememos/gomark/renderer/string
 # github.com/valyala/bytebufferpool v1.0.0
 ## explicit
 github.com/valyala/bytebufferpool
@@ -106,10 +109,11 @@ github.com/valyala/fasttemplate
 # github.com/xrash/smetrics v0.0.0-20240521201337-686a1a2994c1
 ## explicit; go 1.15
 github.com/xrash/smetrics
-# github.com/yearnfar/gokit v1.0.1
+# github.com/yearnfar/gokit v1.0.2
 ## explicit; go 1.20
 github.com/yearnfar/gokit/datetime
 github.com/yearnfar/gokit/fsutil
+github.com/yearnfar/gokit/strutil
 # golang.org/x/crypto v0.25.0
 ## explicit; go 1.20
 golang.org/x/crypto/acme

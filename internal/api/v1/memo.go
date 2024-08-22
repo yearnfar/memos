@@ -7,6 +7,10 @@ import (
 	"time"
 
 	"github.com/pkg/errors"
+	"github.com/usememos/gomark/parser"
+	"github.com/usememos/gomark/parser/tokenizer"
+	"github.com/usememos/gomark/renderer"
+	"github.com/yearnfar/gokit/strutil"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 
 	"github.com/yearnfar/memos/internal/api"
@@ -64,26 +68,26 @@ func (s *MemoService) convertMemoFromStore(ctx context.Context, memo *model.Memo
 	// 	return nil, errors.Wrap(err, "failed to list memo reactions")
 	// }
 
-	// nodes, err := parser.Parse(tokenizer.Tokenize(memo.Content))
-	// if err != nil {
-	// 	return nil, errors.Wrap(err, "failed to parse content")
-	// }
+	nodes, err := parser.Parse(tokenizer.Tokenize(memo.Content))
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to parse content")
+	}
 
-	// snippet, err := getMemoContentSnippet(memo.Content)
-	// if err != nil {
-	// 	return nil, errors.Wrap(err, "failed to get memo content snippet")
-	// }
+	snippet := renderer.NewStringRenderer().Render(nodes)
+	if strutil.Len(snippet) > 100 {
+		snippet = strutil.Substr(snippet, 0, 100, "...")
+	}
 
 	memoMessage := &v1pb.Memo{
-		Name: name,
-		Uid:  memo.UID,
-		// RowStatus:   convertRowStatusFromStore(memo.RowStatus),
+		Name:        name,
+		Uid:         memo.UID,
+		RowStatus:   s.convertRowStatusFromStore(memo.RowStatus),
 		Creator:     fmt.Sprintf("%s%d", api.UserNamePrefix, memo.CreatorID),
 		CreateTime:  timestamppb.New(time.Unix(memo.CreatedTs, 0)),
 		UpdateTime:  timestamppb.New(time.Unix(memo.UpdatedTs, 0)),
 		DisplayTime: timestamppb.New(time.Unix(displayTs, 0)),
 		Content:     memo.Content,
-		// Snippet:     snippet,
+		Snippet:     snippet,
 		// Nodes:       convertFromASTNodes(nodes),
 		Visibility: s.convertVisibilityFromStore(memo.Visibility),
 		// Pinned:     memo.Pinned,
@@ -99,6 +103,17 @@ func (s *MemoService) convertMemoFromStore(ctx context.Context, memo *model.Memo
 	// 	memoMessage.Parent = &parent
 	// }
 	return memoMessage, nil
+}
+
+func (s *MemoService) convertRowStatusFromStore(rowStatus model.RowStatus) v1pb.RowStatus {
+	switch rowStatus {
+	case model.Normal:
+		return v1pb.RowStatus_ACTIVE
+	case model.Archived:
+		return v1pb.RowStatus_ARCHIVED
+	default:
+		return v1pb.RowStatus_ROW_STATUS_UNSPECIFIED
+	}
 }
 
 func (s *MemoService) convertVisibilityFromStore(visibility model.Visibility) v1pb.Visibility {

@@ -361,8 +361,8 @@ github.com/valyala/fasttemplate v1.2.2/go.mod h1:KHLXt3tVN2HBp8eijSv/kGJopbvo7S+
 github.com/xiang90/probing v0.0.0-20190116061207-43a291ad63a2/go.mod h1:UETIi67q53MR2AWcXfiuqkDkRtnGDLqkBTpCHuJHxtU=
 github.com/xrash/smetrics v0.0.0-20240521201337-686a1a2994c1 h1:gEOO8jv9F4OT7lGCjxCBTO/36wtF6j2nSip77qHd4x4=
 github.com/xrash/smetrics v0.0.0-20240521201337-686a1a2994c1/go.mod h1:Ohn+xnUBiLI6FVj/9LpzZWtj1/D6lUovWYBkxHVV3aM=
-github.com/yearnfar/gokit v1.0.1 h1:3BruY86GjGA7OomG9Cea9JI0IP97NdkJAOlfNBdroGs=
-github.com/yearnfar/gokit v1.0.1/go.mod h1:l5bPyXvcHw1w9TOwEJJLzR6v13H3wzz7Bs/sKxsrBKI=
+github.com/yearnfar/gokit v1.0.2 h1:yM4w9F6iu93fHrXYSXQsIV+CagPQXJ3Bo+s41a+vt70=
+github.com/yearnfar/gokit v1.0.2/go.mod h1:l5bPyXvcHw1w9TOwEJJLzR6v13H3wzz7Bs/sKxsrBKI=
 github.com/yuin/goldmark v1.1.27/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9decYSb74=
 github.com/yuin/goldmark v1.2.1/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9decYSb74=
 github.com/yuin/goldmark v1.3.5/go.mod h1:mwnBkeHKe2W/ZEtQ+71ViKU8L12m81fl3OWwC1Zlc8k=
