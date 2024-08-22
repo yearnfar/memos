@@ -19,4 +19,11 @@ func (MemoRelation) TableName() string {
 	return TableMemoRelation
 }
 
-type FindMemoRelationsRequest struct{}
+type FindMemoRelationsRequest struct {
+	MemoId        int
+	RelatedMemoId int
+}
+
+type ListMemoRelationsRequest struct {
+	Id int
+}

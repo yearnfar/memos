@@ -14,4 +14,14 @@ func (Reaction) TableName() string {
 	return TableReaction
 }
 
-type FindReactionsRequest struct{}
+type FindReactionsRequest struct {
+	Id        int
+	CreatorId int
+	ContentId string
+}
+
+type ListReactionRequest struct {
+	Id        int
+	CreatorId int
+	ContentId string
+}
