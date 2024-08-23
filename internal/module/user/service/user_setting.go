@@ -5,26 +5,9 @@ import (
 	"encoding/json"
 
 	"github.com/pkg/errors"
+
 	"github.com/yearnfar/memos/internal/module/user/model"
-	v1pb "github.com/yearnfar/memos/internal/proto/api/v1"
-	"google.golang.org/protobuf/types/known/emptypb"
 )
-
-func (s *Service) CreateUserAccessToken(ctx context.Context, request *v1pb.CreateUserAccessTokenRequest) (*v1pb.UserAccessToken, error) {
-	return nil, nil
-}
-
-func (s *Service) DeleteUserAccessToken(ctx context.Context, request *v1pb.DeleteUserAccessTokenRequest) (*emptypb.Empty, error) {
-	return nil, nil
-}
-
-func (s *Service) UpsertAccessTokenToStore(ctx context.Context, user *model.User, accessToken, description string) error {
-	return nil
-}
-
-func (s *Service) ListUserAccessTokens(ctx context.Context, request *v1pb.ListUserAccessTokensRequest) (*v1pb.ListUserAccessTokensResponse, error) {
-	return nil, nil
-}
 
 func (s *Service) GetAccessTokens(ctx context.Context, userId int32) (tokens []*model.AccessToken, err error) {
 	return s.dao.FindUserAccessTokens(ctx, userId)

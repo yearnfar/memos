@@ -27,7 +27,7 @@ func TestService_UpsertAccessToken(t *testing.T) {
 		UpsertUserSetting(ctx, gomock.Any()).
 		Return(nil)
 
-	userId := 1
+	userId := int32(1)
 	accessToken := "dsafadsfasdfadsfasdf"
 	description := "登录"
 
