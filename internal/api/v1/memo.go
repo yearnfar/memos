@@ -16,7 +16,6 @@ import (
 	"github.com/yearnfar/memos/internal/api"
 	memomod "github.com/yearnfar/memos/internal/module/memo"
 	"github.com/yearnfar/memos/internal/module/memo/model"
-	memomodel "github.com/yearnfar/memos/internal/module/memo/model"
 	v1pb "github.com/yearnfar/memos/internal/proto/api/v1"
 )
 
@@ -31,7 +30,7 @@ func (s *MemoService) CreateMemo(ctx context.Context, request *v1pb.CreateMemoRe
 		err = errors.Errorf("failed to get current user: %v", err)
 		return
 	}
-	memo, err := memomod.CreateMemo(ctx, &memomodel.CreateMemoRequest{
+	memo, err := memomod.CreateMemo(ctx, &model.CreateMemoRequest{
 		UserId:     user.ID,
 		Content:    request.Content,
 		Visibility: model.Visibility(request.Visibility.String()),
@@ -219,7 +218,7 @@ func (s *MemoService) ListMemos(ctx context.Context, req *v1pb.ListMemosRequest)
 		return
 	}
 
-	list, err := memomod.ListMemos(ctx, &memomodel.ListMemosRequest{CreatorId: user.ID})
+	list, err := memomod.ListMemos(ctx, &model.ListMemosRequest{CreatorId: user.ID})
 	if err != nil {
 		return
 	}
