@@ -7,7 +7,7 @@ type WorkspaceSetting struct {
 }
 
 func (WorkspaceSetting) TableName() string {
-	return TableMemo
+	return TableWorkspaceSetting
 }
 
 type WorkspaceSettingCache struct {
