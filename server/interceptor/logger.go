@@ -17,6 +17,7 @@ func NewLoggerInterceptor() *LoggerInterceptor {
 }
 
 func (in *LoggerInterceptor) LoggerInterceptor(ctx context.Context, request any, serverInfo *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (any, error) {
+	slog.InfoContext(ctx, "grpc request", slog.Any("request", request))
 	resp, err := handler(ctx, request)
 	in.loggerInterceptorDo(ctx, serverInfo.FullMethod, err)
 	return resp, err

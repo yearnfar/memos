@@ -119,9 +119,3 @@ func (s *BaseService) buildAccessTokenCookie(ctx context.Context, accessToken st
 	}
 	return strings.Join(attrs, "; "), nil
 }
-
-func SetContext(ctx context.Context, userId int32, accessToken string) context.Context {
-	ctx = context.WithValue(ctx, userContextKey, userId)
-	ctx = context.WithValue(ctx, accessTokenContextKey, accessToken)
-	return ctx
-}

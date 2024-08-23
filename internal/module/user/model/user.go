@@ -36,16 +36,18 @@ type CreateUserRequest struct {
 }
 
 type UpdateUserRequest struct {
-	UpdateMasks []string
-	UserId      int32
-	Username    string
-	Role        Role
-	RowStatus   RowStatus
-	Email       string
-	AvatarURL   string
-	Nickname    string
-	Password    string
-	Description string
+	CurrentUserId int32
+	UpdateMasks   []string
+	Name          string
+	UserId        int32
+	Username      string
+	Role          Role
+	RowStatus     RowStatus
+	Email         string
+	AvatarURL     string
+	Nickname      string
+	Password      string
+	Description   string
 }
 
 type SignUpRequest struct {

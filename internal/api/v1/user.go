@@ -56,17 +56,23 @@ func (s *UserService) UpdateUser(ctx context.Context, req *v1pb.UpdateUserReques
 		err = errors.Errorf("failed to get user: %v", err)
 		return
 	}
+	userID, err := api.ExtractUserIDFromName(req.User.Name)
+	if err != nil {
+		err = errors.Errorf("invalid user name: %v", err)
+		return
+	}
 	user, err := usermod.UpdateUser(ctx, &model.UpdateUserRequest{
-		UpdateMasks: req.UpdateMask.Paths,
-		UserId:      currentUser.ID,
-		Username:    req.User.Name,
-		Role:        usermodel.Role(req.User.Role.String()),
-		RowStatus:   usermodel.RowStatus(req.User.RowStatus.String()),
-		Email:       req.User.Email,
-		AvatarURL:   req.User.AvatarUrl,
-		Nickname:    req.User.Nickname,
-		Password:    req.User.Password,
-		Description: req.User.Description,
+		CurrentUserId: currentUser.ID,
+		UpdateMasks:   req.UpdateMask.Paths,
+		UserId:        userID,
+		Username:      req.User.Username,
+		Role:          usermodel.Role(req.User.Role.String()),
+		RowStatus:     usermodel.RowStatus(req.User.RowStatus.String()),
+		Email:         req.User.Email,
+		AvatarURL:     req.User.AvatarUrl,
+		Nickname:      req.User.Nickname,
+		Password:      req.User.Password,
+		Description:   req.User.Description,
 	})
 	if err != nil {
 		return
