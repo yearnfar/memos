@@ -53,7 +53,7 @@ func (mr *MockServiceMockRecorder) Authenticate(ctx, accessToken, secret interfa
 }
 
 // GenerateAccessToken mocks base method.
-func (m *MockService) GenerateAccessToken(userId int, expirationTime time.Time, secret []byte) (string, error) {
+func (m *MockService) GenerateAccessToken(userId int32, expirationTime time.Time, secret []byte) (string, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GenerateAccessToken", userId, expirationTime, secret)
 	ret0, _ := ret[0].(string)

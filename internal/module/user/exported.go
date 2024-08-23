@@ -39,7 +39,7 @@ func GetUserByUsername(ctx context.Context, username string) (*model.User, error
 	return v1, v2
 }
 
-func GetUserById(ctx context.Context, id int) (*model.User, error) {
+func GetUserById(ctx context.Context, id int32) (*model.User, error) {
 	if defaultService == nil {
 		panic("调用模块方法: user.GetUserById 失败，服务未注册")
 	}
@@ -47,7 +47,15 @@ func GetUserById(ctx context.Context, id int) (*model.User, error) {
 	return v1, v2
 }
 
-func UpsertAccessToken(ctx context.Context, userId int, accessToken, description string) error {
+func UpdateUser(ctx context.Context, req *model.UpdateUserRequest) (*model.User, error) {
+	if defaultService == nil {
+		panic("调用模块方法: user.UpdateUser 失败，服务未注册")
+	}
+	v1, v2 := defaultService.UpdateUser(ctx, req)
+	return v1, v2
+}
+
+func UpsertAccessToken(ctx context.Context, userId int32, accessToken, description string) error {
 	if defaultService == nil {
 		panic("调用模块方法: user.UpsertAccessToken 失败，服务未注册")
 	}
@@ -55,7 +63,7 @@ func UpsertAccessToken(ctx context.Context, userId int, accessToken, description
 	return v1
 }
 
-func DeleteAccessToken(ctx context.Context, userId int, accessToken string) error {
+func DeleteAccessToken(ctx context.Context, userId int32, accessToken string) error {
 	if defaultService == nil {
 		panic("调用模块方法: user.DeleteAccessToken 失败，服务未注册")
 	}
@@ -63,7 +71,7 @@ func DeleteAccessToken(ctx context.Context, userId int, accessToken string) erro
 	return v1
 }
 
-func GetAccessTokens(ctx context.Context, userId int) ([]*model.AccessToken, error) {
+func GetAccessTokens(ctx context.Context, userId int32) ([]*model.AccessToken, error) {
 	if defaultService == nil {
 		panic("调用模块方法: user.GetAccessTokens 失败，服务未注册")
 	}
@@ -71,7 +79,7 @@ func GetAccessTokens(ctx context.Context, userId int) ([]*model.AccessToken, err
 	return v1, v2
 }
 
-func GetUserSettings(ctx context.Context, userId int) ([]*model.UserSetting, error) {
+func GetUserSettings(ctx context.Context, userId int32) ([]*model.UserSetting, error) {
 	if defaultService == nil {
 		panic("调用模块方法: user.GetUserSettings 失败，服务未注册")
 	}

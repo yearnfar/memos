@@ -3,8 +3,8 @@ package model
 type Inbox struct {
 	ID         int
 	CreatedTs  int64
-	SenderID   int
-	ReceiverID int
+	SenderID   int32
+	ReceiverID int32
 	Status     InboxStatus
 	Message    *InboxMessage `gorm:"serializer:json"`
 }
@@ -20,11 +20,11 @@ type InboxMessage struct {
 
 type FindInboxesRequest struct {
 	Id         int
-	SenderId   int
-	ReceiverId int
+	SenderId   int32
+	ReceiverId int32
 	Status     InboxStatus
 }
 
 type ListInboxesRequest struct {
-	ReceiverId int
+	ReceiverId int32
 }

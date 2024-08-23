@@ -47,7 +47,7 @@ type BaseService struct {
 }
 
 func (s *BaseService) GetCurrentUser(ctx context.Context) (userInfo *usermodel.User, err error) {
-	userId, ok := ctx.Value(userContextKey).(int)
+	userId, ok := ctx.Value(userContextKey).(int32)
 	if !ok {
 		return nil, nil
 	}
@@ -120,7 +120,7 @@ func (s *BaseService) buildAccessTokenCookie(ctx context.Context, accessToken st
 	return strings.Join(attrs, "; "), nil
 }
 
-func SetContext(ctx context.Context, userId int, accessToken string) context.Context {
+func SetContext(ctx context.Context, userId int32, accessToken string) context.Context {
 	ctx = context.WithValue(ctx, userContextKey, userId)
 	ctx = context.WithValue(ctx, accessTokenContextKey, accessToken)
 	return ctx

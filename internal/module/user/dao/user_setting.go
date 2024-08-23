@@ -36,7 +36,7 @@ func (dao *Dao) UpsertUserSetting(ctx context.Context, m *model.UserSetting) (er
 	return
 }
 
-func (dao *Dao) FindUserAccessTokens(ctx context.Context, userId int) (tokens []*model.AccessToken, err error) {
+func (dao *Dao) FindUserAccessTokens(ctx context.Context, userId int32) (tokens []*model.AccessToken, err error) {
 	var setting model.UserSetting
 	err = db.GetDB(ctx).Where("user_id=? and key=?", userId, model.UserSettingKeyAccessToken).First(&setting).Error
 	if err == gorm.ErrRecordNotFound {

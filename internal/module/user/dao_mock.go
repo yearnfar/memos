@@ -65,7 +65,7 @@ func (mr *MockDAOMockRecorder) FindUser(ctx, req interface{}) *gomock.Call {
 }
 
 // FindUserAccessTokens mocks base method.
-func (m *MockDAO) FindUserAccessTokens(ctx context.Context, userId int) ([]*model.AccessToken, error) {
+func (m *MockDAO) FindUserAccessTokens(ctx context.Context, userId int32) ([]*model.AccessToken, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "FindUserAccessTokens", ctx, userId)
 	ret0, _ := ret[0].([]*model.AccessToken)
@@ -80,7 +80,7 @@ func (mr *MockDAOMockRecorder) FindUserAccessTokens(ctx, userId interface{}) *go
 }
 
 // FindUserById mocks base method.
-func (m *MockDAO) FindUserById(ctx context.Context, id int) (*model.User, error) {
+func (m *MockDAO) FindUserById(ctx context.Context, id int32) (*model.User, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "FindUserById", ctx, id)
 	ret0, _ := ret[0].(*model.User)

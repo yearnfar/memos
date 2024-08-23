@@ -1,7 +1,7 @@
 package model
 
 type User struct {
-	ID int
+	ID int32
 
 	// Standard fields
 	RowStatus RowStatus
@@ -37,7 +37,7 @@ type CreateUserRequest struct {
 
 type UpdateUserRequest struct {
 	UpdateMasks []string
-	UserId      int
+	UserId      int32
 	Username    string
 	Role        Role
 	RowStatus   RowStatus

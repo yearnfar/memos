@@ -46,7 +46,7 @@ type FindMemoRequest struct {
 }
 
 type ListMemosRequest struct {
-	CreatorId int
+	CreatorId int32
 }
 
 type GetMemoRequest struct {
@@ -54,7 +54,7 @@ type GetMemoRequest struct {
 }
 
 type CreateMemoRequest struct {
-	UserId     int
+	UserId     int32
 	Content    string
 	Visibility Visibility
 }

@@ -11,12 +11,12 @@ import (
 type Service interface {
 	CreateUser(ctx context.Context, req *model.CreateUserRequest) (*model.User, error)
 	SignUp(ctx context.Context, req *model.SignUpRequest) (*model.User, error)
-
 	GetUserByUsername(ctx context.Context, username string) (*model.User, error)
-	GetUserById(ctx context.Context, id int) (*model.User, error)
+	GetUserById(ctx context.Context, id int32) (*model.User, error)
+	UpdateUser(ctx context.Context, req *model.UpdateUserRequest) (*model.User, error)
 
-	UpsertAccessToken(ctx context.Context, userId int, accessToken, description string) error
-	DeleteAccessToken(ctx context.Context, userId int, accessToken string) error
-	GetAccessTokens(ctx context.Context, userId int) ([]*model.AccessToken, error)
-	GetUserSettings(ctx context.Context, userId int) ([]*model.UserSetting, error)
+	UpsertAccessToken(ctx context.Context, userId int32, accessToken, description string) error
+	DeleteAccessToken(ctx context.Context, userId int32, accessToken string) error
+	GetAccessTokens(ctx context.Context, userId int32) ([]*model.AccessToken, error)
+	GetUserSettings(ctx context.Context, userId int32) ([]*model.UserSetting, error)
 }

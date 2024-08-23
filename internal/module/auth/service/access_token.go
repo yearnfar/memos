@@ -15,12 +15,12 @@ import (
 )
 
 // GenerateAccessToken generates an access token.
-func (s *Service) GenerateAccessToken(userID int, expirationTime time.Time, secret []byte) (string, error) {
+func (s *Service) GenerateAccessToken(userID int32, expirationTime time.Time, secret []byte) (string, error) {
 	return s.generateToken(userID, model.AccessTokenAudienceName, expirationTime, secret)
 }
 
 // generateToken generates a jwt token.
-func (s *Service) generateToken(userID int, audience string, expirationTime time.Time, secret []byte) (string, error) {
+func (s *Service) generateToken(userID int32, audience string, expirationTime time.Time, secret []byte) (string, error) {
 	registeredClaims := jwt.RegisteredClaims{
 		Issuer:   model.Issuer,
 		Audience: jwt.ClaimStrings{audience},
@@ -69,7 +69,7 @@ func (in *Service) Authenticate(ctx context.Context, accessToken, secret string)
 	if err != nil {
 		return
 	}
-	user, err = usermod.GetUserById(ctx, userId)
+	user, err = usermod.GetUserById(ctx, int32(userId))
 	if err != nil {
 		return
 	}

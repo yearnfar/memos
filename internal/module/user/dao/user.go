@@ -11,7 +11,7 @@ func (Dao) CreateUser(ctx context.Context, user *model.User) error {
 	return db.GetDB(ctx).Create(user).Error
 }
 
-func (Dao) FindUserById(ctx context.Context, id int) (user *model.User, err error) {
+func (Dao) FindUserById(ctx context.Context, id int32) (user *model.User, err error) {
 	user = &model.User{}
 	err = db.GetDB(ctx).Where("id=?", id).First(&user).Error
 	return

@@ -14,6 +14,6 @@ type SignInResponse struct {
 }
 
 type SignOutRequest struct {
-	UserId      int
+	UserId      int32
 	AccessToken string
 }

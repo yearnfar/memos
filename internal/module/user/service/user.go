@@ -118,15 +118,14 @@ func (s *Service) UpdateUser(ctx context.Context, req *model.UpdateUserRequest) 
 			return
 		}
 	}
-	err = s.dao.UpdateUser(ctx, user, update)
-	if err != nil {
+	if err = s.dao.UpdateUser(ctx, user, update); err != nil {
 		err = errors.Errorf("failed to update user: %v", err)
 		return
 	}
-	return nil, nil
+	return
 }
 
-func (s *Service) GetUserById(ctx context.Context, id int) (*model.User, error) {
+func (s *Service) GetUserById(ctx context.Context, id int32) (*model.User, error) {
 	return s.dao.FindUserById(ctx, id)
 }
 

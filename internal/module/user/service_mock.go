@@ -51,7 +51,7 @@ func (mr *MockServiceMockRecorder) CreateUser(ctx, req interface{}) *gomock.Call
 }
 
 // DeleteAccessToken mocks base method.
-func (m *MockService) DeleteAccessToken(ctx context.Context, userId int, accessToken string) error {
+func (m *MockService) DeleteAccessToken(ctx context.Context, userId int32, accessToken string) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "DeleteAccessToken", ctx, userId, accessToken)
 	ret0, _ := ret[0].(error)
@@ -65,7 +65,7 @@ func (mr *MockServiceMockRecorder) DeleteAccessToken(ctx, userId, accessToken in
 }
 
 // GetAccessTokens mocks base method.
-func (m *MockService) GetAccessTokens(ctx context.Context, userId int) ([]*model.AccessToken, error) {
+func (m *MockService) GetAccessTokens(ctx context.Context, userId int32) ([]*model.AccessToken, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetAccessTokens", ctx, userId)
 	ret0, _ := ret[0].([]*model.AccessToken)
@@ -80,7 +80,7 @@ func (mr *MockServiceMockRecorder) GetAccessTokens(ctx, userId interface{}) *gom
 }
 
 // GetUserById mocks base method.
-func (m *MockService) GetUserById(ctx context.Context, id int) (*model.User, error) {
+func (m *MockService) GetUserById(ctx context.Context, id int32) (*model.User, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetUserById", ctx, id)
 	ret0, _ := ret[0].(*model.User)
@@ -110,7 +110,7 @@ func (mr *MockServiceMockRecorder) GetUserByUsername(ctx, username interface{}) 
 }
 
 // GetUserSettings mocks base method.
-func (m *MockService) GetUserSettings(ctx context.Context, userId int) ([]*model.UserSetting, error) {
+func (m *MockService) GetUserSettings(ctx context.Context, userId int32) ([]*model.UserSetting, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetUserSettings", ctx, userId)
 	ret0, _ := ret[0].([]*model.UserSetting)
@@ -139,8 +139,23 @@ func (mr *MockServiceMockRecorder) SignUp(ctx, req interface{}) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SignUp", reflect.TypeOf((*MockService)(nil).SignUp), ctx, req)
 }
 
+// UpdateUser mocks base method.
+func (m *MockService) UpdateUser(ctx context.Context, req *model.UpdateUserRequest) (*model.User, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpdateUser", ctx, req)
+	ret0, _ := ret[0].(*model.User)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// UpdateUser indicates an expected call of UpdateUser.
+func (mr *MockServiceMockRecorder) UpdateUser(ctx, req interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateUser", reflect.TypeOf((*MockService)(nil).UpdateUser), ctx, req)
+}
+
 // UpsertAccessToken mocks base method.
-func (m *MockService) UpsertAccessToken(ctx context.Context, userId int, accessToken, description string) error {
+func (m *MockService) UpsertAccessToken(ctx context.Context, userId int32, accessToken, description string) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "UpsertAccessToken", ctx, userId, accessToken, description)
 	ret0, _ := ret[0].(error)

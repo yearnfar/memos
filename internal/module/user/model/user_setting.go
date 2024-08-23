@@ -1,7 +1,7 @@
 package model
 
 type UserSetting struct {
-	UserId int            `json:"user_id"`
+	UserId int32          `json:"user_id"`
 	Key    UserSettingKey `json:"key"`
 	Value  string         `json:"value"`
 }
@@ -16,9 +16,9 @@ type AccessToken struct {
 }
 
 type FindUserSettingRequest struct {
-	Id int
+	Id int32
 }
 
 type FindUserSettingsRequest struct {
-	UserId int
+	UserId int32
 }
