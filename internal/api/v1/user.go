@@ -3,6 +3,7 @@ package v1
 import (
 	"context"
 	"fmt"
+	"slices"
 	"time"
 
 	"github.com/pkg/errors"
@@ -117,6 +118,48 @@ func (s *UserService) CreateUserAccessToken(ctx context.Context, request *v1pb.C
 		Description: request.Description,
 		IssuedAt:    timestamppb.New(time.Unix(authToken.IssuedAt, 0)),
 		ExpiresAt:   timestamppb.New(time.Unix(authToken.ExpiresAt, 0)),
+	}
+	return
+}
+
+func (s *UserService) ListUserAccessTokens(ctx context.Context, request *v1pb.ListUserAccessTokensRequest) (response *v1pb.ListUserAccessTokensResponse, err error) {
+	userID, err := api.ExtractUserIDFromName(request.Name)
+	if err != nil {
+		err = errors.Errorf("invalid user name: %v", err)
+		return
+	}
+	currentUser, err := s.GetCurrentUser(ctx)
+	if err != nil {
+		err = errors.Errorf("failed to get current user: %v", err)
+		return
+	}
+	if currentUser == nil || currentUser.ID != userID {
+		err = errors.New("permission denied")
+		return
+	}
+	accessTokens, err := usermod.GetAccessTokens(ctx, userID)
+	if err != nil {
+		return
+	}
+	var userAccessTokens []*v1pb.UserAccessToken
+	for _, accessToken := range accessTokens {
+		authToken, err2 := authmod.Authenticate(ctx, accessToken.Token)
+		if err2 != nil {
+			continue
+		}
+		userAccessTokens = append(userAccessTokens, &v1pb.UserAccessToken{
+			AccessToken: authToken.Token,
+			Description: accessToken.Description,
+			IssuedAt:    timestamppb.New(time.Unix(authToken.IssuedAt, 0)),
+			ExpiresAt:   timestamppb.New(time.Unix(authToken.ExpiresAt, 0)),
+		})
+	}
+	// Sort by issued time in descending order.
+	slices.SortFunc(userAccessTokens, func(i, j *v1pb.UserAccessToken) int {
+		return int(i.IssuedAt.Seconds - j.IssuedAt.Seconds)
+	})
+	response = &v1pb.ListUserAccessTokensResponse{
+		AccessTokens: userAccessTokens,
 	}
 	return
 }
