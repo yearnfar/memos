@@ -13,6 +13,7 @@ import (
 	"github.com/yearnfar/memos/internal/module/user/model"
 	usermodel "github.com/yearnfar/memos/internal/module/user/model"
 	v1pb "github.com/yearnfar/memos/internal/proto/api/v1"
+	"google.golang.org/protobuf/types/known/emptypb"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 )
 
@@ -161,6 +162,25 @@ func (s *UserService) ListUserAccessTokens(ctx context.Context, request *v1pb.Li
 	response = &v1pb.ListUserAccessTokensResponse{
 		AccessTokens: userAccessTokens,
 	}
+	return
+}
+
+func (s *UserService) DeleteUserAccessToken(ctx context.Context, request *v1pb.DeleteUserAccessTokenRequest) (response *emptypb.Empty, err error) {
+	userID, err := api.ExtractUserIDFromName(request.Name)
+	if err != nil {
+		err = errors.Errorf("invalid user name: %v", err)
+		return
+	}
+	currentUser, err := s.GetCurrentUser(ctx)
+	if err != nil {
+		err = errors.Errorf("failed to get current user: %v", err)
+		return
+	}
+	if currentUser == nil || currentUser.ID != userID {
+		err = errors.New("permission denied")
+		return
+	}
+	err = usermod.DeleteAccessToken(ctx, userID, request.AccessToken)
 	return
 }
 
