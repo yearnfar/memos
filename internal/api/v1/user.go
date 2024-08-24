@@ -12,7 +12,6 @@ import (
 	authmod "github.com/yearnfar/memos/internal/module/auth"
 	usermod "github.com/yearnfar/memos/internal/module/user"
 	"github.com/yearnfar/memos/internal/module/user/model"
-	usermodel "github.com/yearnfar/memos/internal/module/user/model"
 	v1pb "github.com/yearnfar/memos/internal/proto/api/v1"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -23,6 +22,50 @@ import (
 type UserService struct {
 	api.BaseService
 	v1pb.UnimplementedUserServiceServer
+}
+
+func (s *UserService) ListUsers(ctx context.Context, _ *v1pb.ListUsersRequest) (*v1pb.ListUsersResponse, error) {
+	currentUser, err := s.GetCurrentUser(ctx)
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to get user: %v", err)
+	}
+	if currentUser.Role != model.RoleHost && currentUser.Role != model.RoleAdmin {
+		return nil, status.Errorf(codes.PermissionDenied, "permission denied")
+	}
+
+	users, err := usermod.ListUsers(ctx, &model.ListUsersRequest{})
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to list users: %v", err)
+	}
+
+	response := &v1pb.ListUsersResponse{
+		Users: []*v1pb.User{},
+	}
+	for _, user := range users {
+		response.Users = append(response.Users, convertUserFromStore(user))
+	}
+	return response, nil
+}
+
+func (s *UserService) CreateUser(ctx context.Context, request *v1pb.CreateUserRequest) (*v1pb.User, error) {
+	currentUser, err := s.GetCurrentUser(ctx)
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to get user: %v", err)
+	}
+	if currentUser.Role != model.RoleHost {
+		return nil, status.Errorf(codes.PermissionDenied, "permission denied")
+	}
+	user, err := usermod.CreateUser(ctx, &model.CreateUserRequest{
+		Username: request.User.Username,
+		Nickname: request.User.Nickname,
+		Role:     model.Role(request.User.Role.String()),
+		Email:    request.User.Email,
+		Password: request.User.Password,
+	})
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "create user fail: %v", err)
+	}
+	return convertUserFromStore(user), nil
 }
 
 func (s *UserService) UpdateUser(ctx context.Context, req *v1pb.UpdateUserRequest) (userInfo *v1pb.User, err error) {
@@ -44,8 +87,8 @@ func (s *UserService) UpdateUser(ctx context.Context, req *v1pb.UpdateUserReques
 		UpdateMasks: req.UpdateMask.Paths,
 		UserId:      userID,
 		Username:    req.User.Username,
-		Role:        usermodel.Role(req.User.Role.String()),
-		RowStatus:   usermodel.RowStatus(req.User.RowStatus.String()),
+		Role:        model.Role(req.User.Role.String()),
+		RowStatus:   model.RowStatus(req.User.RowStatus.String()),
 		Email:       req.User.Email,
 		AvatarURL:   req.User.AvatarUrl,
 		Nickname:    req.User.Nickname,
@@ -77,11 +120,11 @@ func (s *UserService) GetUserSetting(ctx context.Context, _ *v1pb.GetUserSetting
 		if err != nil {
 			return
 		}
-		if setting.Key == usermodel.UserSettingKeyLocale {
+		if setting.Key == model.UserSettingKeyLocale {
 			userSettingMessage.Locale = item.Locale
-		} else if setting.Key == usermodel.UserSettingKeyAppearance {
+		} else if setting.Key == model.UserSettingKeyAppearance {
 			userSettingMessage.Appearance = item.Appearance
-		} else if setting.Key == usermodel.UserSettingKeyMemoVisibility {
+		} else if setting.Key == model.UserSettingKeyMemoVisibility {
 			userSettingMessage.MemoVisibility = item.MemoVisibility
 		}
 	}
@@ -102,7 +145,7 @@ func (s *UserService) UpdateUserSetting(ctx context.Context, request *v1pb.Updat
 		err = status.Errorf(codes.Internal, "failed to get current user: %v", err)
 		return
 	}
-	err = usermod.UpdateUserSetting(ctx, &usermodel.UpdateUserSettingRequest{
+	err = usermod.UpdateUserSetting(ctx, &model.UpdateUserSettingRequest{
 		UpdateMasks:    request.UpdateMask.Paths,
 		UserID:         user.ID,
 		Locale:         request.Setting.Locale,
@@ -131,7 +174,7 @@ func (s *UserService) CreateUserAccessToken(ctx context.Context, request *v1pb.C
 		err = errors.New("permission denied")
 		return
 	}
-	accessToken, err := usermod.CreateUserAccessToken(ctx, &usermodel.CreateUserAccessTokenRequest{
+	accessToken, err := usermod.CreateUserAccessToken(ctx, &model.CreateUserAccessTokenRequest{
 		UserID:      userID,
 		Description: request.Description,
 		ExpiresAt:   request.ExpiresAt.AsTime(),

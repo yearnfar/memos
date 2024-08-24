@@ -48,10 +48,6 @@ func (s *Service) SignUp(ctx context.Context, req *model.SignUpRequest) (user *m
 }
 
 func (s *Service) CreateUser(ctx context.Context, req *model.CreateUserRequest) (user *model.User, err error) {
-	if req.Role != model.RoleHost {
-		err = errors.New("permission denied")
-		return
-	}
 	if !util.UIDMatcher.MatchString(strings.ToLower(req.Username)) {
 		err = errors.Errorf("invalid username: %s", req.Username)
 		return
@@ -64,6 +60,7 @@ func (s *Service) CreateUser(ctx context.Context, req *model.CreateUserRequest) 
 	user = &model.User{
 		Username:     req.Username,
 		Role:         req.Role,
+		RowStatus:    model.Normal,
 		Email:        req.Email,
 		Nickname:     req.Nickname,
 		PasswordHash: string(passwordHash),
@@ -123,6 +120,10 @@ func (s *Service) UpdateUser(ctx context.Context, req *model.UpdateUserRequest) 
 		return
 	}
 	return
+}
+
+func (s *Service) ListUsers(ctx context.Context, req *model.ListUsersRequest) ([]*model.User, error) {
+	return s.dao.FindUsers(ctx, &model.FindUsersRequest{})
 }
 
 func (s *Service) GetUserById(ctx context.Context, id int32) (*model.User, error) {

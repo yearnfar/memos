@@ -55,6 +55,14 @@ func UpdateUser(ctx context.Context, req *model.UpdateUserRequest) (*model.User,
 	return v1, v2
 }
 
+func ListUsers(ctx context.Context, req *model.ListUsersRequest) ([]*model.User, error) {
+	if defaultService == nil {
+		panic("调用模块方法: user.ListUsers 失败，服务未注册")
+	}
+	v1, v2 := defaultService.ListUsers(ctx, req)
+	return v1, v2
+}
+
 func UpsertAccessToken(ctx context.Context, userId int32, token *model.AccessToken) error {
 	if defaultService == nil {
 		panic("调用模块方法: user.UpsertAccessToken 失败，服务未注册")
