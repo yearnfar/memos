@@ -55,11 +55,11 @@ func UpdateUser(ctx context.Context, req *model.UpdateUserRequest) (*model.User,
 	return v1, v2
 }
 
-func UpsertAccessToken(ctx context.Context, userId int32, accessToken, description string) error {
+func UpsertAccessToken(ctx context.Context, userId int32, token *model.AccessToken) error {
 	if defaultService == nil {
 		panic("调用模块方法: user.UpsertAccessToken 失败，服务未注册")
 	}
-	v1 := defaultService.UpsertAccessToken(ctx, userId, accessToken, description)
+	v1 := defaultService.UpsertAccessToken(ctx, userId, token)
 	return v1
 }
 
@@ -76,6 +76,14 @@ func GetAccessTokens(ctx context.Context, userId int32) ([]*model.AccessToken, e
 		panic("调用模块方法: user.GetAccessTokens 失败，服务未注册")
 	}
 	v1, v2 := defaultService.GetAccessTokens(ctx, userId)
+	return v1, v2
+}
+
+func CreateUserAccessToken(ctx context.Context, req *model.CreateUserAccessTokenRequest) (*model.AccessToken, error) {
+	if defaultService == nil {
+		panic("调用模块方法: user.CreateUserAccessToken 失败，服务未注册")
+	}
+	v1, v2 := defaultService.CreateUserAccessToken(ctx, req)
 	return v1, v2
 }
 

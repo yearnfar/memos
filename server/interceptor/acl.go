@@ -13,6 +13,7 @@ import (
 
 	"github.com/yearnfar/memos/internal/api"
 	authmod "github.com/yearnfar/memos/internal/module/auth"
+	usermod "github.com/yearnfar/memos/internal/module/user"
 	usermodel "github.com/yearnfar/memos/internal/module/user/model"
 )
 
@@ -34,22 +35,26 @@ func (in *GRPCAuthInterceptor) AuthenticationInterceptor(ctx context.Context, re
 	if !ok {
 		return nil, status.Errorf(codes.Unauthenticated, "failed to parse metadata from incoming context")
 	}
-	accessToken, err := getTokenFromMetadata(md)
+	tokenStr, err := getTokenFromMetadata(md)
 	if err != nil {
 		return nil, status.Errorf(codes.Unauthenticated, err.Error())
 	}
-	user, err := authmod.Authenticate(ctx, accessToken, "")
+	accessToken, err := authmod.Authenticate(ctx, tokenStr)
 	if err != nil {
 		if isUnauthorizeAllowedMethod(serverInfo.FullMethod) {
 			return handler(ctx, request)
 		}
 		return nil, err
 	}
+	user, err := usermod.GetUserById(ctx, accessToken.UserId)
+	if err != nil {
+		return nil, err
+	}
 	if isOnlyForAdminAllowedMethod(serverInfo.FullMethod) && user.Role != usermodel.RoleHost && user.Role != usermodel.RoleAdmin {
 		return nil, errors.Errorf("user %d is not admin", user.ID)
 	}
 
-	ctx = api.SetContext(ctx, user.ID, accessToken)
+	ctx = api.SetContext(ctx, user.ID, tokenStr)
 	return handler(ctx, request)
 }
 

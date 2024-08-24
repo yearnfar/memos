@@ -7,7 +7,6 @@ import (
 	"github.com/pkg/errors"
 	"golang.org/x/crypto/bcrypt"
 
-	"github.com/yearnfar/memos/internal/config"
 	"github.com/yearnfar/memos/internal/module/auth/model"
 	usermod "github.com/yearnfar/memos/internal/module/user"
 	usermodel "github.com/yearnfar/memos/internal/module/user/model"
@@ -34,30 +33,33 @@ func (s *Service) SignIn(ctx context.Context, req *model.SignInRequest) (resp *m
 		// Set the expire time to 100 years.
 		expireTime = time.Now().Add(100 * 365 * 24 * time.Hour)
 	}
-	accessToken, err := s.doSignIn(ctx, user, expireTime)
+	tokenStr, err := s.doSignIn(ctx, user, expireTime)
 	if err != nil {
 		err = errors.Errorf("failed to sign in, err: %s", err)
 		return
 	}
 	resp = &model.SignInResponse{
-		AccessToken: accessToken,
+		AccessToken: tokenStr,
 		ExpireTime:  expireTime,
 	}
 	return
 }
 
-func (s *Service) doSignIn(ctx context.Context, user *usermodel.User, expireTime time.Time) (accessToken string, err error) {
-	cfg := config.GetApp().JWT
-	accessToken, err = s.GenerateAccessToken(user.ID, expireTime, []byte(cfg.Key))
+func (s *Service) doSignIn(ctx context.Context, user *usermodel.User, expireTime time.Time) (tokenStr string, err error) {
+	accessToken, err := s.GenerateAccessToken(ctx, user.ID, expireTime)
 	if err != nil {
 		err = errors.Errorf("failed to generate tokens, err: %s", err)
 		return
 	}
-	if err = usermod.UpsertAccessToken(ctx, user.ID, accessToken, "user login"); err != nil {
+	token := &usermodel.AccessToken{
+		Token:       accessToken.Token,
+		Description: "user login",
+	}
+	if err = usermod.UpsertAccessToken(ctx, user.ID, token); err != nil {
 		err = errors.Errorf("failed to upsert access token to store, err: %s", err)
 		return
 	}
-	return
+	return accessToken.Token, nil
 }
 
 func (s *Service) SignOut(ctx context.Context, req *model.SignOutRequest) (err error) {

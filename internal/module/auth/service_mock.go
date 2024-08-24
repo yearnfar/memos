@@ -11,7 +11,6 @@ import (
 
 	gomock "github.com/golang/mock/gomock"
 	model "github.com/yearnfar/memos/internal/module/auth/model"
-	model0 "github.com/yearnfar/memos/internal/module/user/model"
 )
 
 // MockService is a mock of Service interface.
@@ -38,33 +37,33 @@ func (m *MockService) EXPECT() *MockServiceMockRecorder {
 }
 
 // Authenticate mocks base method.
-func (m *MockService) Authenticate(ctx context.Context, accessToken, secret string) (*model0.User, error) {
+func (m *MockService) Authenticate(ctx context.Context, tokenStr string) (*model.AccessToken, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Authenticate", ctx, accessToken, secret)
-	ret0, _ := ret[0].(*model0.User)
+	ret := m.ctrl.Call(m, "Authenticate", ctx, tokenStr)
+	ret0, _ := ret[0].(*model.AccessToken)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // Authenticate indicates an expected call of Authenticate.
-func (mr *MockServiceMockRecorder) Authenticate(ctx, accessToken, secret interface{}) *gomock.Call {
+func (mr *MockServiceMockRecorder) Authenticate(ctx, tokenStr interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Authenticate", reflect.TypeOf((*MockService)(nil).Authenticate), ctx, accessToken, secret)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Authenticate", reflect.TypeOf((*MockService)(nil).Authenticate), ctx, tokenStr)
 }
 
 // GenerateAccessToken mocks base method.
-func (m *MockService) GenerateAccessToken(userId int32, expirationTime time.Time, secret []byte) (string, error) {
+func (m *MockService) GenerateAccessToken(ctx context.Context, userId int32, expirationTime time.Time) (*model.AccessToken, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GenerateAccessToken", userId, expirationTime, secret)
-	ret0, _ := ret[0].(string)
+	ret := m.ctrl.Call(m, "GenerateAccessToken", ctx, userId, expirationTime)
+	ret0, _ := ret[0].(*model.AccessToken)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // GenerateAccessToken indicates an expected call of GenerateAccessToken.
-func (mr *MockServiceMockRecorder) GenerateAccessToken(userId, expirationTime, secret interface{}) *gomock.Call {
+func (mr *MockServiceMockRecorder) GenerateAccessToken(ctx, userId, expirationTime interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GenerateAccessToken", reflect.TypeOf((*MockService)(nil).GenerateAccessToken), userId, expirationTime, secret)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GenerateAccessToken", reflect.TypeOf((*MockService)(nil).GenerateAccessToken), ctx, userId, expirationTime)
 }
 
 // SignIn mocks base method.

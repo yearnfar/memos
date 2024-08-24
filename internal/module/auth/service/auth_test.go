@@ -32,7 +32,7 @@ func TestService_SignIn(t *testing.T) {
 
 	userSvc.
 		EXPECT().
-		UpsertAccessToken(ctx, gomock.Any(), gomock.Any(), gomock.Any()).
+		UpsertAccessToken(ctx, gomock.Any(), gomock.Any()).
 		Return(nil)
 
 	userMod.Register(userSvc)

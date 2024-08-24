@@ -50,6 +50,21 @@ func (mr *MockServiceMockRecorder) CreateUser(ctx, req interface{}) *gomock.Call
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateUser", reflect.TypeOf((*MockService)(nil).CreateUser), ctx, req)
 }
 
+// CreateUserAccessToken mocks base method.
+func (m *MockService) CreateUserAccessToken(ctx context.Context, req *model.CreateUserAccessTokenRequest) (*model.AccessToken, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateUserAccessToken", ctx, req)
+	ret0, _ := ret[0].(*model.AccessToken)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateUserAccessToken indicates an expected call of CreateUserAccessToken.
+func (mr *MockServiceMockRecorder) CreateUserAccessToken(ctx, req interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateUserAccessToken", reflect.TypeOf((*MockService)(nil).CreateUserAccessToken), ctx, req)
+}
+
 // DeleteAccessToken mocks base method.
 func (m *MockService) DeleteAccessToken(ctx context.Context, userId int32, accessToken string) error {
 	m.ctrl.T.Helper()
@@ -155,15 +170,15 @@ func (mr *MockServiceMockRecorder) UpdateUser(ctx, req interface{}) *gomock.Call
 }
 
 // UpsertAccessToken mocks base method.
-func (m *MockService) UpsertAccessToken(ctx context.Context, userId int32, accessToken, description string) error {
+func (m *MockService) UpsertAccessToken(ctx context.Context, userId int32, token *model.AccessToken) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "UpsertAccessToken", ctx, userId, accessToken, description)
+	ret := m.ctrl.Call(m, "UpsertAccessToken", ctx, userId, token)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
 // UpsertAccessToken indicates an expected call of UpsertAccessToken.
-func (mr *MockServiceMockRecorder) UpsertAccessToken(ctx, userId, accessToken, description interface{}) *gomock.Call {
+func (mr *MockServiceMockRecorder) UpsertAccessToken(ctx, userId, token interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpsertAccessToken", reflect.TypeOf((*MockService)(nil).UpsertAccessToken), ctx, userId, accessToken, description)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpsertAccessToken", reflect.TypeOf((*MockService)(nil).UpsertAccessToken), ctx, userId, token)
 }

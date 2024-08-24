@@ -7,11 +7,10 @@ import (
 	"time"
 
 	"github.com/yearnfar/memos/internal/module/auth/model"
-	usermodel "github.com/yearnfar/memos/internal/module/user/model"
 )
 
 type Service interface {
-	SignIn(ctx context.Context, req *model.SignInRequest) (resp *model.SignInResponse, err error)
-	GenerateAccessToken(userId int32, expirationTime time.Time, secret []byte) (string, error)
-	Authenticate(ctx context.Context, accessToken, secret string) (user *usermodel.User, err error)
+	SignIn(ctx context.Context, req *model.SignInRequest) (*model.SignInResponse, error)
+	GenerateAccessToken(ctx context.Context, userId int32, expirationTime time.Time) (*model.AccessToken, error)
+	Authenticate(ctx context.Context, tokenStr string) (*model.AccessToken, error)
 }

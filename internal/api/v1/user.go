@@ -7,6 +7,7 @@ import (
 
 	"github.com/pkg/errors"
 	"github.com/yearnfar/memos/internal/api"
+	authmod "github.com/yearnfar/memos/internal/module/auth"
 	usermod "github.com/yearnfar/memos/internal/module/user"
 	"github.com/yearnfar/memos/internal/module/user/model"
 	usermodel "github.com/yearnfar/memos/internal/module/user/model"
@@ -61,23 +62,62 @@ func (s *UserService) UpdateUser(ctx context.Context, req *v1pb.UpdateUserReques
 		err = errors.Errorf("invalid user name: %v", err)
 		return
 	}
+	if currentUser.ID != userID && currentUser.Role != model.RoleAdmin && currentUser.Role != model.RoleHost {
+		err = errors.New("permission denied")
+		return
+	}
 	user, err := usermod.UpdateUser(ctx, &model.UpdateUserRequest{
-		CurrentUserId: currentUser.ID,
-		UpdateMasks:   req.UpdateMask.Paths,
-		UserId:        userID,
-		Username:      req.User.Username,
-		Role:          usermodel.Role(req.User.Role.String()),
-		RowStatus:     usermodel.RowStatus(req.User.RowStatus.String()),
-		Email:         req.User.Email,
-		AvatarURL:     req.User.AvatarUrl,
-		Nickname:      req.User.Nickname,
-		Password:      req.User.Password,
-		Description:   req.User.Description,
+		UpdateMasks: req.UpdateMask.Paths,
+		UserId:      userID,
+		Username:    req.User.Username,
+		Role:        usermodel.Role(req.User.Role.String()),
+		RowStatus:   usermodel.RowStatus(req.User.RowStatus.String()),
+		Email:       req.User.Email,
+		AvatarURL:   req.User.AvatarUrl,
+		Nickname:    req.User.Nickname,
+		Password:    req.User.Password,
+		Description: req.User.Description,
 	})
 	if err != nil {
 		return
 	}
 	userInfo = s.convertUserFromStore(user)
+	return
+}
+
+func (s *UserService) CreateUserAccessToken(ctx context.Context, request *v1pb.CreateUserAccessTokenRequest) (response *v1pb.UserAccessToken, err error) {
+	userID, err := api.ExtractUserIDFromName(request.Name)
+	if err != nil {
+		err = errors.Errorf("invalid user name: %v", err)
+		return
+	}
+	currentUser, err := s.GetCurrentUser(ctx)
+	if err != nil {
+		err = errors.Errorf("failed to get user: %v", err)
+		return
+	}
+	if currentUser == nil || currentUser.ID != userID {
+		err = errors.New("permission denied")
+		return
+	}
+	accessToken, err := usermod.CreateUserAccessToken(ctx, &usermodel.CreateUserAccessTokenRequest{
+		UserID:      userID,
+		Description: request.Description,
+		ExpiresAt:   request.ExpiresAt.AsTime(),
+	})
+	if err != nil {
+		return
+	}
+	authToken, err := authmod.Authenticate(ctx, accessToken.Token)
+	if err != nil {
+		return
+	}
+	response = &v1pb.UserAccessToken{
+		AccessToken: authToken.Token,
+		Description: request.Description,
+		IssuedAt:    timestamppb.New(time.Unix(authToken.IssuedAt, 0)),
+		ExpiresAt:   timestamppb.New(time.Unix(authToken.ExpiresAt, 0)),
+	}
 	return
 }
 

@@ -85,10 +85,6 @@ func (s *Service) UpdateUser(ctx context.Context, req *model.UpdateUserRequest) 
 		err = errors.New("user not found")
 		return
 	}
-	if req.CurrentUserId != user.ID && user.Role != model.RoleAdmin && user.Role != model.RoleHost {
-		err = errors.New("permission denied")
-		return
-	}
 	update := make(map[string]any)
 	for _, field := range req.UpdateMasks {
 		if field == "username" {

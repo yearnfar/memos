@@ -1,5 +1,7 @@
 package model
 
+import "time"
+
 type UserSetting struct {
 	UserId int32          `json:"user_id"`
 	Key    UserSettingKey `json:"key"`
@@ -21,4 +23,10 @@ type FindUserSettingRequest struct {
 
 type FindUserSettingsRequest struct {
 	UserId int32
+}
+
+type CreateUserAccessTokenRequest struct {
+	UserID      int32
+	Description string
+	ExpiresAt   time.Time
 }

@@ -15,8 +15,10 @@ type Service interface {
 	GetUserById(ctx context.Context, id int32) (*model.User, error)
 	UpdateUser(ctx context.Context, req *model.UpdateUserRequest) (*model.User, error)
 
-	UpsertAccessToken(ctx context.Context, userId int32, accessToken, description string) error
+	UpsertAccessToken(ctx context.Context, userId int32, token *model.AccessToken) error
 	DeleteAccessToken(ctx context.Context, userId int32, accessToken string) error
 	GetAccessTokens(ctx context.Context, userId int32) ([]*model.AccessToken, error)
+	CreateUserAccessToken(ctx context.Context, req *model.CreateUserAccessTokenRequest) (*model.AccessToken, error)
+
 	GetUserSettings(ctx context.Context, userId int32) ([]*model.UserSetting, error)
 }
