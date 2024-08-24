@@ -14,6 +14,7 @@ type Service interface {
 	GetUserByUsername(ctx context.Context, username string) (*model.User, error)
 	GetUserById(ctx context.Context, id int32) (*model.User, error)
 	UpdateUser(ctx context.Context, req *model.UpdateUserRequest) (*model.User, error)
+	DeleteUserById(ctx context.Context, userId int32) error
 	ListUsers(ctx context.Context, req *model.ListUsersRequest) ([]*model.User, error)
 
 	UpsertAccessToken(ctx context.Context, userId int32, token *model.AccessToken) error

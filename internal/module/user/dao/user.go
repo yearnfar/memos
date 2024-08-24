@@ -41,6 +41,11 @@ func (Dao) UpdateUser(ctx context.Context, user *model.User, update map[string]a
 	return
 }
 
+func (Dao) DeleteUserById(ctx context.Context, id int32) (err error) {
+	err = db.GetDB(ctx).Model(&model.User{}).Delete("id=?", id).Error
+	return
+}
+
 func (Dao) FindUsers(ctx context.Context, req *model.FindUsersRequest) (list []*model.User, err error) {
 	conn := db.GetDB(ctx)
 	if req.Role != "" {

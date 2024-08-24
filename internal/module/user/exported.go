@@ -55,6 +55,14 @@ func UpdateUser(ctx context.Context, req *model.UpdateUserRequest) (*model.User,
 	return v1, v2
 }
 
+func DeleteUserById(ctx context.Context, userId int32) error {
+	if defaultService == nil {
+		panic("调用模块方法: user.DeleteUserById 失败，服务未注册")
+	}
+	v1 := defaultService.DeleteUserById(ctx, userId)
+	return v1
+}
+
 func ListUsers(ctx context.Context, req *model.ListUsersRequest) ([]*model.User, error) {
 	if defaultService == nil {
 		panic("调用模块方法: user.ListUsers 失败，服务未注册")

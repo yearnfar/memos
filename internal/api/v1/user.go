@@ -101,6 +101,24 @@ func (s *UserService) UpdateUser(ctx context.Context, req *v1pb.UpdateUserReques
 	userInfo = s.convertUserFromStore(user)
 	return
 }
+func (s *UserService) DeleteUser(ctx context.Context, request *v1pb.DeleteUserRequest) (response *emptypb.Empty, err error) {
+	userID, err := api.ExtractUserIDFromName(request.Name)
+	if err != nil {
+		return nil, status.Errorf(codes.InvalidArgument, "invalid user name: %v", err)
+	}
+	currentUser, err := s.GetCurrentUser(ctx)
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to get user: %v", err)
+	}
+	if currentUser.ID != userID && currentUser.Role != model.RoleAdmin && currentUser.Role != model.RoleHost {
+		return nil, status.Errorf(codes.PermissionDenied, "permission denied")
+	}
+
+	if err = usermod.DeleteUserById(ctx, userID); err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to delete user: %v", err)
+	}
+	return
+}
 
 func (s *UserService) GetUserSetting(ctx context.Context, _ *v1pb.GetUserSettingRequest) (response *v1pb.UserSetting, err error) {
 	user, err := s.GetCurrentUser(ctx)

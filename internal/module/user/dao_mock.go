@@ -49,6 +49,20 @@ func (mr *MockDAOMockRecorder) CreateUser(ctx, user interface{}) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateUser", reflect.TypeOf((*MockDAO)(nil).CreateUser), ctx, user)
 }
 
+// DeleteUserById mocks base method.
+func (m *MockDAO) DeleteUserById(ctx context.Context, userId int32) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteUserById", ctx, userId)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteUserById indicates an expected call of DeleteUserById.
+func (mr *MockDAOMockRecorder) DeleteUserById(ctx, userId interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteUserById", reflect.TypeOf((*MockDAO)(nil).DeleteUserById), ctx, userId)
+}
+
 // FindUser mocks base method.
 func (m *MockDAO) FindUser(ctx context.Context, req *model.FindUserRequest) (*model.User, error) {
 	m.ctrl.T.Helper()

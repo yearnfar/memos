@@ -133,3 +133,16 @@ func (s *Service) GetUserById(ctx context.Context, id int32) (*model.User, error
 func (s *Service) GetUserByUsername(ctx context.Context, username string) (*model.User, error) {
 	return s.dao.FindUserByUsername(ctx, username)
 }
+
+func (s *Service) DeleteUserById(ctx context.Context, userId int32) (err error) {
+	user, err := s.dao.FindUserById(ctx, userId)
+	if err != nil {
+		return
+	}
+	err = s.dao.DeleteUserById(ctx, user.ID)
+	if err != nil {
+		return
+	}
+	// s.userCache.Delete(delete.ID)
+	return
+}
