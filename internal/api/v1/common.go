@@ -47,6 +47,17 @@ func convertRowStatusFromStore(rowStatus usermodel.RowStatus) v1pb.RowStatus {
 	}
 }
 
+func convertRowStatusToStore(rowStatus v1pb.RowStatus) usermodel.RowStatus {
+	switch rowStatus {
+	case v1pb.RowStatus_ACTIVE:
+		return usermodel.Normal
+	case v1pb.RowStatus_ARCHIVED:
+		return usermodel.Archived
+	default:
+		return usermodel.Normal
+	}
+}
+
 func convertUserRoleFromStore(role usermodel.Role) v1pb.User_Role {
 	switch role {
 	case usermodel.RoleHost:

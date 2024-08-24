@@ -71,16 +71,16 @@ func (s *UserService) CreateUser(ctx context.Context, request *v1pb.CreateUserRe
 func (s *UserService) UpdateUser(ctx context.Context, req *v1pb.UpdateUserRequest) (userInfo *v1pb.User, err error) {
 	currentUser, err := s.GetCurrentUser(ctx)
 	if err != nil {
-		err = errors.Errorf("failed to get user: %v", err)
+		err = status.Errorf(codes.InvalidArgument, "invalid user name: %v", err)
 		return
 	}
 	userID, err := api.ExtractUserIDFromName(req.User.Name)
 	if err != nil {
-		err = errors.Errorf("invalid user name: %v", err)
+		err = status.Errorf(codes.InvalidArgument, "invalid user name: %v", err)
 		return
 	}
 	if currentUser.ID != userID && currentUser.Role != model.RoleAdmin && currentUser.Role != model.RoleHost {
-		err = errors.New("permission denied")
+		err = status.Errorf(codes.PermissionDenied, "permission denied")
 		return
 	}
 	user, err := usermod.UpdateUser(ctx, &model.UpdateUserRequest{
@@ -88,7 +88,7 @@ func (s *UserService) UpdateUser(ctx context.Context, req *v1pb.UpdateUserReques
 		UserId:      userID,
 		Username:    req.User.Username,
 		Role:        model.Role(req.User.Role.String()),
-		RowStatus:   model.RowStatus(req.User.RowStatus.String()),
+		RowStatus:   convertRowStatusToStore(req.User.RowStatus),
 		Email:       req.User.Email,
 		AvatarURL:   req.User.AvatarUrl,
 		Nickname:    req.User.Nickname,
@@ -96,6 +96,7 @@ func (s *UserService) UpdateUser(ctx context.Context, req *v1pb.UpdateUserReques
 		Description: req.User.Description,
 	})
 	if err != nil {
+		err = status.Errorf(codes.Internal, "update user error: %v", err)
 		return
 	}
 	userInfo = s.convertUserFromStore(user)
