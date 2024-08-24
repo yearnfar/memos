@@ -94,3 +94,11 @@ func GetUserSettings(ctx context.Context, userId int32) ([]*model.UserSetting, e
 	v1, v2 := defaultService.GetUserSettings(ctx, userId)
 	return v1, v2
 }
+
+func UpdateUserSetting(ctx context.Context, req *model.UpdateUserSettingRequest) error {
+	if defaultService == nil {
+		panic("调用模块方法: user.UpdateUserSetting 失败，服务未注册")
+	}
+	v1 := defaultService.UpdateUserSetting(ctx, req)
+	return v1
+}

@@ -12,6 +12,13 @@ func (UserSetting) TableName() string {
 	return TableUserSetting
 }
 
+type UserSettingValue struct {
+	AccessTokens   []*AccessToken `json:"access_tokens,omitempty"`
+	Locale         string         `json:"locale,omitempty"`
+	Appearance     string         `json:"appearance,omitempty"`
+	MemoVisibility string         `json:"memo_visibility,omitempty"`
+}
+
 type AccessToken struct {
 	Token       string `json:"token"`
 	Description string `json:"description"`
@@ -29,4 +36,12 @@ type CreateUserAccessTokenRequest struct {
 	UserID      int32
 	Description string
 	ExpiresAt   time.Time
+}
+
+type UpdateUserSettingRequest struct {
+	UpdateMasks    []string
+	UserID         int32
+	Locale         string
+	Appearance     string
+	MemoVisibility string
 }

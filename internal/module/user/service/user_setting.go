@@ -34,8 +34,7 @@ func (s *Service) UpsertAccessToken(ctx context.Context, userId int32, token *mo
 		err = errors.Wrap(err, "failed to get user access tokens")
 		return
 	}
-	tokens = append(tokens, token)
-	data, err := json.Marshal(tokens)
+	data, err := json.Marshal(model.UserSettingValue{AccessTokens: append(tokens, token)})
 	if err != nil {
 		return
 	}
@@ -57,13 +56,13 @@ func (s *Service) DeleteAccessToken(ctx context.Context, userId int32, accessTok
 		err = errors.Wrap(err, "failed to get user access tokens")
 		return
 	}
-	var newTokens []*model.AccessToken
+	var val *model.UserSettingValue
 	for _, token := range tokens {
 		if accessToken != token.Token {
-			newTokens = append(newTokens, token)
+			val.AccessTokens = append(val.AccessTokens, token)
 		}
 	}
-	data, err := json.Marshal(newTokens)
+	data, err := json.Marshal(val)
 	if err != nil {
 		return
 	}
@@ -81,4 +80,42 @@ func (s *Service) DeleteAccessToken(ctx context.Context, userId int32, accessTok
 
 func (s *Service) GetUserSettings(ctx context.Context, userId int32) ([]*model.UserSetting, error) {
 	return s.dao.FindUserSettings(ctx, &model.FindUserSettingsRequest{UserId: userId})
+}
+
+func (s *Service) UpdateUserSetting(ctx context.Context, req *model.UpdateUserSettingRequest) (err error) {
+	if len(req.UpdateMasks) == 0 {
+		err = errors.New("update mask is empty")
+		return
+	}
+
+	var key model.UserSettingKey
+	var value model.UserSettingValue
+	for _, field := range req.UpdateMasks {
+		if field == "locale" {
+			key = model.UserSettingKeyLocale
+			value = model.UserSettingValue{Locale: req.Locale}
+		} else if field == "appearance" {
+			key = model.UserSettingKeyAppearance
+			value = model.UserSettingValue{Appearance: req.Appearance}
+		} else if field == "memo_visibility" {
+			key = model.UserSettingKeyMemoVisibility
+			value = model.UserSettingValue{MemoVisibility: req.MemoVisibility}
+		} else {
+			err = errors.Errorf("invalid update path: %s", field)
+			return
+		}
+	}
+	data, err := json.Marshal(value)
+	if err != nil {
+		return
+	}
+	if err = s.dao.UpsertUserSetting(ctx, &model.UserSetting{
+		UserId: req.UserID,
+		Key:    key,
+		Value:  string(data),
+	}); err != nil {
+		err = errors.Errorf("failed to upsert user setting: %v", err)
+		return
+	}
+	return
 }

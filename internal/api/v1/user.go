@@ -2,6 +2,7 @@ package v1
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"slices"
 	"time"
@@ -13,6 +14,8 @@ import (
 	"github.com/yearnfar/memos/internal/module/user/model"
 	usermodel "github.com/yearnfar/memos/internal/module/user/model"
 	v1pb "github.com/yearnfar/memos/internal/proto/api/v1"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/emptypb"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 )
@@ -20,37 +23,6 @@ import (
 type UserService struct {
 	api.BaseService
 	v1pb.UnimplementedUserServiceServer
-}
-
-func (s *UserService) GetUserSetting(ctx context.Context, _ *v1pb.GetUserSettingRequest) (*v1pb.UserSetting, error) {
-	user, err := s.GetCurrentUser(ctx)
-	if err != nil {
-		return nil, errors.Errorf("failed to get current user: %v", err)
-	}
-
-	userSettings, err := usermod.GetUserSettings(ctx, user.ID)
-	if err != nil {
-		return nil, errors.Errorf("failed to list user settings: %v", err)
-	}
-	userSettingMessage := s.getDefaultUserSetting()
-	for _, setting := range userSettings {
-		if setting.Key == usermodel.UserSettingKeyLocale {
-			userSettingMessage.Locale = string(setting.Key)
-		} else if setting.Key == usermodel.UserSettingKeyAppearance {
-			userSettingMessage.Appearance = string(setting.Key)
-		} else if setting.Key == usermodel.UserSettingKeyMemoVisibility {
-			userSettingMessage.MemoVisibility = string(setting.Key)
-		}
-	}
-	return userSettingMessage, nil
-}
-
-func (s *UserService) getDefaultUserSetting() *v1pb.UserSetting {
-	return &v1pb.UserSetting{
-		Locale:         "en",
-		Appearance:     "system",
-		MemoVisibility: "PRIVATE",
-	}
 }
 
 func (s *UserService) UpdateUser(ctx context.Context, req *v1pb.UpdateUserRequest) (userInfo *v1pb.User, err error) {
@@ -85,6 +57,63 @@ func (s *UserService) UpdateUser(ctx context.Context, req *v1pb.UpdateUserReques
 	}
 	userInfo = s.convertUserFromStore(user)
 	return
+}
+
+func (s *UserService) GetUserSetting(ctx context.Context, _ *v1pb.GetUserSettingRequest) (response *v1pb.UserSetting, err error) {
+	user, err := s.GetCurrentUser(ctx)
+	if err != nil {
+		err = status.Errorf(codes.Internal, "failed to get current user: %v", err)
+		return
+	}
+	userSettings, err := usermod.GetUserSettings(ctx, user.ID)
+	if err != nil {
+		err = status.Errorf(codes.Internal, "failed to list user settings: %v", err)
+		return
+	}
+	userSettingMessage := s.getDefaultUserSetting()
+	for _, setting := range userSettings {
+		var item *model.UserSettingValue
+		err = json.Unmarshal([]byte(setting.Value), &item)
+		if err != nil {
+			return
+		}
+		if setting.Key == usermodel.UserSettingKeyLocale {
+			userSettingMessage.Locale = item.Locale
+		} else if setting.Key == usermodel.UserSettingKeyAppearance {
+			userSettingMessage.Appearance = item.Appearance
+		} else if setting.Key == usermodel.UserSettingKeyMemoVisibility {
+			userSettingMessage.MemoVisibility = item.MemoVisibility
+		}
+	}
+	return userSettingMessage, nil
+}
+
+func (s *UserService) getDefaultUserSetting() *v1pb.UserSetting {
+	return &v1pb.UserSetting{
+		Locale:         "en",
+		Appearance:     "system",
+		MemoVisibility: "PRIVATE",
+	}
+}
+
+func (s *UserService) UpdateUserSetting(ctx context.Context, request *v1pb.UpdateUserSettingRequest) (response *v1pb.UserSetting, err error) {
+	user, err := s.GetCurrentUser(ctx)
+	if err != nil {
+		err = status.Errorf(codes.Internal, "failed to get current user: %v", err)
+		return
+	}
+	err = usermod.UpdateUserSetting(ctx, &usermodel.UpdateUserSettingRequest{
+		UpdateMasks:    request.UpdateMask.Paths,
+		UserID:         user.ID,
+		Locale:         request.Setting.Locale,
+		Appearance:     request.Setting.Appearance,
+		MemoVisibility: request.Setting.MemoVisibility,
+	})
+	if err != nil {
+		err = status.Errorf(codes.Internal, "failed to get update user setting: %v", err)
+		return
+	}
+	return s.GetUserSetting(ctx, nil)
 }
 
 func (s *UserService) CreateUserAccessToken(ctx context.Context, request *v1pb.CreateUserAccessTokenRequest) (response *v1pb.UserAccessToken, err error) {

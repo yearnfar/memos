@@ -169,6 +169,20 @@ func (mr *MockServiceMockRecorder) UpdateUser(ctx, req interface{}) *gomock.Call
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateUser", reflect.TypeOf((*MockService)(nil).UpdateUser), ctx, req)
 }
 
+// UpdateUserSetting mocks base method.
+func (m *MockService) UpdateUserSetting(ctx context.Context, req *model.UpdateUserSettingRequest) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpdateUserSetting", ctx, req)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpdateUserSetting indicates an expected call of UpdateUserSetting.
+func (mr *MockServiceMockRecorder) UpdateUserSetting(ctx, req interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateUserSetting", reflect.TypeOf((*MockService)(nil).UpdateUserSetting), ctx, req)
+}
+
 // UpsertAccessToken mocks base method.
 func (m *MockService) UpsertAccessToken(ctx context.Context, userId int32, token *model.AccessToken) error {
 	m.ctrl.T.Helper()

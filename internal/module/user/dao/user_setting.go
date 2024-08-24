@@ -46,10 +46,11 @@ func (dao *Dao) FindUserAccessTokens(ctx context.Context, userId int32) (tokens 
 		return
 	}
 	if setting.Value != "" {
-		err = json.Unmarshal([]byte(setting.Value), &tokens)
-		if err != nil {
+		var val model.UserSettingValue
+		if err = json.Unmarshal([]byte(setting.Value), &val); err != nil {
 			return
 		}
+		tokens = val.AccessTokens
 	}
 	return
 }

@@ -21,4 +21,5 @@ type Service interface {
 	CreateUserAccessToken(ctx context.Context, req *model.CreateUserAccessTokenRequest) (*model.AccessToken, error)
 
 	GetUserSettings(ctx context.Context, userId int32) ([]*model.UserSetting, error)
+	UpdateUserSetting(ctx context.Context, req *model.UpdateUserSettingRequest) error
 }
