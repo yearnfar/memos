@@ -150,6 +150,38 @@ func (s *MemoService) SetMemoResources(ctx context.Context, request *v1pb.SetMem
 	return
 }
 
+func (s *MemoService) SetMemoRelations(ctx context.Context, request *v1pb.SetMemoRelationsRequest) (response *emptypb.Empty, err error) {
+	memoID, err := api.ExtractMemoIDFromName(request.Name)
+	if err != nil {
+		err = status.Errorf(codes.InvalidArgument, "invalid memo name: %v", err)
+		return
+	}
+	var list []*model.MemoRelation
+	for _, relation := range request.Relations {
+		var relatedMemoID int32
+		relatedMemoID, err = api.ExtractMemoIDFromName(relation.RelatedMemo)
+		if err != nil {
+			err = status.Errorf(codes.Internal, "set memo relations fail: %v", err)
+			return
+		}
+		item := &model.MemoRelation{
+			MemoID:        memoID,
+			RelatedMemoID: relatedMemoID,
+			Type:          convertMemoRelationTypeToStore(relation.Type),
+		}
+		list = append(list, item)
+	}
+	err = memomod.SetMemoRelations(ctx, &model.SetMemoRelationsRequest{
+		MemoID:    memoID,
+		Relations: list,
+	})
+	if err != nil {
+		err = status.Errorf(codes.Internal, "set memo relations fail: %v", err)
+		return
+	}
+	return
+}
+
 func (s *MemoService) ListMemos(ctx context.Context, req *v1pb.ListMemosRequest) (response *v1pb.ListMemosResponse, err error) {
 	user, err := s.GetCurrentUser(ctx)
 	if err != nil {
@@ -186,4 +218,15 @@ func (s *MemoService) ListMemoProperties(ctx context.Context, request *v1pb.List
 
 	slog.Info("user", user)
 	return
+}
+
+func convertMemoRelationTypeToStore(relationType v1pb.MemoRelation_Type) model.MemoRelationType {
+	switch relationType {
+	case v1pb.MemoRelation_REFERENCE:
+		return model.MemoRelationReference
+	case v1pb.MemoRelation_COMMENT:
+		return model.MemoRelationComment
+	default:
+		return model.MemoRelationReference
+	}
 }

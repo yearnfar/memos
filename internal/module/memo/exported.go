@@ -47,6 +47,14 @@ func CreateMemo(ctx context.Context, req *model.CreateMemoRequest) (*model.Memo,
 	return v1, v2
 }
 
+func ListResources(ctx context.Context, req *model.ListResourcesRequest) ([]*model.Resource, error) {
+	if defaultService == nil {
+		panic("调用模块方法: memo.ListResources 失败，服务未注册")
+	}
+	v1, v2 := defaultService.ListResources(ctx, req)
+	return v1, v2
+}
+
 func SetMemoResources(ctx context.Context, req *model.SetMemoResourcesRequest) error {
 	if defaultService == nil {
 		panic("调用模块方法: memo.SetMemoResources 失败，服务未注册")
@@ -63,19 +71,19 @@ func ListMemoRelations(ctx context.Context, req *model.ListMemoRelationsRequest)
 	return v1, v2
 }
 
+func SetMemoRelations(ctx context.Context, req *model.SetMemoRelationsRequest) error {
+	if defaultService == nil {
+		panic("调用模块方法: memo.SetMemoRelations 失败，服务未注册")
+	}
+	v1 := defaultService.SetMemoRelations(ctx, req)
+	return v1
+}
+
 func ListReactions(ctx context.Context, req *model.ListReactionsRequest) ([]*model.Reaction, error) {
 	if defaultService == nil {
 		panic("调用模块方法: memo.ListReactions 失败，服务未注册")
 	}
 	v1, v2 := defaultService.ListReactions(ctx, req)
-	return v1, v2
-}
-
-func ListResources(ctx context.Context, req *model.ListResourcesRequest) ([]*model.Resource, error) {
-	if defaultService == nil {
-		panic("调用模块方法: memo.ListResources 失败，服务未注册")
-	}
-	v1, v2 := defaultService.ListResources(ctx, req)
 	return v1, v2
 }
 

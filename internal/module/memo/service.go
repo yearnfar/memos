@@ -14,13 +14,13 @@ type Service interface {
 	ListMemos(ctx context.Context, req *model.ListMemosRequest) ([]*model.Memo, error)
 	CreateMemo(ctx context.Context, req *model.CreateMemoRequest) (*model.Memo, error)
 
+	ListResources(ctx context.Context, req *model.ListResourcesRequest) ([]*model.Resource, error)
 	SetMemoResources(ctx context.Context, req *model.SetMemoResourcesRequest) error
 
 	ListMemoRelations(ctx context.Context, req *model.ListMemoRelationsRequest) ([]*model.MemoRelation, error)
+	SetMemoRelations(ctx context.Context, req *model.SetMemoRelationsRequest) error
 
 	ListReactions(ctx context.Context, req *model.ListReactionsRequest) ([]*model.Reaction, error)
-
-	ListResources(ctx context.Context, req *model.ListResourcesRequest) ([]*model.Resource, error)
 
 	SetWorkspaceSetting(ctx context.Context, req *model.SetWorkspaceSettingRequest) (*model.WorkspaceSettingCache, error)
 	GetWorkspaceSetting(ctx context.Context, req *model.GetWorkspaceSettingRequest) (*model.WorkspaceSettingCache, error)

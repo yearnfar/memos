@@ -49,6 +49,20 @@ func (mr *MockDAOMockRecorder) CreateMemo(ctx, memo interface{}) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateMemo", reflect.TypeOf((*MockDAO)(nil).CreateMemo), ctx, memo)
 }
 
+// DeleteMemoRelations mocks base method.
+func (m *MockDAO) DeleteMemoRelations(ctx context.Context, req *model.DeleteMemoRelationsRequest) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteMemoRelations", ctx, req)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteMemoRelations indicates an expected call of DeleteMemoRelations.
+func (mr *MockDAOMockRecorder) DeleteMemoRelations(ctx, req interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteMemoRelations", reflect.TypeOf((*MockDAO)(nil).DeleteMemoRelations), ctx, req)
+}
+
 // DeleteResourceById mocks base method.
 func (m *MockDAO) DeleteResourceById(ctx context.Context, id int32) error {
 	m.ctrl.T.Helper()
@@ -210,6 +224,20 @@ func (m_2 *MockDAO) UpdateResource(ctx context.Context, m *model.Resource, updat
 func (mr *MockDAOMockRecorder) UpdateResource(ctx, m, update interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateResource", reflect.TypeOf((*MockDAO)(nil).UpdateResource), ctx, m, update)
+}
+
+// UpsertMemoRelation mocks base method.
+func (m_2 *MockDAO) UpsertMemoRelation(ctx context.Context, m *model.MemoRelation) error {
+	m_2.ctrl.T.Helper()
+	ret := m_2.ctrl.Call(m_2, "UpsertMemoRelation", ctx, m)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpsertMemoRelation indicates an expected call of UpsertMemoRelation.
+func (mr *MockDAOMockRecorder) UpsertMemoRelation(ctx, m interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpsertMemoRelation", reflect.TypeOf((*MockDAO)(nil).UpsertMemoRelation), ctx, m)
 }
 
 // UpsertWorkspaceSetting mocks base method.

@@ -14,6 +14,9 @@ type DAO interface {
 	FindMemo(ctx context.Context, req *model.FindMemoRequest) (*model.Memo, error)
 
 	FindMemoRelations(ctx context.Context, req *model.FindMemoRelationsRequest) ([]*model.MemoRelation, error)
+	DeleteMemoRelations(ctx context.Context, req *model.DeleteMemoRelationsRequest) error
+	UpsertMemoRelation(ctx context.Context, m *model.MemoRelation) error
+
 	FindMemoOrganizers(ctx context.Context, req *model.FindMemoOrganizersRequest) ([]*model.MemoOrganizer, error)
 	FindReactions(ctx context.Context, req *model.FindReactionsRequest) ([]*model.Reaction, error)
 

@@ -27,3 +27,14 @@ type FindMemoRelationsRequest struct {
 type ListMemoRelationsRequest struct {
 	Id int
 }
+
+type DeleteMemoRelationsRequest struct {
+	MemoID        int32
+	RelatedMemoID int32
+	Type          MemoRelationType
+}
+
+type SetMemoRelationsRequest struct {
+	MemoID    int32
+	Relations []*MemoRelation
+}
