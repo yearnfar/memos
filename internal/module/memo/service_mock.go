@@ -155,6 +155,20 @@ func (mr *MockServiceMockRecorder) ListResources(ctx, req interface{}) *gomock.C
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListResources", reflect.TypeOf((*MockService)(nil).ListResources), ctx, req)
 }
 
+// SetMemoResources mocks base method.
+func (m *MockService) SetMemoResources(ctx context.Context, req *model.SetMemoResourcesRequest) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "SetMemoResources", ctx, req)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// SetMemoResources indicates an expected call of SetMemoResources.
+func (mr *MockServiceMockRecorder) SetMemoResources(ctx, req interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SetMemoResources", reflect.TypeOf((*MockService)(nil).SetMemoResources), ctx, req)
+}
+
 // SetWorkspaceSetting mocks base method.
 func (m *MockService) SetWorkspaceSetting(ctx context.Context, req *model.SetWorkspaceSettingRequest) (*model.WorkspaceSettingCache, error) {
 	m.ctrl.T.Helper()

@@ -49,6 +49,20 @@ func (mr *MockDAOMockRecorder) CreateMemo(ctx, memo interface{}) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateMemo", reflect.TypeOf((*MockDAO)(nil).CreateMemo), ctx, memo)
 }
 
+// DeleteResourceById mocks base method.
+func (m *MockDAO) DeleteResourceById(ctx context.Context, id int32) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteResourceById", ctx, id)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteResourceById indicates an expected call of DeleteResourceById.
+func (mr *MockDAOMockRecorder) DeleteResourceById(ctx, id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteResourceById", reflect.TypeOf((*MockDAO)(nil).DeleteResourceById), ctx, id)
+}
+
 // FindInboxes mocks base method.
 func (m *MockDAO) FindInboxes(ctx context.Context, req *model.FindInboxesRequest) ([]*model.Inbox, error) {
 	m.ctrl.T.Helper()
@@ -139,6 +153,21 @@ func (mr *MockDAOMockRecorder) FindReactions(ctx, req interface{}) *gomock.Call 
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindReactions", reflect.TypeOf((*MockDAO)(nil).FindReactions), ctx, req)
 }
 
+// FindResource mocks base method.
+func (m *MockDAO) FindResource(ctx context.Context, req *model.FindResourceRequest) (*model.Resource, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "FindResource", ctx, req)
+	ret0, _ := ret[0].(*model.Resource)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// FindResource indicates an expected call of FindResource.
+func (mr *MockDAOMockRecorder) FindResource(ctx, req interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindResource", reflect.TypeOf((*MockDAO)(nil).FindResource), ctx, req)
+}
+
 // FindResources mocks base method.
 func (m *MockDAO) FindResources(ctx context.Context, req *model.FindResourcesRequest) ([]*model.Resource, error) {
 	m.ctrl.T.Helper()
@@ -167,6 +196,20 @@ func (m *MockDAO) FindWorkspaceSettings(ctx context.Context, req *model.FindWork
 func (mr *MockDAOMockRecorder) FindWorkspaceSettings(ctx, req interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindWorkspaceSettings", reflect.TypeOf((*MockDAO)(nil).FindWorkspaceSettings), ctx, req)
+}
+
+// UpdateResource mocks base method.
+func (m_2 *MockDAO) UpdateResource(ctx context.Context, m *model.Resource, update map[string]any) error {
+	m_2.ctrl.T.Helper()
+	ret := m_2.ctrl.Call(m_2, "UpdateResource", ctx, m, update)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpdateResource indicates an expected call of UpdateResource.
+func (mr *MockDAOMockRecorder) UpdateResource(ctx, m, update interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateResource", reflect.TypeOf((*MockDAO)(nil).UpdateResource), ctx, m, update)
 }
 
 // UpsertWorkspaceSetting mocks base method.

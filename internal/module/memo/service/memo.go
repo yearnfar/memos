@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"slices"
+	"time"
 
 	"github.com/lithammer/shortuuid/v4"
 	"github.com/pkg/errors"
@@ -104,4 +105,50 @@ func (s *Service) GetMemo(ctx context.Context, req *model.GetMemoRequest) (*mode
 	return s.dao.FindMemo(ctx, &model.FindMemoRequest{
 		Id: req.Id,
 	})
+}
+
+func (s *Service) SetMemoResources(ctx context.Context, req *model.SetMemoResourcesRequest) (err error) {
+	resources, err := s.dao.FindResources(ctx, &model.FindResourcesRequest{
+		MemoID: req.MemoID,
+	})
+	if err != nil {
+		err = errors.New("failed to list resources")
+		return
+	}
+
+	// Delete resources that are not in the request.
+	for _, resource := range resources {
+		found := false
+		for _, requestResource := range req.Resources {
+			if resource.UID == requestResource.Uid {
+				found = true
+				break
+			}
+		}
+		if !found {
+			if err = s.dao.DeleteResourceById(ctx, resource.ID); err != nil {
+				err = errors.New("failed to delete resource")
+				return
+			}
+		}
+	}
+
+	slices.Reverse(req.Resources)
+
+	// Update resources' memo_id in the request.
+	for index, resource := range req.Resources {
+		var res *model.Resource
+		res, err = s.dao.FindResource(ctx, &model.FindResourceRequest{ID: resource.ID})
+		if err != nil {
+			continue
+		}
+		if err = s.dao.UpdateResource(ctx, res, map[string]any{
+			"memos_id":   req.MemoID,
+			"updated_ts": time.Now().Unix() + int64(index),
+		}); err != nil {
+			err = errors.Errorf("failed to update resource: %v", err)
+			return
+		}
+	}
+	return
 }

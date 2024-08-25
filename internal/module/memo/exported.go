@@ -47,6 +47,14 @@ func CreateMemo(ctx context.Context, req *model.CreateMemoRequest) (*model.Memo,
 	return v1, v2
 }
 
+func SetMemoResources(ctx context.Context, req *model.SetMemoResourcesRequest) error {
+	if defaultService == nil {
+		panic("调用模块方法: memo.SetMemoResources 失败，服务未注册")
+	}
+	v1 := defaultService.SetMemoResources(ctx, req)
+	return v1
+}
+
 func ListMemoRelations(ctx context.Context, req *model.ListMemoRelationsRequest) ([]*model.MemoRelation, error) {
 	if defaultService == nil {
 		panic("调用模块方法: memo.ListMemoRelations 失败，服务未注册")

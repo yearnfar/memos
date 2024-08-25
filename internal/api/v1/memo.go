@@ -11,6 +11,9 @@ import (
 	"github.com/usememos/gomark/parser/tokenizer"
 	"github.com/usememos/gomark/renderer"
 	"github.com/yearnfar/gokit/strutil"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/types/known/emptypb"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 
 	"github.com/yearnfar/memos/internal/api"
@@ -116,6 +119,35 @@ func (s *MemoService) convertMemoFromStore(ctx context.Context, memo *model.Memo
 	// 	memoMessage.Parent = &parent
 	// }
 	return memoMessage, nil
+}
+
+func (s *MemoService) SetMemoResources(ctx context.Context, request *v1pb.SetMemoResourcesRequest) (response *emptypb.Empty, err error) {
+	memoID, err := api.ExtractMemoIDFromName(request.Name)
+	if err != nil {
+		return nil, status.Errorf(codes.InvalidArgument, "invalid memo name: %v", err)
+	}
+	var resources []*model.MemoResource
+	for _, res := range request.Resources {
+		resID, _ := api.ExtractResourceIDFromName(res.Name)
+		resources = append(resources, &model.MemoResource{
+			ID:           resID,
+			Uid:          res.Uid,
+			CreateTime:   res.CreateTime.AsTime().Unix(),
+			Filename:     res.Filename,
+			Content:      res.Content,
+			ExternalLink: res.ExternalLink,
+			Type:         res.Type,
+			Size:         res.Size,
+		})
+	}
+	err = memomod.SetMemoResources(ctx, &model.SetMemoResourcesRequest{
+		MemoID:    memoID,
+		Resources: resources,
+	})
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "set memo resource fail: %v", err)
+	}
+	return
 }
 
 func (s *MemoService) ListMemos(ctx context.Context, req *v1pb.ListMemosRequest) (response *v1pb.ListMemosResponse, err error) {

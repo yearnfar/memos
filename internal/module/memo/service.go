@@ -14,6 +14,8 @@ type Service interface {
 	ListMemos(ctx context.Context, req *model.ListMemosRequest) ([]*model.Memo, error)
 	CreateMemo(ctx context.Context, req *model.CreateMemoRequest) (*model.Memo, error)
 
+	SetMemoResources(ctx context.Context, req *model.SetMemoResourcesRequest) error
+
 	ListMemoRelations(ctx context.Context, req *model.ListMemoRelationsRequest) ([]*model.MemoRelation, error)
 
 	ListReactions(ctx context.Context, req *model.ListReactionsRequest) ([]*model.Reaction, error)

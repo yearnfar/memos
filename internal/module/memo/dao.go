@@ -16,7 +16,11 @@ type DAO interface {
 	FindMemoRelations(ctx context.Context, req *model.FindMemoRelationsRequest) ([]*model.MemoRelation, error)
 	FindMemoOrganizers(ctx context.Context, req *model.FindMemoOrganizersRequest) ([]*model.MemoOrganizer, error)
 	FindReactions(ctx context.Context, req *model.FindReactionsRequest) ([]*model.Reaction, error)
+
+	FindResource(ctx context.Context, req *model.FindResourceRequest) (*model.Resource, error)
 	FindResources(ctx context.Context, req *model.FindResourcesRequest) ([]*model.Resource, error)
+	DeleteResourceById(ctx context.Context, id int32) error
+	UpdateResource(ctx context.Context, m *model.Resource, update map[string]any) error
 
 	UpsertWorkspaceSetting(ctx context.Context, setting *model.WorkspaceSetting) error
 	FindWorkspaceSettings(ctx context.Context, req *model.FindWorkspaceSettingsRequest) ([]*model.WorkspaceSetting, error)

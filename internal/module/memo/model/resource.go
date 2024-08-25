@@ -30,6 +30,20 @@ func (Resource) TableName() string {
 	return TableResource
 }
 
+type MemoResource struct {
+	ID int32 `json:"id"`
+	// The user defined id of the resource.
+	Uid          string `json:"uid"`
+	CreateTime   int64  `json:"create_time"`
+	Filename     string `json:"filename"`
+	Content      []byte `json:"content"`
+	ExternalLink string `json:"external_link"`
+	Type         string `json:"type"`
+	Size         int64  `json:"size"`
+
+	MemeID int32
+}
+
 type ResourcePayload struct {
 	Payload *json.RawMessage `json:"payload"`
 }
@@ -43,8 +57,31 @@ type ResourcePayloadS3Object struct {
 	LastPresignedTime int64 `json:"last_presigned_time"`
 }
 
+type SetMemoResourcesRequest struct {
+	MemoID    int32
+	Resources []*MemoResource
+}
+
 type FindResourcesRequest struct {
+	ID     int32
+	MemoID int32
+}
+
+type FindResourceRequest struct {
+	ID     int32
+	MemoID int32
 }
 
 type ListResourcesRequest struct {
+}
+
+type DeleteResourceRequest struct {
+	ID     int32
+	MemoID int32
+}
+
+type UpdateResourceRequest struct {
+	ID        int32
+	MemoID    int32
+	UpdatedTs int64
 }
