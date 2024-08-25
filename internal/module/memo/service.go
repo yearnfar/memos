@@ -19,4 +19,7 @@ type Service interface {
 	ListReactions(ctx context.Context, req *model.ListReactionsRequest) ([]*model.Reaction, error)
 
 	ListResources(ctx context.Context, req *model.ListResourcesRequest) ([]*model.Resource, error)
+
+	SetWorkspaceSetting(ctx context.Context, req *model.SetWorkspaceSettingRequest) (*model.WorkspaceSettingCache, error)
+	GetWorkspaceSetting(ctx context.Context, req *model.GetWorkspaceSettingRequest) (*model.WorkspaceSettingCache, error)
 }

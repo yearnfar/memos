@@ -168,3 +168,17 @@ func (mr *MockDAOMockRecorder) FindWorkspaceSettings(ctx, req interface{}) *gomo
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindWorkspaceSettings", reflect.TypeOf((*MockDAO)(nil).FindWorkspaceSettings), ctx, req)
 }
+
+// UpsertWorkspaceSetting mocks base method.
+func (m *MockDAO) UpsertWorkspaceSetting(ctx context.Context, setting *model.WorkspaceSetting) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpsertWorkspaceSetting", ctx, setting)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpsertWorkspaceSetting indicates an expected call of UpsertWorkspaceSetting.
+func (mr *MockDAOMockRecorder) UpsertWorkspaceSetting(ctx, setting interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpsertWorkspaceSetting", reflect.TypeOf((*MockDAO)(nil).UpsertWorkspaceSetting), ctx, setting)
+}

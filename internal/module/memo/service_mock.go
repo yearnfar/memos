@@ -65,6 +65,21 @@ func (mr *MockServiceMockRecorder) GetMemo(ctx, req interface{}) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetMemo", reflect.TypeOf((*MockService)(nil).GetMemo), ctx, req)
 }
 
+// GetWorkspaceSetting mocks base method.
+func (m *MockService) GetWorkspaceSetting(ctx context.Context, req *model.GetWorkspaceSettingRequest) (*model.WorkspaceSettingCache, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetWorkspaceSetting", ctx, req)
+	ret0, _ := ret[0].(*model.WorkspaceSettingCache)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetWorkspaceSetting indicates an expected call of GetWorkspaceSetting.
+func (mr *MockServiceMockRecorder) GetWorkspaceSetting(ctx, req interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetWorkspaceSetting", reflect.TypeOf((*MockService)(nil).GetWorkspaceSetting), ctx, req)
+}
+
 // ListInboxes mocks base method.
 func (m *MockService) ListInboxes(ctx context.Context, req *model.ListInboxesRequest) ([]*model.Inbox, error) {
 	m.ctrl.T.Helper()
@@ -138,4 +153,19 @@ func (m *MockService) ListResources(ctx context.Context, req *model.ListResource
 func (mr *MockServiceMockRecorder) ListResources(ctx, req interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListResources", reflect.TypeOf((*MockService)(nil).ListResources), ctx, req)
+}
+
+// SetWorkspaceSetting mocks base method.
+func (m *MockService) SetWorkspaceSetting(ctx context.Context, req *model.SetWorkspaceSettingRequest) (*model.WorkspaceSettingCache, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "SetWorkspaceSetting", ctx, req)
+	ret0, _ := ret[0].(*model.WorkspaceSettingCache)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// SetWorkspaceSetting indicates an expected call of SetWorkspaceSetting.
+func (mr *MockServiceMockRecorder) SetWorkspaceSetting(ctx, req interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SetWorkspaceSetting", reflect.TypeOf((*MockService)(nil).SetWorkspaceSetting), ctx, req)
 }

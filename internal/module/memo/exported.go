@@ -70,3 +70,19 @@ func ListResources(ctx context.Context, req *model.ListResourcesRequest) ([]*mod
 	v1, v2 := defaultService.ListResources(ctx, req)
 	return v1, v2
 }
+
+func SetWorkspaceSetting(ctx context.Context, req *model.SetWorkspaceSettingRequest) (*model.WorkspaceSettingCache, error) {
+	if defaultService == nil {
+		panic("调用模块方法: memo.SetWorkspaceSetting 失败，服务未注册")
+	}
+	v1, v2 := defaultService.SetWorkspaceSetting(ctx, req)
+	return v1, v2
+}
+
+func GetWorkspaceSetting(ctx context.Context, req *model.GetWorkspaceSettingRequest) (*model.WorkspaceSettingCache, error) {
+	if defaultService == nil {
+		panic("调用模块方法: memo.GetWorkspaceSetting 失败，服务未注册")
+	}
+	v1, v2 := defaultService.GetWorkspaceSetting(ctx, req)
+	return v1, v2
+}

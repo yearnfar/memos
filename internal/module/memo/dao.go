@@ -18,5 +18,6 @@ type DAO interface {
 	FindReactions(ctx context.Context, req *model.FindReactionsRequest) ([]*model.Reaction, error)
 	FindResources(ctx context.Context, req *model.FindResourcesRequest) ([]*model.Resource, error)
 
+	UpsertWorkspaceSetting(ctx context.Context, setting *model.WorkspaceSetting) error
 	FindWorkspaceSettings(ctx context.Context, req *model.FindWorkspaceSettingsRequest) ([]*model.WorkspaceSetting, error)
 }

@@ -78,3 +78,16 @@ type FindWorkspaceSettingsRequest struct {
 type FindWorkspaceSettingRequest struct {
 	Name string
 }
+
+type SetWorkspaceSettingRequest struct {
+	Name        string
+	Description string
+	Basic       *WorkspaceBasicSetting
+	General     *WorkspaceGeneralSetting
+	Storage     *WorkspaceStorageSetting
+	MemoRelated *WorkspaceMemoRelatedSetting
+}
+
+type GetWorkspaceSettingRequest struct {
+	Name string
+}

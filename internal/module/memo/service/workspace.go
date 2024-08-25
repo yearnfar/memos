@@ -14,6 +14,54 @@ const (
 	DefaultContentLengthLimit = 8 * 1024
 )
 
+func (s *Service) SetWorkspaceSetting(ctx context.Context, req *model.SetWorkspaceSettingRequest) (setting *model.WorkspaceSettingCache, err error) {
+	var data []byte
+	switch req.Name {
+	case string(model.WorkspaceSettingKeyBasic):
+		data, err = json.Marshal(req.Basic)
+		if err != nil {
+			return
+		}
+	case string(model.WorkspaceSettingKeyGeneral):
+		data, err = json.Marshal(req.General)
+		if err != nil {
+			return
+		}
+	case string(model.WorkspaceSettingKeyStorage):
+		data, err = json.Marshal(req.Storage)
+		if err != nil {
+			return
+		}
+	case string(model.WorkspaceSettingKeyMemoRelated):
+		data, err = json.Marshal(req.MemoRelated)
+		if err != nil {
+			return
+		}
+	default:
+		return nil, errors.Errorf("unsupported workspace setting key: %s", req.Name)
+	}
+	wsSetting := &model.WorkspaceSetting{
+		Name:        req.Name,
+		Value:       string(data),
+		Description: req.Description,
+	}
+	if err = s.dao.UpsertWorkspaceSetting(ctx, wsSetting); err != nil {
+		err = errors.Wrap(err, "Failed to upsert workspace setting")
+		return
+	}
+	settingCache, err := s.convertWorkspaceSettingCache(wsSetting)
+	if err != nil {
+		err = errors.Wrap(err, "Failed to convert workspace setting")
+		return
+	}
+	s.workspaceSettingCache.Store(settingCache.Key, settingCache)
+	return settingCache, nil
+}
+
+func (s *Service) GetWorkspaceSetting(ctx context.Context, req *model.GetWorkspaceSettingRequest) (setting *model.WorkspaceSettingCache, err error) {
+	return s.getWorkspaceSettingCache(ctx, model.WorkspaceSettingKey(req.Name))
+}
+
 func (s *Service) getWorkspaceMemoRelatedSetting(ctx context.Context) (*model.WorkspaceMemoRelatedSetting, error) {
 	settingCache, err := s.getWorkspaceSettingCache(ctx, model.WorkspaceSettingKeyMemoRelated)
 	if err != nil {
@@ -91,7 +139,7 @@ func (s *Service) convertWorkspaceSettingCache(wsSetting *model.WorkspaceSetting
 		if err = json.Unmarshal([]byte(wsSetting.Value), &relatedSetting); err != nil {
 			return
 		}
-		settingCache.Value = relatedSetting
+		settingCache.Value = &relatedSetting
 	default:
 		// Skip unsupported workspace setting key.
 		return nil, nil
