@@ -11,8 +11,8 @@ import (
 
 func (dao *Dao) FindMemoRelations(ctx context.Context, req *model.FindMemoRelationsRequest) (list []*model.MemoRelation, err error) {
 	conn := db.GetDB(ctx)
-	err = conn.First(&list).Error
-	return nil, nil
+	err = conn.Find(&list).Error
+	return
 }
 
 func (dao *Dao) UpsertMemoRelation(ctx context.Context, m *model.MemoRelation) (err error) {

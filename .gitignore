@@ -10,6 +10,8 @@ web/dist
 # build folder
 build
 
+__debug_bin*
+
 .DS_Store
 
 # Jetbrains

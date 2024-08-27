@@ -104,8 +104,8 @@ func (s *MemoService) convertMemoFromStore(ctx context.Context, memo *model.Memo
 		DisplayTime: timestamppb.New(time.Unix(displayTs, 0)),
 		Content:     memo.Content,
 		Snippet:     snippet,
-		// Nodes:       convertFromASTNodes(nodes),
-		Visibility: convertVisibilityFromStore(memo.Visibility),
+		Nodes:       convertFromASTNodes(nodes),
+		Visibility:  convertVisibilityFromStore(memo.Visibility),
 		// Pinned:     memo.Pinned,
 		Relations: relationsList,
 		Resources: resourcesList,
@@ -189,12 +189,25 @@ func (s *MemoService) ListMemos(ctx context.Context, req *v1pb.ListMemosRequest)
 		return
 	}
 
-	list, err := memomod.ListMemos(ctx, &model.ListMemosRequest{CreatorId: user.ID})
+	memos, err := memomod.ListMemos(ctx, &model.ListMemosRequest{CreatorId: user.ID})
 	if err != nil {
 		return
 	}
 
-	slog.Info("list", list)
+	var list []*v1pb.Memo
+	for _, memo := range memos {
+		var item *v1pb.Memo
+		item, err = s.convertMemoFromStore(ctx, memo)
+		if err != nil {
+			return
+		}
+		list = append(list, item)
+	}
+
+	response = &v1pb.ListMemosResponse{
+		Memos:         list,
+		NextPageToken: "",
+	}
 	return
 }
 

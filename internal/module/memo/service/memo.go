@@ -102,6 +102,7 @@ func (s *Service) ListMemos(ctx context.Context, req *model.ListMemosRequest) (l
 	if err != nil {
 		return
 	}
+
 	return
 }
 
