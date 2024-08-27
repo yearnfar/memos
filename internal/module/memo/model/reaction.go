@@ -20,6 +20,12 @@ type FindReactionsRequest struct {
 	ContentId string
 }
 
+type UpsertReactionRequest struct {
+	CreatorID    int32
+	ContentID    string
+	ReactionType ReactionType
+}
+
 type ListReactionsRequest struct {
 	Id        int
 	CreatorId int

@@ -54,7 +54,8 @@ type FindMemosRequest struct {
 	ExcludeComments bool
 }
 type FindMemoRequest struct {
-	Id int32
+	Id  int32
+	UID string
 }
 
 type ListMemosRequest struct {
@@ -63,6 +64,7 @@ type ListMemosRequest struct {
 
 type GetMemoRequest struct {
 	Id            int32
+	UID           string
 	CurrentUserId int32
 }
 

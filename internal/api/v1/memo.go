@@ -225,6 +225,39 @@ func (s *MemoService) GetMemo(ctx context.Context, request *v1pb.GetMemoRequest)
 	return
 }
 
+func (s *MemoService) GetMemoByUid(ctx context.Context, request *v1pb.GetMemoByUidRequest) (response *v1pb.Memo, err error) {
+	memo, err := memomod.GetMemo(ctx, &model.GetMemoRequest{UID: request.Uid})
+	if err != nil {
+		err = status.Errorf(codes.Internal, "get memo failed: %v", err)
+		return
+	}
+	response, err = s.convertMemoFromStore(ctx, memo)
+	return
+}
+
+func (s *MemoService) UpsertMemoReaction(ctx context.Context, request *v1pb.UpsertMemoReactionRequest) (response *v1pb.Reaction, err error) {
+	user, err := s.GetCurrentUser(ctx)
+	if err != nil {
+		err = status.Errorf(codes.Internal, "failed to get current user")
+		return
+	}
+	reaction, err := memomod.UpsertReaction(ctx, &model.UpsertReactionRequest{
+		CreatorID:    user.ID,
+		ContentID:    request.Reaction.ContentId,
+		ReactionType: model.ReactionType(v1pb.Reaction_Type_name[int32(request.Reaction.ReactionType)]),
+	})
+	if err != nil {
+		err = status.Errorf(codes.Internal, "failed to upsert reaction")
+		return
+	}
+
+	response, err = convertReactionFromStore(ctx, reaction)
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to convert reaction")
+	}
+	return response, nil
+}
+
 func (s *MemoService) ListMemoTags(ctx context.Context, request *v1pb.ListMemoTagsRequest) (response *v1pb.ListMemoTagsResponse, err error) {
 	user, err := s.GetCurrentUser(ctx)
 	if err != nil {

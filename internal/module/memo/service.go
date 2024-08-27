@@ -21,6 +21,7 @@ type Service interface {
 	SetMemoRelations(ctx context.Context, req *model.SetMemoRelationsRequest) error
 
 	ListReactions(ctx context.Context, req *model.ListReactionsRequest) ([]*model.Reaction, error)
+	UpsertReaction(ctx context.Context, req *model.UpsertReactionRequest) (*model.Reaction, error)
 
 	SetWorkspaceSetting(ctx context.Context, req *model.SetWorkspaceSettingRequest) (*model.WorkspaceSettingCache, error)
 	GetWorkspaceSetting(ctx context.Context, req *model.GetWorkspaceSettingRequest) (*model.WorkspaceSettingCache, error)

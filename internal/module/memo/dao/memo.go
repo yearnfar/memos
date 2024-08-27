@@ -25,6 +25,9 @@ func (dao *Dao) FindMemo(ctx context.Context, req *model.FindMemoRequest) (memo 
 	if req.Id != 0 {
 		conn = conn.Where("id=?", req.Id)
 	}
+	if req.UID != "" {
+		conn = conn.Where("uid=?", req.UID)
+	}
 	memo = &model.Memo{}
 	err = conn.First(&memo).Error
 	return

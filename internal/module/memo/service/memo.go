@@ -108,7 +108,8 @@ func (s *Service) ListMemos(ctx context.Context, req *model.ListMemosRequest) (l
 
 func (s *Service) GetMemo(ctx context.Context, req *model.GetMemoRequest) (*model.Memo, error) {
 	memo, err := s.dao.FindMemo(ctx, &model.FindMemoRequest{
-		Id: req.Id,
+		Id:  req.Id,
+		UID: req.UID,
 	})
 	if err != nil {
 		return nil, err
@@ -119,6 +120,16 @@ func (s *Service) GetMemo(ctx context.Context, req *model.GetMemoRequest) (*mode
 		}
 	}
 	return memo, nil
+}
+
+func (s *Service) UpsertReaction(ctx context.Context, req *model.UpsertReactionRequest) (reaction *model.Reaction, err error) {
+	reaction = &model.Reaction{
+		CreatorID:    req.CreatorID,
+		ContentID:    req.ContentID,
+		ReactionType: req.ReactionType,
+	}
+	err = s.dao.CreateReaction(ctx, reaction)
+	return
 }
 
 func (s *Service) SetMemoResources(ctx context.Context, req *model.SetMemoResourcesRequest) (err error) {

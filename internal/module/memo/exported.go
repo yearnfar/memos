@@ -87,6 +87,14 @@ func ListReactions(ctx context.Context, req *model.ListReactionsRequest) ([]*mod
 	return v1, v2
 }
 
+func UpsertReaction(ctx context.Context, req *model.UpsertReactionRequest) (*model.Reaction, error) {
+	if defaultService == nil {
+		panic("调用模块方法: memo.UpsertReaction 失败，服务未注册")
+	}
+	v1, v2 := defaultService.UpsertReaction(ctx, req)
+	return v1, v2
+}
+
 func SetWorkspaceSetting(ctx context.Context, req *model.SetWorkspaceSettingRequest) (*model.WorkspaceSettingCache, error) {
 	if defaultService == nil {
 		panic("调用模块方法: memo.SetWorkspaceSetting 失败，服务未注册")

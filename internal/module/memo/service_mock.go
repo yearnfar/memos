@@ -197,3 +197,18 @@ func (mr *MockServiceMockRecorder) SetWorkspaceSetting(ctx, req interface{}) *go
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SetWorkspaceSetting", reflect.TypeOf((*MockService)(nil).SetWorkspaceSetting), ctx, req)
 }
+
+// UpsertReaction mocks base method.
+func (m *MockService) UpsertReaction(ctx context.Context, req *model.UpsertReactionRequest) (*model.Reaction, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpsertReaction", ctx, req)
+	ret0, _ := ret[0].(*model.Reaction)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// UpsertReaction indicates an expected call of UpsertReaction.
+func (mr *MockServiceMockRecorder) UpsertReaction(ctx, req interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpsertReaction", reflect.TypeOf((*MockService)(nil).UpsertReaction), ctx, req)
+}

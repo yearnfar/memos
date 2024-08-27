@@ -21,3 +21,7 @@ func (dao *Dao) FindReactions(ctx context.Context, req *model.FindReactionsReque
 	err = conn.Find(&list).Error
 	return
 }
+func (dao *Dao) CreateReaction(ctx context.Context, m *model.Reaction) (err error) {
+	err = db.GetDB(ctx).Create(&m).Error
+	return
+}

@@ -19,6 +19,7 @@ type DAO interface {
 
 	FindMemoOrganizers(ctx context.Context, req *model.FindMemoOrganizersRequest) ([]*model.MemoOrganizer, error)
 	FindReactions(ctx context.Context, req *model.FindReactionsRequest) ([]*model.Reaction, error)
+	CreateReaction(ctx context.Context, m *model.Reaction) error
 
 	FindResource(ctx context.Context, req *model.FindResourceRequest) (*model.Resource, error)
 	FindResources(ctx context.Context, req *model.FindResourcesRequest) ([]*model.Resource, error)
