@@ -198,6 +198,20 @@ func (s *MemoService) ListMemos(ctx context.Context, req *v1pb.ListMemosRequest)
 	return
 }
 
+func (s *MemoService) GetMemo(ctx context.Context, request *v1pb.GetMemoRequest) (response *v1pb.Memo, err error) {
+	id, err := api.ExtractMemoIDFromName(request.Name)
+	if err != nil {
+		return nil, status.Errorf(codes.InvalidArgument, "invalid memo name: %v", err)
+	}
+	memo, err := memomod.GetMemo(ctx, &model.GetMemoRequest{Id: id})
+	if err != nil {
+		err = status.Errorf(codes.Internal, "get memo failed: %v", err)
+		return
+	}
+	response, err = s.convertMemoFromStore(ctx, memo)
+	return
+}
+
 func (s *MemoService) ListMemoTags(ctx context.Context, request *v1pb.ListMemoTagsRequest) (response *v1pb.ListMemoTagsResponse, err error) {
 	user, err := s.GetCurrentUser(ctx)
 	if err != nil {

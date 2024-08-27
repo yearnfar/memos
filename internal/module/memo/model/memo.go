@@ -40,6 +40,8 @@ type MemoPayloadProperty struct {
 }
 
 type FindMemosRequest struct {
+	Id        int32
+	CreatorId int32
 }
 type FindMemoRequest struct {
 	Id int32
@@ -50,7 +52,8 @@ type ListMemosRequest struct {
 }
 
 type GetMemoRequest struct {
-	Id int32
+	Id            int32
+	CurrentUserId int32
 }
 
 type CreateMemoRequest struct {

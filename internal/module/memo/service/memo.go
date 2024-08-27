@@ -102,9 +102,18 @@ func (s *Service) ListMemos(ctx context.Context, req *model.ListMemosRequest) (l
 }
 
 func (s *Service) GetMemo(ctx context.Context, req *model.GetMemoRequest) (*model.Memo, error) {
-	return s.dao.FindMemo(ctx, &model.FindMemoRequest{
+	memo, err := s.dao.FindMemo(ctx, &model.FindMemoRequest{
 		Id: req.Id,
 	})
+	if err != nil {
+		return nil, err
+	}
+	if req.CurrentUserId != 0 {
+		if memo.Visibility == model.Private && memo.CreatorID != req.CurrentUserId {
+			return nil, errors.New("permission denied")
+		}
+	}
+	return memo, nil
 }
 
 func (s *Service) SetMemoResources(ctx context.Context, req *model.SetMemoResourcesRequest) (err error) {
