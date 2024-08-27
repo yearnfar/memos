@@ -98,7 +98,11 @@ func TraverseASTNodes(nodes []ast.Node, fn func(ast.Node)) {
 }
 
 func (s *Service) ListMemos(ctx context.Context, req *model.ListMemosRequest) (list []*model.Memo, err error) {
-	return s.dao.FindMemos(ctx, &model.FindMemosRequest{})
+	list, err = s.dao.FindMemos(ctx, &model.FindMemosRequest{})
+	if err != nil {
+		return
+	}
+	return
 }
 
 func (s *Service) GetMemo(ctx context.Context, req *model.GetMemoRequest) (*model.Memo, error) {

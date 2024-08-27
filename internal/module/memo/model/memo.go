@@ -40,8 +40,18 @@ type MemoPayloadProperty struct {
 }
 
 type FindMemosRequest struct {
-	Id        int32
-	CreatorId int32
+	Id              int32
+	UID             int32
+	CreatorId       int32
+	RoeStatus       string
+	CreatedTsBefore int64
+	CreatedTsAfter  int64
+	UpdatedTsBefore int64
+	UpdatedTsAfter  int64
+	ContentSearch   []string
+	VisibilityList  []Visibility
+	ExcludeContent  bool
+	ExcludeComments bool
 }
 type FindMemoRequest struct {
 	Id int32
