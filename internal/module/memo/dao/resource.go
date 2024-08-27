@@ -10,7 +10,7 @@ import (
 func (dao *Dao) FindResource(ctx context.Context, req *model.FindResourceRequest) (*model.Resource, error) {
 	conn := db.GetDB(ctx)
 	if req.ID != 0 {
-		conn.Where("id=?", req.ID)
+		conn = conn.Where("id=?", req.ID)
 	}
 	var m model.Resource
 	if err := conn.First(&m).Error; err != nil {
@@ -22,10 +22,10 @@ func (dao *Dao) FindResource(ctx context.Context, req *model.FindResourceRequest
 func (dao *Dao) FindResources(ctx context.Context, req *model.FindResourcesRequest) (list []*model.Resource, err error) {
 	conn := db.GetDB(ctx)
 	if req.ID != 0 {
-		conn.Where("id=?", req.ID)
+		conn = conn.Where("id=?", req.ID)
 	}
 	if req.MemoID != 0 {
-		conn.Where("memo_id", req.MemoID)
+		conn = conn.Where("memo_id", req.MemoID)
 	}
 	err = conn.Find(&list).Error
 	return

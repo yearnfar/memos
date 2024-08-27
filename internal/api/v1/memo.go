@@ -74,7 +74,7 @@ func (s *MemoService) convertMemoFromStore(ctx context.Context, memo *model.Memo
 		resourcesList = append(resourcesList, convertResourceFromStore(ctx, resource))
 	}
 
-	reactions, err := memomod.ListReactions(ctx, &model.ListReactionsRequest{Id: 1})
+	reactions, err := memomod.ListReactions(ctx, &model.ListReactionsRequest{ContentId: name})
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to list memo reactions")
 	}

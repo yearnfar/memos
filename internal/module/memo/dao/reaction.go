@@ -10,13 +10,13 @@ import (
 func (dao *Dao) FindReactions(ctx context.Context, req *model.FindReactionsRequest) (list []*model.Reaction, err error) {
 	conn := db.GetDB(ctx)
 	if req.Id != 0 {
-		conn.Where("id=?", req.Id)
+		conn = conn.Where("id=?", req.Id)
 	}
 	if req.CreatorId != 0 {
-		conn.Where("creator_id=?", req.CreatorId)
+		conn = conn.Where("creator_id=?", req.CreatorId)
 	}
 	if req.ContentId != "" {
-		conn.Where("content_id=?", req.ContentId)
+		conn = conn.Where("content_id=?", req.ContentId)
 	}
 	err = conn.Find(&list).Error
 	return

@@ -2,7 +2,7 @@ package model
 
 type Reaction struct {
 	ID        int32
-	CreatedTs int64
+	CreatedTs int64 `gorm:"autoCreateTime"`
 	CreatorID int32
 	// ContentID is the id of the content that the reaction is for.
 	// This can be a memo. e.g. memos/101
