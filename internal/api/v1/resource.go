@@ -23,12 +23,27 @@ func (s *ResourceService) CreateResource(ctx context.Context, request *v1pb.Crea
 		return nil, status.Errorf(codes.Internal, "failed to get current user: %v", err)
 	}
 
+	var memoId int32
+	if request.Resource.Memo != nil {
+		memoId, err = api.ExtractMemoIDFromName(*request.Resource.Memo)
+		if err != nil {
+			return
+		}
+	}
 	resource, err := memomod.CreateResource(ctx, &model.CreateResourceRequest{
-		UserId: user.ID,
+		UserId:       user.ID,
+		Name:         request.Resource.Name,
+		Uid:          request.Resource.Uid,
+		CreateTime:   request.Resource.CreateTime.AsTime().Unix(),
+		Filename:     request.Resource.Filename,
+		Content:      request.Resource.Content,
+		ExternalLink: request.Resource.ExternalLink,
+		Type:         request.Resource.Type,
+		Size:         request.Resource.Size,
+		MemoID:       memoId,
 	})
 	if err != nil {
 		return
 	}
-
 	return convertResourceFromStore(ctx, resource), nil
 }

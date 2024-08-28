@@ -19,7 +19,7 @@ func TestService_UpsertAccessToken(t *testing.T) {
 	daoMock := usermod.NewMockDAO(ctl)
 	daoMock.
 		EXPECT().
-		FindUserAccessTokens(ctx, 1).
+		FindUserAccessTokens(ctx, int32(1)).
 		Return([]*model.AccessToken{}, nil)
 
 	daoMock.
@@ -31,7 +31,10 @@ func TestService_UpsertAccessToken(t *testing.T) {
 	accessToken := "dsafadsfasdfadsfasdf"
 	description := "登录"
 
-	err := New(daoMock).UpsertAccessToken(ctx, userId, accessToken, description)
+	err := New(daoMock).UpsertAccessToken(ctx, userId, &model.AccessToken{
+		Token:       accessToken,
+		Description: description,
+	})
 	if err != nil {
 		t.Fatal(err)
 	}
