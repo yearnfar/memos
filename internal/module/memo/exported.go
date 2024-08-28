@@ -71,11 +71,27 @@ func CreateResource(ctx context.Context, req *model.CreateResourceRequest) (*mod
 	return v1, v2
 }
 
+func GetResource(ctx context.Context, req *model.GetResourceRequest) (*model.Resource, error) {
+	if defaultService == nil {
+		panic("调用模块方法: memo.GetResource 失败，服务未注册")
+	}
+	v1, v2 := defaultService.GetResource(ctx, req)
+	return v1, v2
+}
+
 func ListResources(ctx context.Context, req *model.ListResourcesRequest) ([]*model.Resource, error) {
 	if defaultService == nil {
 		panic("调用模块方法: memo.ListResources 失败，服务未注册")
 	}
 	v1, v2 := defaultService.ListResources(ctx, req)
+	return v1, v2
+}
+
+func GetResourceBinary(ctx context.Context, req *model.GetResourceBinaryRequest) (rb *model.ResourceBinary, err error) {
+	if defaultService == nil {
+		panic("调用模块方法: memo.GetResourceBinary 失败，服务未注册")
+	}
+	v1, v2 := defaultService.GetResourceBinary(ctx, req)
 	return v1, v2
 }
 

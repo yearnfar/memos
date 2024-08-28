@@ -9,6 +9,8 @@ import (
 	"time"
 
 	"github.com/lithammer/shortuuid/v4"
+	"github.com/pkg/errors"
+
 	"github.com/yearnfar/memos/internal/config"
 	"github.com/yearnfar/memos/internal/module/memo/model"
 	"github.com/yearnfar/memos/internal/pkg/util"
@@ -59,6 +61,48 @@ func (s *Service) CreateResource(ctx context.Context, req *model.CreateResourceR
 }
 
 func (s *Service) ListResources(ctx context.Context, req *model.ListResourcesRequest) (list []*model.Resource, err error) {
+	return
+}
+
+func (s *Service) GetResource(ctx context.Context, req *model.GetResourceRequest) (rb *model.Resource, err error) {
+	return
+}
+
+func (s *Service) GetResourceBinary(ctx context.Context, req *model.GetResourceBinaryRequest) (rb *model.ResourceBinary, err error) {
+	resource, err := s.dao.FindResource(ctx, &model.FindResourceRequest{ID: req.Id})
+	if err != nil {
+		err = errors.Errorf("failed to get resource: %v", err)
+		return
+	}
+	// Check the related memo visibility.
+	if resource.MemoID != 0 {
+		var memo *model.Memo
+		memo, err = s.GetMemo(ctx, &model.GetMemoRequest{Id: resource.MemoID})
+		if err != nil {
+			err = errors.Errorf("failed to find memo by ID: %v", resource.MemoID)
+			return
+		}
+		if memo.Visibility == model.Private && req.UserId != resource.CreatorID {
+			err = errors.New("unauthorized access")
+			return
+		}
+	}
+	var blob []byte
+	if resource.StorageType == model.ResourceStorageTypeLocal {
+		fpath := filepath.FromSlash(resource.Reference)
+		if !filepath.IsAbs(fpath) {
+			fs := config.GetApp().FileSystem
+			fpath = filepath.Join(fs.Path, fpath)
+		}
+		blob, err = s.dao.ReadLocalFile(ctx, fpath, resource.Filename)
+		if err != nil {
+			return
+		}
+	}
+	rb = &model.ResourceBinary{
+		Resource: resource,
+		Blob:     blob,
+	}
 	return
 }
 

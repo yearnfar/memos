@@ -109,6 +109,36 @@ func (mr *MockServiceMockRecorder) GetMemo(ctx, req interface{}) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetMemo", reflect.TypeOf((*MockService)(nil).GetMemo), ctx, req)
 }
 
+// GetResource mocks base method.
+func (m *MockService) GetResource(ctx context.Context, req *model.GetResourceRequest) (*model.Resource, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetResource", ctx, req)
+	ret0, _ := ret[0].(*model.Resource)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetResource indicates an expected call of GetResource.
+func (mr *MockServiceMockRecorder) GetResource(ctx, req interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetResource", reflect.TypeOf((*MockService)(nil).GetResource), ctx, req)
+}
+
+// GetResourceBinary mocks base method.
+func (m *MockService) GetResourceBinary(ctx context.Context, req *model.GetResourceBinaryRequest) (*model.ResourceBinary, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetResourceBinary", ctx, req)
+	ret0, _ := ret[0].(*model.ResourceBinary)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetResourceBinary indicates an expected call of GetResourceBinary.
+func (mr *MockServiceMockRecorder) GetResourceBinary(ctx, req interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetResourceBinary", reflect.TypeOf((*MockService)(nil).GetResourceBinary), ctx, req)
+}
+
 // GetWorkspaceSetting mocks base method.
 func (m *MockService) GetWorkspaceSetting(ctx context.Context, req *model.GetWorkspaceSettingRequest) (*model.WorkspaceSettingCache, error) {
 	m.ctrl.T.Helper()

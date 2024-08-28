@@ -30,6 +30,11 @@ func (Resource) TableName() string {
 	return TableResource
 }
 
+type ResourceBinary struct {
+	Resource *Resource
+	Blob     []byte
+}
+
 type MemoResource struct {
 	ID int32 `json:"id"`
 	// The user defined id of the resource.
@@ -83,6 +88,16 @@ type CreateResourceRequest struct {
 	Type         string `json:"type"`
 	Size         int64  `json:"size"`
 	MemoID       int32  `json:"memo_id"`
+}
+
+type GetResourceBinaryRequest struct {
+	Id     int32
+	UserId int32
+}
+
+type GetResourceRequest struct {
+	Id     int32
+	UserId int32
 }
 
 type ListResourcesRequest struct {

@@ -254,18 +254,33 @@ func (mr *MockDAOMockRecorder) FindWorkspaceSettings(ctx, req interface{}) *gomo
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindWorkspaceSettings", reflect.TypeOf((*MockDAO)(nil).FindWorkspaceSettings), ctx, req)
 }
 
-// SaveLocalFile mocks base method.
-func (m *MockDAO) SaveLocalFile(ctx context.Context, savePath string, blob []byte) error {
+// ReadLocalFile mocks base method.
+func (m *MockDAO) ReadLocalFile(ctx context.Context, fpath, name string) ([]byte, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "SaveLocalFile", ctx, savePath, blob)
+	ret := m.ctrl.Call(m, "ReadLocalFile", ctx, fpath, name)
+	ret0, _ := ret[0].([]byte)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ReadLocalFile indicates an expected call of ReadLocalFile.
+func (mr *MockDAOMockRecorder) ReadLocalFile(ctx, fpath, name interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReadLocalFile", reflect.TypeOf((*MockDAO)(nil).ReadLocalFile), ctx, fpath, name)
+}
+
+// SaveLocalFile mocks base method.
+func (m *MockDAO) SaveLocalFile(ctx context.Context, fpath string, blob []byte) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "SaveLocalFile", ctx, fpath, blob)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
 // SaveLocalFile indicates an expected call of SaveLocalFile.
-func (mr *MockDAOMockRecorder) SaveLocalFile(ctx, savePath, blob interface{}) *gomock.Call {
+func (mr *MockDAOMockRecorder) SaveLocalFile(ctx, fpath, blob interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SaveLocalFile", reflect.TypeOf((*MockDAO)(nil).SaveLocalFile), ctx, savePath, blob)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SaveLocalFile", reflect.TypeOf((*MockDAO)(nil).SaveLocalFile), ctx, fpath, blob)
 }
 
 // UpdateResource mocks base method.

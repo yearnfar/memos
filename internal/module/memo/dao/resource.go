@@ -2,6 +2,7 @@ package dao
 
 import (
 	"context"
+	"io"
 	"os"
 	"path/filepath"
 
@@ -49,20 +50,39 @@ func (dao *Dao) UpdateResource(ctx context.Context, m *model.Resource, update ma
 	return
 }
 
-func (dao *Dao) SaveLocalFile(ctx context.Context, savePath string, blob []byte) (err error) {
-	dir := filepath.Dir(savePath)
+func (dao *Dao) SaveLocalFile(ctx context.Context, fpath string, blob []byte) (err error) {
+	dir := filepath.Dir(fpath)
 	if err = os.MkdirAll(dir, os.ModePerm); err != nil {
 		err = errors.Wrap(err, "Failed to create directory")
 		return
 	}
-	dst, err := os.Create(savePath)
+	dst, err := os.Create(fpath)
 	if err != nil {
 		err = errors.Wrap(err, "Failed to create file")
 		return
 	}
 	defer dst.Close()
-	if err = os.WriteFile(savePath, blob, 0644); err != nil {
+	if err = os.WriteFile(fpath, blob, 0644); err != nil {
 		err = errors.Wrap(err, "Failed to write file")
+		return
+	}
+	return
+}
+
+func (dao *Dao) ReadLocalFile(ctx context.Context, fpath, name string) (blob []byte, err error) {
+	file, err := os.Open(fpath)
+	if err != nil {
+		if os.IsNotExist(err) {
+			err = errors.Errorf("file not found for resource: %s", name)
+			return
+		}
+		errors.Errorf("failed to open the file: %v", err)
+		return
+	}
+	defer file.Close()
+	blob, err = io.ReadAll(file)
+	if err != nil {
+		err = errors.Errorf("failed to read the file: %v", err)
 		return
 	}
 	return
