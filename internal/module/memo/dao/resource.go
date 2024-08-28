@@ -2,7 +2,10 @@ package dao
 
 import (
 	"context"
+	"os"
+	"path/filepath"
 
+	"github.com/pkg/errors"
 	"github.com/yearnfar/memos/internal/module/memo/model"
 	"github.com/yearnfar/memos/internal/pkg/db"
 )
@@ -43,5 +46,24 @@ func (dao *Dao) DeleteResourceById(ctx context.Context, id int32) (err error) {
 
 func (dao *Dao) UpdateResource(ctx context.Context, m *model.Resource, update map[string]any) (err error) {
 	err = db.GetDB(ctx).Model(m).Updates(update).Error
+	return
+}
+
+func (dao *Dao) SaveLocalFile(ctx context.Context, savePath string, blob []byte) (err error) {
+	dir := filepath.Dir(savePath)
+	if err = os.MkdirAll(dir, os.ModePerm); err != nil {
+		err = errors.Wrap(err, "Failed to create directory")
+		return
+	}
+	dst, err := os.Create(savePath)
+	if err != nil {
+		err = errors.Wrap(err, "Failed to create file")
+		return
+	}
+	defer dst.Close()
+	if err = os.WriteFile(savePath, blob, 0644); err != nil {
+		err = errors.Wrap(err, "Failed to write file")
+		return
+	}
 	return
 }

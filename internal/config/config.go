@@ -30,10 +30,11 @@ var UpTime time.Time // 系统启动时间
 
 // App 配置结构体
 type App struct {
-	Logger   Logger   `toml:"logger" envPrefix:"LOGGER_"`     // 日志配置
-	Server   Server   `toml:"server" envPrefix:"SERVER_"`     // http server配置
-	Database Database `toml:"database" envPrefix:"DATABASE_"` // database configuration
-	JWT      JWT      `toml:"jwt"  envPrefix:"JWT_"`          // jwt配置`
+	Logger     Logger     `toml:"logger" envPrefix:"LOGGER_"`           // 日志配置
+	Server     Server     `toml:"server" envPrefix:"SERVER_"`           // http server配置
+	Database   Database   `toml:"database" envPrefix:"DATABASE_"`       // database configuration
+	JWT        JWT        `toml:"jwt"  envPrefix:"JWT_"`                // jwt配置`
+	FileSystem FileSystem `toml:"file_system" envPrefix:"FILE_SYSTEM_"` // 文件系统配置
 }
 
 type Logger struct {
@@ -53,6 +54,9 @@ type JWT struct {
 type Database struct {
 	Type string `toml:"type" env:"TYPE"`
 	DSN  string `toml:"dsn" env:"DSN"`
+}
+type FileSystem struct {
+	Path string `toml:"path" env:"PATH"`
 }
 
 var app *App       // 项目配置
@@ -86,6 +90,9 @@ func Init(runDir string, cfgFiles ...string) {
 	if err != nil {
 		syslog.Fatal("初始化配置失败", err)
 		return
+	}
+	if !filepath.IsAbs(app.FileSystem.Path) {
+		app.FileSystem.Path = GetPath(app.FileSystem.Path)
 	}
 }
 
@@ -122,7 +129,7 @@ func initConfig(app *App, cfgFile string) (err error) {
 			return err
 		}
 	}
-	if err := env.ParseWithOptions(app, env.Options{Prefix: "MOSS_"}); err != nil {
+	if err := env.ParseWithOptions(app, env.Options{Prefix: "MEMO_"}); err != nil {
 		return err
 	}
 	return nil

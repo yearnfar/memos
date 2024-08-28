@@ -10,3 +10,6 @@ level = "debug"
 [database]
 dsn = "./memos_dev.db?_pragma=foreign_keys(0)&_pragma=busy_timeout(10000)&_pragma=journal_mode(WAL)"
 type = "sqlite"
+
+[file_system]
+path = ".air"

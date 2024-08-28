@@ -62,6 +62,23 @@ func (s *Service) GetWorkspaceSetting(ctx context.Context, req *model.GetWorkspa
 	return s.getWorkspaceSettingCache(ctx, model.WorkspaceSettingKey(req.Name))
 }
 
+func (s *Service) getWorkspaceStorageSetting(ctx context.Context) (*model.WorkspaceStorageSetting, error) {
+	settingCache, err := s.getWorkspaceSettingCache(ctx, model.WorkspaceSettingKeyStorage)
+	if err != nil {
+		return nil, err
+	}
+	setting := &model.WorkspaceStorageSetting{
+		StorageType: model.StorageTypeLocal,
+	}
+	if settingCache != nil {
+		var ok bool
+		if setting, ok = settingCache.Value.(*model.WorkspaceStorageSetting); !ok {
+			return nil, errors.New("type error")
+		}
+	}
+	return setting, nil
+}
+
 func (s *Service) getWorkspaceMemoRelatedSetting(ctx context.Context) (*model.WorkspaceMemoRelatedSetting, error) {
 	settingCache, err := s.getWorkspaceSettingCache(ctx, model.WorkspaceSettingKeyMemoRelated)
 	if err != nil {

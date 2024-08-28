@@ -28,6 +28,8 @@ type DAO interface {
 	DeleteResourceById(ctx context.Context, id int32) error
 	UpdateResource(ctx context.Context, m *model.Resource, update map[string]any) error
 
+	SaveLocalFile(ctx context.Context, savePath string, blob []byte) error
+
 	UpsertWorkspaceSetting(ctx context.Context, setting *model.WorkspaceSetting) error
 	FindWorkspaceSettings(ctx context.Context, req *model.FindWorkspaceSettingsRequest) ([]*model.WorkspaceSetting, error)
 }
