@@ -258,7 +258,6 @@ func (s *MemoService) UpsertMemoReaction(ctx context.Context, request *v1pb.Upse
 	return response, nil
 }
 
-<<<<<<< Updated upstream
 func (s *MemoService) DeleteMemo(ctx context.Context, request *v1pb.DeleteMemoRequest) (response *emptypb.Empty, err error) {
 	id, err := api.ExtractMemoIDFromName(request.Name)
 	if err != nil {
@@ -273,9 +272,10 @@ func (s *MemoService) DeleteMemo(ctx context.Context, request *v1pb.DeleteMemoRe
 		Id:            id,
 		CurrentUserId: user.ID,
 	})
-=======
+	return
+}
+
 func (s *MemoService) CreateMemoComment(ctx context.Context, request *v1pb.CreateMemoCommentRequest) (response *v1pb.Memo, err error) {
->>>>>>> Stashed changes
 	return
 }
 
