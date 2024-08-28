@@ -63,6 +63,20 @@ func (mr *MockDAOMockRecorder) CreateReaction(ctx, m interface{}) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateReaction", reflect.TypeOf((*MockDAO)(nil).CreateReaction), ctx, m)
 }
 
+// CreateResource mocks base method.
+func (m_2 *MockDAO) CreateResource(ctx context.Context, m *model.Resource) error {
+	m_2.ctrl.T.Helper()
+	ret := m_2.ctrl.Call(m_2, "CreateResource", ctx, m)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// CreateResource indicates an expected call of CreateResource.
+func (mr *MockDAOMockRecorder) CreateResource(ctx, m interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateResource", reflect.TypeOf((*MockDAO)(nil).CreateResource), ctx, m)
+}
+
 // DeleteMemoById mocks base method.
 func (m *MockDAO) DeleteMemoById(ctx context.Context, id int32) error {
 	m.ctrl.T.Helper()

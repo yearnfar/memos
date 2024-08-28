@@ -72,6 +72,19 @@ type FindResourceRequest struct {
 	MemoID int32
 }
 
+type CreateResourceRequest struct {
+	UserId       int32
+	Name         string `json:"name"`
+	Uid          string `json:"uid"`
+	CreateTime   int64  `json:"create_time"`
+	Filename     string `json:"filename"`
+	Content      []byte `json:"content"`
+	ExternalLink string `json:"external_link"`
+	Type         string `json:"type"`
+	Size         int64  `json:"size"`
+	MemoID       int32  `json:"memo_id"`
+}
+
 type ListResourcesRequest struct {
 }
 

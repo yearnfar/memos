@@ -22,6 +22,7 @@ type DAO interface {
 	FindReactions(ctx context.Context, req *model.FindReactionsRequest) ([]*model.Reaction, error)
 	CreateReaction(ctx context.Context, m *model.Reaction) error
 
+	CreateResource(ctx context.Context, m *model.Resource) error
 	FindResource(ctx context.Context, req *model.FindResourceRequest) (*model.Resource, error)
 	FindResources(ctx context.Context, req *model.FindResourcesRequest) ([]*model.Resource, error)
 	DeleteResourceById(ctx context.Context, id int32) error

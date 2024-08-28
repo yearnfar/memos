@@ -50,6 +50,21 @@ func (mr *MockServiceMockRecorder) CreateMemo(ctx, req interface{}) *gomock.Call
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateMemo", reflect.TypeOf((*MockService)(nil).CreateMemo), ctx, req)
 }
 
+// CreateResource mocks base method.
+func (m *MockService) CreateResource(ctx context.Context, req *model.CreateResourceRequest) (*model.Resource, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateResource", ctx, req)
+	ret0, _ := ret[0].(*model.Resource)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateResource indicates an expected call of CreateResource.
+func (mr *MockServiceMockRecorder) CreateResource(ctx, req interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateResource", reflect.TypeOf((*MockService)(nil).CreateResource), ctx, req)
+}
+
 // DeleteMemo mocks base method.
 func (m *MockService) DeleteMemo(ctx context.Context, req *model.DeleteMemoRequest) error {
 	m.ctrl.T.Helper()

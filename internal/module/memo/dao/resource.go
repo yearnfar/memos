@@ -31,6 +31,11 @@ func (dao *Dao) FindResources(ctx context.Context, req *model.FindResourcesReque
 	return
 }
 
+func (dao *Dao) CreateResource(ctx context.Context, m *model.Resource) (err error) {
+	err = db.GetDB(ctx).Create(m).Error
+	return
+}
+
 func (dao *Dao) DeleteResourceById(ctx context.Context, id int32) (err error) {
 	err = db.GetDB(ctx).Model(&model.Resource{}).Delete("id=?", id).Error
 	return
