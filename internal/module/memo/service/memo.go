@@ -47,6 +47,10 @@ func (s *Service) CreateMemo(ctx context.Context, req *model.CreateMemoRequest) 
 	return
 }
 
+func (s *Service) CreateMemoComment(ctx context.Context, req *model.CreateMemoCommentRequest) (memo *model.Memo, err error) {
+	return
+}
+
 func getMemoPropertyFromContent(content string) (*model.MemoPayloadProperty, error) {
 	nodes, err := parser.Parse(tokenizer.Tokenize(content))
 	if err != nil {

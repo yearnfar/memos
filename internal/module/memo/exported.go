@@ -47,6 +47,7 @@ func CreateMemo(ctx context.Context, req *model.CreateMemoRequest) (*model.Memo,
 	return v1, v2
 }
 
+<<<<<<< Updated upstream
 func DeleteMemo(ctx context.Context, req *model.DeleteMemoRequest) error {
 	if defaultService == nil {
 		panic("调用模块方法: memo.DeleteMemo 失败，服务未注册")
@@ -60,6 +61,13 @@ func CreateResource(ctx context.Context, req *model.CreateResourceRequest) (*mod
 		panic("调用模块方法: memo.CreateResource 失败，服务未注册")
 	}
 	v1, v2 := defaultService.CreateResource(ctx, req)
+=======
+func CreateMemoComment(ctx context.Context, req *model.CreateMemoCommentRequest) (*model.Memo, error) {
+	if defaultService == nil {
+		panic("调用模块方法: memo.CreateMemoComment 失败，服务未注册")
+	}
+	v1, v2 := defaultService.CreateMemoComment(ctx, req)
+>>>>>>> Stashed changes
 	return v1, v2
 }
 

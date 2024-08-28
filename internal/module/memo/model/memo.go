@@ -73,3 +73,6 @@ type CreateMemoRequest struct {
 	Content    string
 	Visibility Visibility
 }
+
+type CreateMemoCommentRequest struct {
+}

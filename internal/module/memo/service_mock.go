@@ -50,15 +50,24 @@ func (mr *MockServiceMockRecorder) CreateMemo(ctx, req interface{}) *gomock.Call
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateMemo", reflect.TypeOf((*MockService)(nil).CreateMemo), ctx, req)
 }
 
+<<<<<<< Updated upstream
 // CreateResource mocks base method.
 func (m *MockService) CreateResource(ctx context.Context, req *model.CreateResourceRequest) (*model.Resource, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreateResource", ctx, req)
 	ret0, _ := ret[0].(*model.Resource)
+=======
+// CreateMemoComment mocks base method.
+func (m *MockService) CreateMemoComment(ctx context.Context, req *model.CreateMemoCommentRequest) (*model.Memo, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateMemoComment", ctx, req)
+	ret0, _ := ret[0].(*model.Memo)
+>>>>>>> Stashed changes
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
+<<<<<<< Updated upstream
 // CreateResource indicates an expected call of CreateResource.
 func (mr *MockServiceMockRecorder) CreateResource(ctx, req interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
@@ -77,6 +86,12 @@ func (m *MockService) DeleteMemo(ctx context.Context, req *model.DeleteMemoReque
 func (mr *MockServiceMockRecorder) DeleteMemo(ctx, req interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteMemo", reflect.TypeOf((*MockService)(nil).DeleteMemo), ctx, req)
+=======
+// CreateMemoComment indicates an expected call of CreateMemoComment.
+func (mr *MockServiceMockRecorder) CreateMemoComment(ctx, req interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateMemoComment", reflect.TypeOf((*MockService)(nil).CreateMemoComment), ctx, req)
+>>>>>>> Stashed changes
 }
 
 // GetMemo mocks base method.
