@@ -20,6 +20,11 @@ type FindReactionsRequest struct {
 	ContentId string
 }
 
+type DeleteMemoRequest struct {
+	Id            int32
+	CurrentUserId int32
+}
+
 type UpsertReactionRequest struct {
 	CreatorID    int32
 	ContentID    string

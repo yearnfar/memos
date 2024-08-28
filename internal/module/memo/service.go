@@ -13,6 +13,7 @@ type Service interface {
 	GetMemo(ctx context.Context, req *model.GetMemoRequest) (*model.Memo, error)
 	ListMemos(ctx context.Context, req *model.ListMemosRequest) ([]*model.Memo, error)
 	CreateMemo(ctx context.Context, req *model.CreateMemoRequest) (*model.Memo, error)
+	DeleteMemo(ctx context.Context, req *model.DeleteMemoRequest) error
 
 	ListResources(ctx context.Context, req *model.ListResourcesRequest) ([]*model.Resource, error)
 	SetMemoResources(ctx context.Context, req *model.SetMemoResourcesRequest) error

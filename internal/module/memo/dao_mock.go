@@ -63,6 +63,20 @@ func (mr *MockDAOMockRecorder) CreateReaction(ctx, m interface{}) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateReaction", reflect.TypeOf((*MockDAO)(nil).CreateReaction), ctx, m)
 }
 
+// DeleteMemoById mocks base method.
+func (m *MockDAO) DeleteMemoById(ctx context.Context, id int32) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteMemoById", ctx, id)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteMemoById indicates an expected call of DeleteMemoById.
+func (mr *MockDAOMockRecorder) DeleteMemoById(ctx, id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteMemoById", reflect.TypeOf((*MockDAO)(nil).DeleteMemoById), ctx, id)
+}
+
 // DeleteMemoRelations mocks base method.
 func (m *MockDAO) DeleteMemoRelations(ctx context.Context, req *model.DeleteMemoRelationsRequest) error {
 	m.ctrl.T.Helper()

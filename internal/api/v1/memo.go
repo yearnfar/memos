@@ -258,6 +258,23 @@ func (s *MemoService) UpsertMemoReaction(ctx context.Context, request *v1pb.Upse
 	return response, nil
 }
 
+func (s *MemoService) DeleteMemo(ctx context.Context, request *v1pb.DeleteMemoRequest) (response *emptypb.Empty, err error) {
+	id, err := api.ExtractMemoIDFromName(request.Name)
+	if err != nil {
+		return nil, status.Errorf(codes.InvalidArgument, "invalid memo name: %v", err)
+	}
+	user, err := s.GetCurrentUser(ctx)
+	if err != nil {
+		err = status.Errorf(codes.Internal, "failed to get current user")
+		return
+	}
+	err = memomod.DeleteMemo(ctx, &model.DeleteMemoRequest{
+		Id:            id,
+		CurrentUserId: user.ID,
+	})
+	return
+}
+
 func (s *MemoService) ListMemoTags(ctx context.Context, request *v1pb.ListMemoTagsRequest) (response *v1pb.ListMemoTagsResponse, err error) {
 	user, err := s.GetCurrentUser(ctx)
 	if err != nil {

@@ -122,6 +122,29 @@ func (s *Service) GetMemo(ctx context.Context, req *model.GetMemoRequest) (*mode
 	return memo, nil
 }
 
+func (s *Service) DeleteMemo(ctx context.Context, req *model.DeleteMemoRequest) (err error) {
+	memo, err := s.dao.FindMemo(ctx, &model.FindMemoRequest{Id: req.Id})
+	if err != nil {
+		return
+	}
+	if memo.CreatorID != req.CurrentUserId {
+		err = errors.New("permission denied")
+		return
+	}
+
+	// TO-DO
+	// 删除webhook
+
+	if err = s.dao.DeleteMemoById(ctx, req.Id); err != nil {
+		return
+	}
+	err = s.dao.DeleteMemoRelations(ctx, &model.DeleteMemoRelationsRequest{MemoID: req.Id})
+	if err != nil {
+		return
+	}
+	return
+}
+
 func (s *Service) UpsertReaction(ctx context.Context, req *model.UpsertReactionRequest) (reaction *model.Reaction, err error) {
 	reaction = &model.Reaction{
 		CreatorID:    req.CreatorID,
