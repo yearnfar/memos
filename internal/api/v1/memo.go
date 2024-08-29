@@ -258,6 +258,38 @@ func (s *MemoService) UpsertMemoReaction(ctx context.Context, request *v1pb.Upse
 	return response, nil
 }
 
+func (s *MemoService) UpdateMemo(ctx context.Context, request *v1pb.UpdateMemoRequest) (response *v1pb.Memo, err error) {
+	id, err := api.ExtractMemoIDFromName(request.Memo.Name)
+	if err != nil {
+		return nil, status.Errorf(codes.InvalidArgument, "invalid memo name: %v", err)
+	}
+	user, err := s.GetCurrentUser(ctx)
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to get current user")
+	}
+
+	memo, err := memomod.UpdateMemo(ctx, &model.UpdateMemoRequest{
+		UpdateMasks: request.UpdateMask.Paths,
+		UserId:      user.ID,
+		ID:          id,
+		UID:         request.Memo.Uid,
+		Content:     request.Memo.Content,
+		RowStatus:   model.RowStatus(request.Memo.RowStatus.String()),
+		Visibility:  model.Visibility(request.Memo.Visibility.String()),
+		UpdatedTime: request.Memo.UpdateTime.AsTime().Unix(),
+		CreatedTime: request.Memo.CreateTime.AsTime().Unix(),
+		DisplayTime: request.Memo.DisplayTime.AsTime().Unix(),
+	})
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed update user: %v", err.Error())
+	}
+	response, err = s.convertMemoFromStore(ctx, memo)
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to convert memo")
+	}
+	return
+}
+
 func (s *MemoService) DeleteMemo(ctx context.Context, request *v1pb.DeleteMemoRequest) (response *emptypb.Empty, err error) {
 	id, err := api.ExtractMemoIDFromName(request.Name)
 	if err != nil {

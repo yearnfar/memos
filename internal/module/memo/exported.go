@@ -55,6 +55,14 @@ func DeleteMemo(ctx context.Context, req *model.DeleteMemoRequest) error {
 	return v1
 }
 
+func UpdateMemo(ctx context.Context, req *model.UpdateMemoRequest) (*model.Memo, error) {
+	if defaultService == nil {
+		panic("调用模块方法: memo.UpdateMemo 失败，服务未注册")
+	}
+	v1, v2 := defaultService.UpdateMemo(ctx, req)
+	return v1, v2
+}
+
 func CreateMemoComment(ctx context.Context, req *model.CreateMemoCommentRequest) (*model.Memo, error) {
 	if defaultService == nil {
 		panic("调用模块方法: memo.CreateMemoComment 失败，服务未注册")

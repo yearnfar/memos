@@ -272,6 +272,21 @@ func (mr *MockServiceMockRecorder) SetWorkspaceSetting(ctx, req interface{}) *go
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SetWorkspaceSetting", reflect.TypeOf((*MockService)(nil).SetWorkspaceSetting), ctx, req)
 }
 
+// UpdateMemo mocks base method.
+func (m *MockService) UpdateMemo(ctx context.Context, req *model.UpdateMemoRequest) (*model.Memo, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpdateMemo", ctx, req)
+	ret0, _ := ret[0].(*model.Memo)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// UpdateMemo indicates an expected call of UpdateMemo.
+func (mr *MockServiceMockRecorder) UpdateMemo(ctx, req interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateMemo", reflect.TypeOf((*MockService)(nil).UpdateMemo), ctx, req)
+}
+
 // UpsertReaction mocks base method.
 func (m *MockService) UpsertReaction(ctx context.Context, req *model.UpsertReactionRequest) (*model.Reaction, error) {
 	m.ctrl.T.Helper()

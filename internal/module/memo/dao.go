@@ -12,6 +12,7 @@ type DAO interface {
 	CreateMemo(ctx context.Context, memo *model.Memo) error
 	FindMemos(ctx context.Context, req *model.FindMemosRequest) ([]*model.Memo, error)
 	FindMemo(ctx context.Context, req *model.FindMemoRequest) (*model.Memo, error)
+	UpdateMemo(ctx context.Context, memo *model.Memo, update map[string]any) error
 	DeleteMemoById(ctx context.Context, id int32) error
 
 	FindMemoRelations(ctx context.Context, req *model.FindMemoRelationsRequest) ([]*model.MemoRelation, error)

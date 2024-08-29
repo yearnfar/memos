@@ -283,6 +283,20 @@ func (mr *MockDAOMockRecorder) SaveLocalFile(ctx, fpath, blob interface{}) *gomo
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SaveLocalFile", reflect.TypeOf((*MockDAO)(nil).SaveLocalFile), ctx, fpath, blob)
 }
 
+// UpdateMemo mocks base method.
+func (m *MockDAO) UpdateMemo(ctx context.Context, memo *model.Memo, update map[string]any) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpdateMemo", ctx, memo, update)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpdateMemo indicates an expected call of UpdateMemo.
+func (mr *MockDAOMockRecorder) UpdateMemo(ctx, memo, update interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateMemo", reflect.TypeOf((*MockDAO)(nil).UpdateMemo), ctx, memo, update)
+}
+
 // UpdateResource mocks base method.
 func (m_2 *MockDAO) UpdateResource(ctx context.Context, m *model.Resource, update map[string]any) error {
 	m_2.ctrl.T.Helper()

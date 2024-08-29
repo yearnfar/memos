@@ -12,6 +12,7 @@ import (
 	"github.com/usememos/gomark/parser/tokenizer"
 
 	"github.com/yearnfar/memos/internal/module/memo/model"
+	"github.com/yearnfar/memos/internal/pkg/util"
 )
 
 func (s *Service) CreateMemo(ctx context.Context, req *model.CreateMemoRequest) (memo *model.Memo, err error) {
@@ -99,6 +100,63 @@ func TraverseASTNodes(nodes []ast.Node, fn func(ast.Node)) {
 			TraverseASTNodes(n.Children, fn)
 		}
 	}
+}
+
+func (s *Service) UpdateMemo(ctx context.Context, req *model.UpdateMemoRequest) (memo *model.Memo, err error) {
+	memo, err = s.dao.FindMemo(ctx, &model.FindMemoRequest{Id: req.ID})
+	if err != nil {
+		return
+	}
+	memoRelatedSetting, err := s.getWorkspaceMemoRelatedSetting(ctx)
+	if err != nil {
+		return nil, errors.New("failed to get workspace memo related setting")
+	}
+	update := map[string]any{}
+	for _, path := range req.UpdateMasks {
+		if path == "content" {
+			if len(req.Content) > int(memoRelatedSetting.ContentLengthLimit) {
+				return nil, errors.Errorf("content too long (max %d characters)", memoRelatedSetting.ContentLengthLimit)
+			}
+			update["content"] = req.Content
+			property, err := getMemoPropertyFromContent(req.Content)
+			if err != nil {
+				return nil, errors.Errorf("failed to get memo property: %v", err)
+			}
+			payload := memo.Payload
+			payload.Property = property
+			update["payload"] = payload
+		} else if path == "uid" {
+			if !util.UIDMatcher.MatchString(req.UID) {
+				return nil, errors.New("invalid resource name")
+			}
+			update["mid"] = req.UID
+		} else if path == "visibility" {
+			if memoRelatedSetting.DisallowPublicVisibility && req.Visibility == model.Public {
+				return nil, errors.New("disable public memos system setting is enabled")
+			}
+			update["visibility"] = req.Visibility
+		} else if path == "row_status" {
+			update["row_status"] = req.RowStatus
+		} else if path == "create_time" {
+			update["created_ts"] = req.CreatedTime
+		} else if path == "display_time" {
+			if memoRelatedSetting.DisplayWithUpdateTime {
+				update["updated_ts"] = req.DisplayTime
+			} else {
+				update["created_ts"] = req.DisplayTime
+			}
+		} else if path == "pinned" {
+			// if _, err := s.Store.UpsertMemoOrganizer(ctx, &store.MemoOrganizer{
+			// 	MemoID: id,
+			// 	UserID: user.ID,
+			// 	Pinned: request.Memo.Pinned,
+			// }); err != nil {
+			// 	return nil, status.Errorf(codes.Internal, "failed to upsert memo organizer")
+			// }
+		}
+	}
+	err = s.dao.UpdateMemo(ctx, memo, update)
+	return
 }
 
 func (s *Service) ListMemos(ctx context.Context, req *model.ListMemosRequest) (list []*model.Memo, err error) {

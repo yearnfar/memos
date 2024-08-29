@@ -62,6 +62,19 @@ type ListMemosRequest struct {
 	CreatorId int32
 }
 
+type UpdateMemoRequest struct {
+	UpdateMasks []string
+	UserId      int32
+	ID          int32
+	UID         string
+	Content     string
+	RowStatus   RowStatus
+	Visibility  Visibility
+	UpdatedTime int64
+	CreatedTime int64
+	DisplayTime int64
+}
+
 type GetMemoRequest struct {
 	Id            int32
 	UID           string
