@@ -1,6 +1,8 @@
 package model
 
-import "encoding/json"
+import (
+	"encoding/json"
+)
 
 type Resource struct {
 	// ID is the system generated unique identifier for the resource.
@@ -68,8 +70,17 @@ type SetMemoResourcesRequest struct {
 }
 
 type FindResourcesRequest struct {
-	ID     int32
-	MemoID int32
+	ID             int32
+	MemoID         int32
+	GetBlob        bool
+	UID            string
+	CreatorID      int32
+	Filename       string
+	FilenameSearch string
+	HasRelatedMemo bool
+	StorageType    StorageType
+	Limit          int
+	Offset         int
 }
 
 type FindResourceRequest struct {
@@ -101,6 +112,7 @@ type GetResourceRequest struct {
 }
 
 type ListResourcesRequest struct {
+	MemoID int32
 }
 
 type DeleteResourceRequest struct {

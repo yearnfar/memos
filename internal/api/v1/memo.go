@@ -65,7 +65,7 @@ func (s *MemoService) convertMemoFromStore(ctx context.Context, memo *model.Memo
 		relationsList = append(relationsList, convertMemoRelationFromStore(relation))
 	}
 
-	resources, err := memomod.ListResources(ctx, &model.ListResourcesRequest{})
+	resources, err := memomod.ListResources(ctx, &model.ListResourcesRequest{MemoID: memo.ID})
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to list memo relations")
 	}

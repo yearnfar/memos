@@ -195,7 +195,7 @@ func (s *Service) SetMemoResources(ctx context.Context, req *model.SetMemoResour
 			continue
 		}
 		if err = s.dao.UpdateResource(ctx, res, map[string]any{
-			"memos_id":   req.MemoID,
+			"memo_id":    req.MemoID,
 			"updated_ts": time.Now().Unix() + int64(index),
 		}); err != nil {
 			err = errors.Errorf("failed to update resource: %v", err)

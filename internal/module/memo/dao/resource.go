@@ -29,7 +29,25 @@ func (dao *Dao) FindResources(ctx context.Context, req *model.FindResourcesReque
 		conn = conn.Where("id=?", req.ID)
 	}
 	if req.MemoID != 0 {
-		conn = conn.Where("memo_id", req.MemoID)
+		conn = conn.Where("memo_id=?", req.MemoID)
+	}
+	if req.UID != "" {
+		conn = conn.Where("uid=?", req.UID)
+	}
+	if req.CreatorID != 0 {
+		conn = conn.Where("creator_id=?", req.CreatorID)
+	}
+	if req.Filename != "" {
+		conn = conn.Where("file_name=?", req.Filename)
+	}
+	if req.FilenameSearch != "" {
+		conn = conn.Where("filename like ?", "%s"+req.FilenameSearch+"%")
+	}
+	if req.HasRelatedMemo {
+		conn = conn.Where("memo_id is not null")
+	}
+	if req.StorageType != "" {
+		conn = conn.Where("storage_type=?", req.StorageType)
 	}
 	err = conn.Find(&list).Error
 	return
