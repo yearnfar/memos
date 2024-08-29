@@ -112,7 +112,8 @@ type GetResourceRequest struct {
 }
 
 type ListResourcesRequest struct {
-	MemoID int32
+	CreatorID int32
+	MemoID    int32
 }
 
 type DeleteResourceRequest struct {

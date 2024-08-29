@@ -76,3 +76,21 @@ func (s *ResourceService) GetResourceBinary(ctx context.Context, request *v1pb.G
 	}
 	return httpBody, nil
 }
+
+func (s *ResourceService) ListResources(ctx context.Context, _ *v1pb.ListResourcesRequest) (response *v1pb.ListResourcesResponse, err error) {
+	user, err := s.GetCurrentUser(ctx)
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to get current user: %v", err)
+	}
+	list, err := memomod.ListResources(ctx, &model.ListResourcesRequest{CreatorID: user.ID})
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to list resources: %v", err)
+	}
+
+	var resources []*v1pb.Resource
+	for _, item := range list {
+		resources = append(resources, convertResourceFromStore(ctx, item))
+	}
+	response = &v1pb.ListResourcesResponse{Resources: resources}
+	return
+}
