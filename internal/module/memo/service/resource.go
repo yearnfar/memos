@@ -71,6 +71,28 @@ func (s *Service) GetResource(ctx context.Context, req *model.GetResourceRequest
 	return
 }
 
+func (s *Service) DeleteResource(ctx context.Context, req *model.DeleteResourceRequest) (err error) {
+	resource, err := s.dao.FindResource(ctx, &model.FindResourceRequest{ID: req.ID})
+	if err != nil {
+		return errors.Wrap(err, "failed to get resource")
+	}
+	if resource.StorageType == model.ResourceStorageTypeLocal {
+		osPath := filepath.FromSlash(resource.Reference)
+		if !filepath.IsAbs(osPath) {
+			fs := config.GetApp().FileSystem
+			osPath = filepath.Join(fs.Path, osPath)
+		}
+		if err = s.dao.RemoveLocalFile(ctx, osPath); err != nil {
+			return
+		}
+	} else if resource.StorageType == model.ResourceStorageTypeS3 {
+		// TODO
+	}
+
+	err = s.dao.DeleteResourceById(ctx, req.ID)
+	return
+}
+
 func (s *Service) GetResourceBinary(ctx context.Context, req *model.GetResourceBinaryRequest) (rb *model.ResourceBinary, err error) {
 	resource, err := s.dao.FindResource(ctx, &model.FindResourceRequest{ID: req.Id})
 	if err != nil {

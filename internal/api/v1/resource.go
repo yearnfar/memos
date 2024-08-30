@@ -7,6 +7,7 @@ import (
 	"google.golang.org/genproto/googleapis/api/httpbody"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/types/known/emptypb"
 
 	"github.com/yearnfar/memos/internal/api"
 	memomod "github.com/yearnfar/memos/internal/module/memo"
@@ -93,4 +94,23 @@ func (s *ResourceService) ListResources(ctx context.Context, _ *v1pb.ListResourc
 	}
 	response = &v1pb.ListResourcesResponse{Resources: resources}
 	return
+}
+
+func (s *ResourceService) DeleteResource(ctx context.Context, request *v1pb.DeleteResourceRequest) (*emptypb.Empty, error) {
+	id, err := api.ExtractResourceIDFromName(request.Name)
+	if err != nil {
+		return nil, status.Errorf(codes.InvalidArgument, "invalid resource id: %v", err)
+	}
+	user, err := s.GetCurrentUser(ctx)
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to get current user: %v", err)
+	}
+	// Delete the resource from the database.
+	if err := memomod.DeleteResource(ctx, &model.DeleteResourceRequest{
+		ID:     id,
+		UserID: user.ID,
+	}); err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to delete resource: %v", err)
+	}
+	return &emptypb.Empty{}, nil
 }

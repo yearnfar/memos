@@ -95,6 +95,14 @@ func ListResources(ctx context.Context, req *model.ListResourcesRequest) ([]*mod
 	return v1, v2
 }
 
+func DeleteResource(ctx context.Context, req *model.DeleteResourceRequest) error {
+	if defaultService == nil {
+		panic("调用模块方法: memo.DeleteResource 失败，服务未注册")
+	}
+	v1 := defaultService.DeleteResource(ctx, req)
+	return v1
+}
+
 func GetResourceBinary(ctx context.Context, req *model.GetResourceBinaryRequest) (rb *model.ResourceBinary, err error) {
 	if defaultService == nil {
 		panic("调用模块方法: memo.GetResourceBinary 失败，服务未注册")

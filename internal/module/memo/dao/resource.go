@@ -7,6 +7,7 @@ import (
 	"path/filepath"
 
 	"github.com/pkg/errors"
+	"github.com/yearnfar/gokit/fsutil"
 	"github.com/yearnfar/memos/internal/module/memo/model"
 	"github.com/yearnfar/memos/internal/pkg/db"
 )
@@ -104,4 +105,12 @@ func (dao *Dao) ReadLocalFile(ctx context.Context, fpath, name string) (blob []b
 		return
 	}
 	return
+}
+
+func (dao *Dao) RemoveLocalFile(ctx context.Context, fpath string) error {
+	if fsutil.IsFile(fpath) {
+		return nil
+	}
+	err := os.Remove(fpath)
+	return errors.Wrap(err, "failed to delete local file")
 }

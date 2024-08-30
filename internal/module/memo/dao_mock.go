@@ -269,6 +269,20 @@ func (mr *MockDAOMockRecorder) ReadLocalFile(ctx, fpath, name interface{}) *gomo
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReadLocalFile", reflect.TypeOf((*MockDAO)(nil).ReadLocalFile), ctx, fpath, name)
 }
 
+// RemoveLocalFile mocks base method.
+func (m *MockDAO) RemoveLocalFile(ctx context.Context, fpath string) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "RemoveLocalFile", ctx, fpath)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// RemoveLocalFile indicates an expected call of RemoveLocalFile.
+func (mr *MockDAOMockRecorder) RemoveLocalFile(ctx, fpath interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RemoveLocalFile", reflect.TypeOf((*MockDAO)(nil).RemoveLocalFile), ctx, fpath)
+}
+
 // SaveLocalFile mocks base method.
 func (m *MockDAO) SaveLocalFile(ctx context.Context, fpath string, blob []byte) error {
 	m.ctrl.T.Helper()

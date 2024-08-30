@@ -21,6 +21,7 @@ type Service interface {
 	CreateResource(ctx context.Context, req *model.CreateResourceRequest) (*model.Resource, error)
 	GetResource(ctx context.Context, req *model.GetResourceRequest) (*model.Resource, error)
 	ListResources(ctx context.Context, req *model.ListResourcesRequest) ([]*model.Resource, error)
+	DeleteResource(ctx context.Context, req *model.DeleteResourceRequest) error
 	GetResourceBinary(ctx context.Context, req *model.GetResourceBinaryRequest) (rb *model.ResourceBinary, err error)
 	SetMemoResources(ctx context.Context, req *model.SetMemoResourcesRequest) error
 

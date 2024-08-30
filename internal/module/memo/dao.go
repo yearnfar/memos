@@ -31,6 +31,7 @@ type DAO interface {
 
 	SaveLocalFile(ctx context.Context, fpath string, blob []byte) error
 	ReadLocalFile(ctx context.Context, fpath, name string) ([]byte, error)
+	RemoveLocalFile(ctx context.Context, fpath string) error
 
 	UpsertWorkspaceSetting(ctx context.Context, setting *model.WorkspaceSetting) error
 	FindWorkspaceSettings(ctx context.Context, req *model.FindWorkspaceSettingsRequest) ([]*model.WorkspaceSetting, error)

@@ -94,6 +94,20 @@ func (mr *MockServiceMockRecorder) DeleteMemo(ctx, req interface{}) *gomock.Call
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteMemo", reflect.TypeOf((*MockService)(nil).DeleteMemo), ctx, req)
 }
 
+// DeleteResource mocks base method.
+func (m *MockService) DeleteResource(ctx context.Context, req *model.DeleteResourceRequest) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteResource", ctx, req)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteResource indicates an expected call of DeleteResource.
+func (mr *MockServiceMockRecorder) DeleteResource(ctx, req interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteResource", reflect.TypeOf((*MockService)(nil).DeleteResource), ctx, req)
+}
+
 // GetMemo mocks base method.
 func (m *MockService) GetMemo(ctx context.Context, req *model.GetMemoRequest) (*model.Memo, error) {
 	m.ctrl.T.Helper()

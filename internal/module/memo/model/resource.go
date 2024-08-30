@@ -118,6 +118,7 @@ type ListResourcesRequest struct {
 
 type DeleteResourceRequest struct {
 	ID     int32
+	UserID int32
 	MemoID int32
 }
 
