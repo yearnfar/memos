@@ -19,7 +19,6 @@ import (
 	"github.com/yearnfar/memos/internal/api"
 	memomod "github.com/yearnfar/memos/internal/module/memo"
 	"github.com/yearnfar/memos/internal/module/memo/model"
-	usermodel "github.com/yearnfar/memos/internal/module/user/model"
 	v1pb "github.com/yearnfar/memos/internal/proto/api/v1"
 )
 
@@ -97,7 +96,7 @@ func (s *MemoService) convertMemoFromStore(ctx context.Context, memo *model.Memo
 	memoMessage := &v1pb.Memo{
 		Name:        name,
 		Uid:         memo.UID,
-		RowStatus:   convertRowStatusFromStore(usermodel.RowStatus(memo.RowStatus)),
+		RowStatus:   s.convertRowStatusFromStore(memo.RowStatus),
 		Creator:     fmt.Sprintf("%s%d", api.UserNamePrefix, memo.CreatorID),
 		CreateTime:  timestamppb.New(time.Unix(memo.CreatedTs, 0)),
 		UpdateTime:  timestamppb.New(time.Unix(memo.UpdatedTs, 0)),
@@ -274,7 +273,7 @@ func (s *MemoService) UpdateMemo(ctx context.Context, request *v1pb.UpdateMemoRe
 		ID:          id,
 		UID:         request.Memo.Uid,
 		Content:     request.Memo.Content,
-		RowStatus:   model.RowStatus(request.Memo.RowStatus.String()),
+		RowStatus:   s.convertRowStatusToStore(request.Memo.RowStatus),
 		Visibility:  model.Visibility(request.Memo.Visibility.String()),
 		UpdatedTime: request.Memo.UpdateTime.AsTime().Unix(),
 		CreatedTime: request.Memo.CreateTime.AsTime().Unix(),
@@ -331,6 +330,28 @@ func (s *MemoService) ListMemoProperties(ctx context.Context, request *v1pb.List
 
 	slog.Info("user", user)
 	return
+}
+
+func (s *MemoService) convertRowStatusFromStore(rowStatus model.RowStatus) v1pb.RowStatus {
+	switch rowStatus {
+	case model.Normal:
+		return v1pb.RowStatus_ACTIVE
+	case model.Archived:
+		return v1pb.RowStatus_ARCHIVED
+	default:
+		return v1pb.RowStatus_ROW_STATUS_UNSPECIFIED
+	}
+}
+
+func (s *MemoService) convertRowStatusToStore(rowStatus v1pb.RowStatus) model.RowStatus {
+	switch rowStatus {
+	case v1pb.RowStatus_ACTIVE:
+		return model.Normal
+	case v1pb.RowStatus_ARCHIVED:
+		return model.Archived
+	default:
+		return model.Normal
+	}
 }
 
 func convertMemoRelationTypeToStore(relationType v1pb.MemoRelation_Type) model.MemoRelationType {
