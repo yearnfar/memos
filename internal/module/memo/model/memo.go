@@ -88,4 +88,6 @@ type CreateMemoRequest struct {
 }
 
 type CreateMemoCommentRequest struct {
+	ID      int32
+	Comment *CreateMemoRequest
 }

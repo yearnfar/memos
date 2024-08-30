@@ -24,12 +24,12 @@ const (
 	InboxStatusArchived    InboxStatus = "ARCHIVED"
 )
 
-type InboxMsgType int32
+type InboxMsgType string
 
 const (
-	InboxMsgTypeUnspecified   InboxMsgType = 0
-	InboxMsgTypeMemoComment   InboxMsgType = 1
-	InboxMsgTypeVersionUpdate InboxMsgType = 2
+	InboxMsgTypeUnspecified   InboxMsgType = "TYPE_UNSPECIFIED"
+	InboxMsgTypeMemoComment   InboxMsgType = "MEMO_COMMENT"
+	InboxMsgTypeVersionUpdate InboxMsgType = "VERSION_UPDATE"
 )
 
 // RowStatus is the status for a row.
@@ -102,6 +102,27 @@ const (
 	ResourceStorageTypeS3          ResourceStorageType = "S3"
 	ResourceStorageTypeExternal    ResourceStorageType = "EXTERNAL"
 )
+
+type ActivityType string
+
+const (
+	ActivityTypeMemoComment   ActivityType = "MEMO_COMMENT"
+	ActivityTypeVersionUpdate ActivityType = "VERSION_UPDATE"
+)
+
+func (t ActivityType) String() string {
+	return string(t)
+}
+
+type ActivityLevel string
+
+const (
+	ActivityLevelInfo ActivityLevel = "INFO"
+)
+
+func (l ActivityLevel) String() string {
+	return string(l)
+}
 
 const (
 	TableInbox            = "inbox"

@@ -35,6 +35,34 @@ func (m *MockDAO) EXPECT() *MockDAOMockRecorder {
 	return m.recorder
 }
 
+// CreateActivity mocks base method.
+func (m *MockDAO) CreateActivity(ctx context.Context, memo *model.Activity) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateActivity", ctx, memo)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// CreateActivity indicates an expected call of CreateActivity.
+func (mr *MockDAOMockRecorder) CreateActivity(ctx, memo interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateActivity", reflect.TypeOf((*MockDAO)(nil).CreateActivity), ctx, memo)
+}
+
+// CreateInbox mocks base method.
+func (m *MockDAO) CreateInbox(ctx context.Context, inbox *model.Inbox) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateInbox", ctx, inbox)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// CreateInbox indicates an expected call of CreateInbox.
+func (mr *MockDAOMockRecorder) CreateInbox(ctx, inbox interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateInbox", reflect.TypeOf((*MockDAO)(nil).CreateInbox), ctx, inbox)
+}
+
 // CreateMemo mocks base method.
 func (m *MockDAO) CreateMemo(ctx context.Context, memo *model.Memo) error {
 	m.ctrl.T.Helper()

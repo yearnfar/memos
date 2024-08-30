@@ -25,3 +25,7 @@ func (dao *Dao) FindInboxes(ctx context.Context, req *model.FindInboxesRequest) 
 	err = conn.Find(&inboxes).Error
 	return
 }
+
+func (dao *Dao) CreateInbox(ctx context.Context, m *model.Inbox) error {
+	return db.GetDB(ctx).Create(m).Error
+}

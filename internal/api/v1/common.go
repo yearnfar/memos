@@ -78,7 +78,7 @@ func convertInboxFromStore(inbox *memomodel.Inbox) *v1pb.Inbox {
 		Receiver:   fmt.Sprintf("%s%d", api.UserNamePrefix, inbox.ReceiverID),
 		Status:     convertInboxStatusFromStore(inbox.Status),
 		CreateTime: timestamppb.New(time.Unix(inbox.CreatedTs, 0)),
-		Type:       v1pb.Inbox_Type(inbox.Message.Type),
+		Type:       v1pb.Inbox_Type(v1pb.Inbox_Type_value[string(inbox.Message.Type)]),
 		ActivityId: &inbox.Message.ActivityId,
 	}
 }

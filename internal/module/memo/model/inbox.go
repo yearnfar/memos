@@ -2,7 +2,7 @@ package model
 
 type Inbox struct {
 	ID         int
-	CreatedTs  int64
+	CreatedTs  int64 `gorm:"autoCreateTime"`
 	SenderID   int32
 	ReceiverID int32
 	Status     InboxStatus

@@ -9,6 +9,10 @@ import (
 
 type DAO interface {
 	FindInboxes(ctx context.Context, req *model.FindInboxesRequest) ([]*model.Inbox, error)
+	CreateInbox(ctx context.Context, inbox *model.Inbox) error
+
+	CreateActivity(ctx context.Context, memo *model.Activity) error
+
 	CreateMemo(ctx context.Context, memo *model.Memo) error
 	FindMemos(ctx context.Context, req *model.FindMemosRequest) ([]*model.Memo, error)
 	FindMemo(ctx context.Context, req *model.FindMemoRequest) (*model.Memo, error)

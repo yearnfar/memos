@@ -49,6 +49,56 @@ func (s *Service) CreateMemo(ctx context.Context, req *model.CreateMemoRequest) 
 }
 
 func (s *Service) CreateMemoComment(ctx context.Context, req *model.CreateMemoCommentRequest) (memo *model.Memo, err error) {
+	relatedMemo, err := s.dao.FindMemo(ctx, &model.FindMemoRequest{Id: req.ID})
+	if err != nil {
+		err = errors.New("failed to get memo")
+		return
+	}
+	memo, err = s.CreateMemo(ctx, req.Comment)
+	if err != nil {
+		err = errors.New("failed to create memo")
+		return
+	}
+	err = s.dao.UpsertMemoRelation(ctx, &model.MemoRelation{
+		MemoID:        memo.ID,
+		RelatedMemoID: relatedMemo.ID,
+		Type:          model.MemoRelationComment,
+	})
+	if err != nil {
+		err = errors.New("failed to create memo relation")
+		return
+	}
+
+	if memo.Visibility != model.Private && memo.CreatorID != relatedMemo.CreatorID {
+		activity := &model.Activity{
+			CreatorID: memo.CreatorID,
+			Type:      model.ActivityTypeMemoComment,
+			Level:     model.ActivityLevelInfo,
+			Payload: &model.ActivityPayload{
+				MemoComment: &model.ActivityMemoCommentPayload{
+					MemoId:        memo.CreatorID,
+					RelatedMemoId: relatedMemo.ID,
+				},
+			},
+		}
+		if err = s.dao.CreateActivity(ctx, activity); err != nil {
+			err = errors.New("failed to create activity")
+			return
+		}
+		err = s.dao.CreateInbox(ctx, &model.Inbox{
+			SenderID:   memo.CreatorID,
+			ReceiverID: relatedMemo.CreatorID,
+			Status:     model.InboxStatusUnread,
+			Message: &model.InboxMessage{
+				Type:       model.InboxMsgTypeMemoComment,
+				ActivityId: activity.ID,
+			},
+		})
+		if err != nil {
+			err = errors.New("failed to create inbox")
+			return
+		}
+	}
 	return
 }
 

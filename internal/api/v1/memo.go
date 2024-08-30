@@ -307,6 +307,33 @@ func (s *MemoService) DeleteMemo(ctx context.Context, request *v1pb.DeleteMemoRe
 }
 
 func (s *MemoService) CreateMemoComment(ctx context.Context, request *v1pb.CreateMemoCommentRequest) (response *v1pb.Memo, err error) {
+	id, err := api.ExtractMemoIDFromName(request.Name)
+	if err != nil {
+		return nil, status.Errorf(codes.InvalidArgument, "invalid memo name: %v", err)
+	}
+	user, err := s.GetCurrentUser(ctx)
+	if err != nil {
+		err = errors.Errorf("failed to get current user: %v", err)
+		return
+	}
+
+	req := &model.CreateMemoCommentRequest{
+		ID: id,
+		Comment: &model.CreateMemoRequest{
+			UserId:     user.ID,
+			Content:    request.Comment.Content,
+			Visibility: model.Visibility(request.Comment.Visibility.String()),
+		},
+	}
+	memo, err := memomod.CreateMemoComment(ctx, req)
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to create memo comment")
+	}
+
+	response, err = s.convertMemoFromStore(ctx, memo)
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to convert memo")
+	}
 	return
 }
 
