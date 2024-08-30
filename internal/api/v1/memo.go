@@ -55,7 +55,7 @@ func (s *MemoService) convertMemoFromStore(ctx context.Context, memo *model.Memo
 	// }
 
 	name := fmt.Sprintf("%s%d", api.MemoNamePrefix, memo.ID)
-	relations, err := memomod.ListMemoRelations(ctx, &model.ListMemoRelationsRequest{Id: 0})
+	relations, err := memomod.ListMemoRelations(ctx, &model.ListMemoRelationsRequest{MemoID: memo.ID})
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to list memo relations")
 	}

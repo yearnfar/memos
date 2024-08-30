@@ -25,7 +25,8 @@ type FindMemoRelationsRequest struct {
 }
 
 type ListMemoRelationsRequest struct {
-	Id int
+	Id     int
+	MemoID int32
 }
 
 type DeleteMemoRelationsRequest struct {
