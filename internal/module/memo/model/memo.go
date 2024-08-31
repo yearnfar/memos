@@ -18,8 +18,8 @@ type Memo struct {
 	Payload    *MemoPayload `gorm:"serializer:json"`
 
 	// Composed fields
-	// Pinned   bool
-	// ParentID *int32
+	Pinned   bool  `gorm:"-"`
+	ParentID int32 `gorm:"-"`
 }
 
 func (Memo) TableName() string {

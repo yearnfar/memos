@@ -167,14 +167,12 @@ func (s *Service) UpdateMemo(ctx context.Context, req *model.UpdateMemoRequest) 
 			if len(req.Content) > int(memoRelatedSetting.ContentLengthLimit) {
 				return nil, errors.Errorf("content too long (max %d characters)", memoRelatedSetting.ContentLengthLimit)
 			}
-			update["content"] = req.Content
 			property, err := getMemoPropertyFromContent(req.Content)
 			if err != nil {
 				return nil, errors.Errorf("failed to get memo property: %v", err)
 			}
-			payload := memo.Payload
-			payload.Property = property
-			update["payload"] = payload
+			update["content"] = req.Content
+			update["payload"] = &model.MemoPayload{Property: property}
 		} else if path == "uid" {
 			if !util.UIDMatcher.MatchString(req.UID) {
 				return nil, errors.New("invalid resource name")

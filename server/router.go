@@ -24,6 +24,7 @@ func registerGRPC(s *Server) {
 	v1pb.RegisterInboxServiceServer(s.grpcServer, &v1.InboxService{})
 	v1pb.RegisterMemoServiceServer(s.grpcServer, &v1.MemoService{})
 	v1pb.RegisterResourceServiceServer(s.grpcServer, &v1.ResourceService{})
+	v1pb.RegisterMarkdownServiceServer(s.grpcServer, &v1.MarkdownService{})
 	reflection.Register(s.grpcServer)
 }
 
@@ -55,6 +56,9 @@ func registerGateway(ctx context.Context, s *Server) error {
 		return err
 	}
 	if err := v1pb.RegisterResourceServiceHandler(ctx, gwMux, conn); err != nil {
+		return err
+	}
+	if err := v1pb.RegisterMarkdownServiceHandler(ctx, gwMux, conn); err != nil {
 		return err
 	}
 

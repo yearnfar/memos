@@ -17,7 +17,7 @@ import (
 
 type MarkdownService struct {
 	api.BaseService
-	v1pb.UnimplementedMemoServiceServer
+	v1pb.UnimplementedMarkdownServiceServer
 }
 
 func (*MarkdownService) ParseMarkdown(_ context.Context, request *v1pb.ParseMarkdownRequest) (*v1pb.ParseMarkdownResponse, error) {
