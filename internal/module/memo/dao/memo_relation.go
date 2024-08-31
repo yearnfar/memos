@@ -10,6 +10,16 @@ import (
 
 func (dao *Dao) FindMemoRelations(ctx context.Context, req *model.FindMemoRelationsRequest) (list []*model.MemoRelation, err error) {
 	conn := db.GetDB(ctx)
+	if req.MemoID != 0 {
+		conn = conn.Where("memo_id=?", req.MemoID)
+	}
+	if req.RelatedMemoID != 0 {
+		conn = conn.Where("related_memo_id=?", req.RelatedMemoID)
+	}
+	if req.Type != "" {
+		conn = conn.Where("type=?", req.Type)
+	}
+
 	err = conn.Find(&list).Error
 	return
 }

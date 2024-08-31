@@ -20,8 +20,9 @@ func (MemoRelation) TableName() string {
 }
 
 type FindMemoRelationsRequest struct {
-	MemoId        int
-	RelatedMemoId int
+	MemoID        int32
+	RelatedMemoID int32
+	Type          MemoRelationType
 }
 
 type ListMemoRelationsRequest struct {
