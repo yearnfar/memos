@@ -26,13 +26,13 @@ func (dao *Dao) DeleteMemoRelations(ctx context.Context, req *model.DeleteMemoRe
 	}
 	conn := db.GetDB(ctx)
 	if req.MemoID != 0 {
-		conn.Where("memo_id=?", req.MemoID)
+		conn = conn.Where("memo_id=?", req.MemoID)
 	}
 	if req.Type != "" {
-		conn.Where("type=?", req.Type)
+		conn = conn.Where("type=?", req.Type)
 	}
 	if req.RelatedMemoID != 0 {
-		conn.Where("related_memo_id=?", req.RelatedMemoID)
+		conn = conn.Where("related_memo_id=?", req.RelatedMemoID)
 	}
 	err = conn.Delete(&model.MemoRelation{}).Error
 	return
