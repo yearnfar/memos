@@ -14,3 +14,8 @@ type FindMemoOrganizersRequest struct {
 	MemoID int32
 	UserID int32
 }
+
+type DeleteMemoOrganizersRequest struct {
+	MemoID int32
+	UserID int32
+}
