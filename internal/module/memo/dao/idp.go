@@ -8,11 +8,11 @@ import (
 	"gorm.io/gorm"
 )
 
-func (dao *Dao) CreateIdentityProvider(ctx context.Context, m *model.IdentityProvider) error {
+func (dao *Dao) CreateInbox(ctx context.Context, m *model.Inbox) error {
 	return db.GetDB(ctx).Create(m).Error
 }
 
-func (dao *Dao) FindIdentityProviders(ctx context.Context, req *model.FindInboxRequest) (list []*model.IdentityProvider, err error) {
+func (dao *Dao) FindInboxes(ctx context.Context, req *model.FindInboxRequest) (list []*model.Inbox, err error) {
 	conn := db.GetDB(ctx)
 	if req.Id != 0 {
 		conn.Where("id=?", req.Id)
@@ -30,8 +30,8 @@ func (dao *Dao) FindIdentityProviders(ctx context.Context, req *model.FindInboxR
 	return
 }
 
-func (dao *Dao) FindIdentityProvider(ctx context.Context, req *model.FindInboxRequest) (*model.IdentityProvider, error) {
-	list, err := dao.FindIdentityProviders(ctx, req)
+func (dao *Dao) FindInbox(ctx context.Context, req *model.FindInboxRequest) (*model.Inbox, error) {
+	list, err := dao.FindInboxes(ctx, req)
 	if err != nil {
 		return nil, err
 	} else if len(list) == 0 {
@@ -40,10 +40,10 @@ func (dao *Dao) FindIdentityProvider(ctx context.Context, req *model.FindInboxRe
 	return list[0], nil
 }
 
-func (dao *Dao) UpdateIdentityProvider(ctx context.Context, m *model.IdentityProvider, update map[string]any) error {
+func (dao *Dao) UpdateInbox(ctx context.Context, m *model.Inbox, update map[string]any) error {
 	return db.GetDB(ctx).Model(m).Updates(update).Error
 }
 
-func (dao *Dao) DeleteIdentityProviderById(ctx context.Context, id int32) error {
+func (dao *Dao) DeleteInboxById(ctx context.Context, id int32) error {
 	return db.GetDB(ctx).Model(&model.Memo{}).Delete("id=?", id).Error
 }
