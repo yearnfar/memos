@@ -39,9 +39,9 @@ type MemoPayloadProperty struct {
 	HasIncompleteTasks bool     `json:"has_incomplete_tasks"`
 }
 
-type FindMemosRequest struct {
+type FindMemoRequest struct {
 	Id              int32
-	UID             int32
+	UID             string
 	CreatorId       int32
 	RoeStatus       string
 	CreatedTsBefore int64
@@ -52,10 +52,6 @@ type FindMemosRequest struct {
 	VisibilityList  []Visibility
 	ExcludeContent  bool
 	ExcludeComments bool
-}
-type FindMemoRequest struct {
-	Id  int32
-	UID string
 }
 
 type ListMemosRequest struct {

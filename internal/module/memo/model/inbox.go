@@ -18,7 +18,7 @@ type InboxMessage struct {
 	ActivityId int32
 }
 
-type FindInboxesRequest struct {
+type FindInboxRequest struct {
 	Id         int
 	SenderId   int32
 	ReceiverId int32

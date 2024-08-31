@@ -148,7 +148,7 @@ func (mr *MockDAOMockRecorder) DeleteResourceById(ctx, id interface{}) *gomock.C
 }
 
 // FindInboxes mocks base method.
-func (m *MockDAO) FindInboxes(ctx context.Context, req *model.FindInboxesRequest) ([]*model.Inbox, error) {
+func (m *MockDAO) FindInboxes(ctx context.Context, req *model.FindInboxRequest) ([]*model.Inbox, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "FindInboxes", ctx, req)
 	ret0, _ := ret[0].([]*model.Inbox)
@@ -208,7 +208,7 @@ func (mr *MockDAOMockRecorder) FindMemoRelations(ctx, req interface{}) *gomock.C
 }
 
 // FindMemos mocks base method.
-func (m *MockDAO) FindMemos(ctx context.Context, req *model.FindMemosRequest) ([]*model.Memo, error) {
+func (m *MockDAO) FindMemos(ctx context.Context, req *model.FindMemoRequest) ([]*model.Memo, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "FindMemos", ctx, req)
 	ret0, _ := ret[0].([]*model.Memo)

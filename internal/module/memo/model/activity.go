@@ -26,3 +26,8 @@ type ActivityMemoCommentPayload struct {
 type ActivityVersionUpdatePayload struct {
 	Version string `json:"version"`
 }
+
+type FindActivityRequest struct {
+	ID   int32
+	Type ActivityType
+}
