@@ -268,7 +268,7 @@ func (s *Service) UpsertReaction(ctx context.Context, req *model.UpsertReactionR
 }
 
 func (s *Service) SetMemoResources(ctx context.Context, req *model.SetMemoResourcesRequest) (err error) {
-	resources, err := s.dao.FindResources(ctx, &model.FindResourcesRequest{
+	resources, err := s.dao.FindResources(ctx, &model.FindResourceRequest{
 		MemoID: req.MemoID,
 	})
 	if err != nil {

@@ -29,7 +29,7 @@ type DAO interface {
 
 	CreateResource(ctx context.Context, m *model.Resource) error
 	FindResource(ctx context.Context, req *model.FindResourceRequest) (*model.Resource, error)
-	FindResources(ctx context.Context, req *model.FindResourcesRequest) ([]*model.Resource, error)
+	FindResources(ctx context.Context, req *model.FindResourceRequest) ([]*model.Resource, error)
 	DeleteResourceById(ctx context.Context, id int32) error
 	UpdateResource(ctx context.Context, m *model.Resource, update map[string]any) error
 

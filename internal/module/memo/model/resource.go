@@ -69,7 +69,7 @@ type SetMemoResourcesRequest struct {
 	Resources []*MemoResource
 }
 
-type FindResourcesRequest struct {
+type FindResourceRequest struct {
 	ID             int32
 	MemoID         int32
 	GetBlob        bool
@@ -81,11 +81,6 @@ type FindResourcesRequest struct {
 	StorageType    StorageType
 	Limit          int
 	Offset         int
-}
-
-type FindResourceRequest struct {
-	ID     int32
-	MemoID int32
 }
 
 type CreateResourceRequest struct {

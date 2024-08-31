@@ -253,7 +253,7 @@ func (mr *MockDAOMockRecorder) FindResource(ctx, req interface{}) *gomock.Call {
 }
 
 // FindResources mocks base method.
-func (m *MockDAO) FindResources(ctx context.Context, req *model.FindResourcesRequest) ([]*model.Resource, error) {
+func (m *MockDAO) FindResources(ctx context.Context, req *model.FindResourceRequest) ([]*model.Resource, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "FindResources", ctx, req)
 	ret0, _ := ret[0].([]*model.Resource)

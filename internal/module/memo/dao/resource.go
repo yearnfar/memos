@@ -10,21 +10,10 @@ import (
 	"github.com/yearnfar/gokit/fsutil"
 	"github.com/yearnfar/memos/internal/module/memo/model"
 	"github.com/yearnfar/memos/internal/pkg/db"
+	"gorm.io/gorm"
 )
 
-func (dao *Dao) FindResource(ctx context.Context, req *model.FindResourceRequest) (*model.Resource, error) {
-	conn := db.GetDB(ctx)
-	if req.ID != 0 {
-		conn = conn.Where("id=?", req.ID)
-	}
-	var m model.Resource
-	if err := conn.First(&m).Error; err != nil {
-		return nil, err
-	}
-	return &m, nil
-}
-
-func (dao *Dao) FindResources(ctx context.Context, req *model.FindResourcesRequest) (list []*model.Resource, err error) {
+func (dao *Dao) FindResources(ctx context.Context, req *model.FindResourceRequest) (list []*model.Resource, err error) {
 	conn := db.GetDB(ctx)
 	if req.ID != 0 {
 		conn = conn.Where("id=?", req.ID)
@@ -52,6 +41,16 @@ func (dao *Dao) FindResources(ctx context.Context, req *model.FindResourcesReque
 	}
 	err = conn.Find(&list).Error
 	return
+}
+
+func (dao *Dao) FindResource(ctx context.Context, req *model.FindResourceRequest) (*model.Resource, error) {
+	list, err := dao.FindResources(ctx, req)
+	if err != nil {
+		return nil, err
+	} else if len(list) == 0 {
+		return nil, gorm.ErrRecordNotFound
+	}
+	return list[0], nil
 }
 
 func (dao *Dao) CreateResource(ctx context.Context, m *model.Resource) (err error) {
