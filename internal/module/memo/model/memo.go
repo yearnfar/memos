@@ -55,7 +55,8 @@ type FindMemoRequest struct {
 }
 
 type ListMemosRequest struct {
-	CreatorId int32
+	CreatorId       int32
+	ExcludeComments bool
 }
 
 type UpdateMemoRequest struct {

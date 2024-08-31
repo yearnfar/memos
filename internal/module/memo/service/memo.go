@@ -210,7 +210,10 @@ func (s *Service) UpdateMemo(ctx context.Context, req *model.UpdateMemoRequest) 
 }
 
 func (s *Service) ListMemos(ctx context.Context, req *model.ListMemosRequest) (list []*model.Memo, err error) {
-	list, err = s.dao.FindMemos(ctx, &model.FindMemoRequest{})
+	list, err = s.dao.FindMemos(ctx, &model.FindMemoRequest{
+		CreatorId:       req.CreatorId,
+		ExcludeComments: req.ExcludeComments,
+	})
 	if err != nil {
 		return
 	}

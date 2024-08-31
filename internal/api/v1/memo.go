@@ -188,7 +188,10 @@ func (s *MemoService) ListMemos(ctx context.Context, req *v1pb.ListMemosRequest)
 		return
 	}
 
-	memos, err := memomod.ListMemos(ctx, &model.ListMemosRequest{CreatorId: user.ID})
+	memos, err := memomod.ListMemos(ctx, &model.ListMemosRequest{
+		CreatorId:       user.ID,
+		ExcludeComments: true,
+	})
 	if err != nil {
 		return
 	}

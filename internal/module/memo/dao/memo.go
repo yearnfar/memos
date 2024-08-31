@@ -23,7 +23,16 @@ func (dao *Dao) FindMemos(ctx context.Context, req *model.FindMemoRequest) (list
 	if req.CreatorId != 0 {
 		conn = conn.Where("creator_id=?", req.CreatorId)
 	}
-	err = conn.Find(&list).Error
+	if req.ExcludeComments {
+		conn = conn.Where("parent_id IS NULL")
+	}
+
+	err = conn.
+		Select(`m.*, related_memo_id AS parent_id`).
+		Table("memo m").
+		Joins("LEFT JOIN memo_organizer mo ON m.id = mo.memo_id AND m.creator_id = mo.user_id").
+		Joins("LEFT JOIN memo_relation mr ON m.id = mr.memo_id AND mr.type = \"COMMENT\"").
+		Find(&list).Error
 	return
 }
 
