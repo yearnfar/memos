@@ -132,4 +132,5 @@ const (
 	TableWorkspaceSetting = "system_setting"
 	TableReaction         = "reaction"
 	TableResource         = "resource"
+	TableWebhook          = "webhook"
 )

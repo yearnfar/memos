@@ -23,3 +23,8 @@ func (dao *Dao) UpsertWorkspaceSetting(ctx context.Context, m *model.WorkspaceSe
 		FirstOrCreate(&m).Error
 	return
 }
+
+func (dao *Dao) DeleteWorkspaceSetting(ctx context.Context, name string) error {
+	err := db.GetDB(ctx).Model(&model.WorkspaceSetting{}).Delete("name=?", name).Error
+	return err
+}
