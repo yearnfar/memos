@@ -31,7 +31,7 @@ func (dao *Dao) FindMemos(ctx context.Context, req *model.FindMemoRequest) (list
 		Select(`m.*, related_memo_id AS parent_id, IFNULL(mo.pinned, 0) AS pinned`).
 		Table("memo m").
 		Joins("LEFT JOIN memo_organizer mo ON m.id = mo.memo_id AND m.creator_id = mo.user_id").
-		Joins("LEFT JOIN memo_relation mr ON m.id = mr.memo_id AND mr.type = \"COMMENT\"").
+		Joins("LEFT JOIN memo_relation mr ON m.id = mr.memo_id AND mr.type = ?", model.MemoRelationComment).
 		Find(&list).Error
 	return
 }

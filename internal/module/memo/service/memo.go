@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"encoding/json"
 	"slices"
 	"time"
 
@@ -172,7 +173,8 @@ func (s *Service) UpdateMemo(ctx context.Context, req *model.UpdateMemoRequest) 
 				return nil, errors.Errorf("failed to get memo property: %v", err)
 			}
 			update["content"] = req.Content
-			update["payload"] = &model.MemoPayload{Property: property}
+			payload, _ := json.Marshal(&model.MemoPayload{Property: property})
+			update["payload"] = string(payload)
 		} else if path == "uid" {
 			if !util.UIDMatcher.MatchString(req.UID) {
 				return nil, errors.New("invalid resource name")
