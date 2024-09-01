@@ -174,7 +174,7 @@ func (s *Service) UpdateMemo(ctx context.Context, req *model.UpdateMemoRequest) 
 			}
 			update["content"] = req.Content
 			payload, _ := json.Marshal(&model.MemoPayload{Property: property})
-			update["payload"] = string(payload)
+			update["payload"] = payload
 		} else if path == "uid" {
 			if !util.UIDMatcher.MatchString(req.UID) {
 				return nil, errors.New("invalid resource name")
