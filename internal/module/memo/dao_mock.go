@@ -163,10 +163,10 @@ func (mr *MockDAOMockRecorder) FindInboxes(ctx, req interface{}) *gomock.Call {
 }
 
 // FindMemo mocks base method.
-func (m *MockDAO) FindMemo(ctx context.Context, req *model.FindMemoRequest) (*model.Memo, error) {
+func (m *MockDAO) FindMemo(ctx context.Context, req *model.FindMemoRequest) (*model.MemoInfo, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "FindMemo", ctx, req)
-	ret0, _ := ret[0].(*model.Memo)
+	ret0, _ := ret[0].(*model.MemoInfo)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -208,10 +208,10 @@ func (mr *MockDAOMockRecorder) FindMemoRelations(ctx, req interface{}) *gomock.C
 }
 
 // FindMemos mocks base method.
-func (m *MockDAO) FindMemos(ctx context.Context, req *model.FindMemoRequest) ([]*model.Memo, error) {
+func (m *MockDAO) FindMemos(ctx context.Context, req *model.FindMemoRequest) ([]*model.MemoInfo, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "FindMemos", ctx, req)
-	ret0, _ := ret[0].([]*model.Memo)
+	ret0, _ := ret[0].([]*model.MemoInfo)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -351,6 +351,20 @@ func (m_2 *MockDAO) UpdateResource(ctx context.Context, m *model.Resource, updat
 func (mr *MockDAOMockRecorder) UpdateResource(ctx, m, update interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateResource", reflect.TypeOf((*MockDAO)(nil).UpdateResource), ctx, m, update)
+}
+
+// UpsertMemoOrganizer mocks base method.
+func (m_2 *MockDAO) UpsertMemoOrganizer(ctx context.Context, m *model.MemoOrganizer) error {
+	m_2.ctrl.T.Helper()
+	ret := m_2.ctrl.Call(m_2, "UpsertMemoOrganizer", ctx, m)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpsertMemoOrganizer indicates an expected call of UpsertMemoOrganizer.
+func (mr *MockDAOMockRecorder) UpsertMemoOrganizer(ctx, m interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpsertMemoOrganizer", reflect.TypeOf((*MockDAO)(nil).UpsertMemoOrganizer), ctx, m)
 }
 
 // UpsertMemoRelation mocks base method.

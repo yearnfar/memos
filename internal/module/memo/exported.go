@@ -23,7 +23,7 @@ func ListInboxes(ctx context.Context, req *model.ListInboxesRequest) ([]*model.I
 	return v1, v2
 }
 
-func GetMemo(ctx context.Context, req *model.GetMemoRequest) (*model.Memo, error) {
+func GetMemo(ctx context.Context, req *model.GetMemoRequest) (*model.MemoInfo, error) {
 	if defaultService == nil {
 		panic("调用模块方法: memo.GetMemo 失败，服务未注册")
 	}
@@ -31,7 +31,7 @@ func GetMemo(ctx context.Context, req *model.GetMemoRequest) (*model.Memo, error
 	return v1, v2
 }
 
-func ListMemos(ctx context.Context, req *model.ListMemosRequest) ([]*model.Memo, error) {
+func ListMemos(ctx context.Context, req *model.ListMemosRequest) ([]*model.MemoInfo, error) {
 	if defaultService == nil {
 		panic("调用模块方法: memo.ListMemos 失败，服务未注册")
 	}
@@ -39,7 +39,7 @@ func ListMemos(ctx context.Context, req *model.ListMemosRequest) ([]*model.Memo,
 	return v1, v2
 }
 
-func CreateMemo(ctx context.Context, req *model.CreateMemoRequest) (*model.Memo, error) {
+func CreateMemo(ctx context.Context, req *model.CreateMemoRequest) (*model.MemoInfo, error) {
 	if defaultService == nil {
 		panic("调用模块方法: memo.CreateMemo 失败，服务未注册")
 	}
@@ -55,7 +55,7 @@ func DeleteMemo(ctx context.Context, req *model.DeleteMemoRequest) error {
 	return v1
 }
 
-func UpdateMemo(ctx context.Context, req *model.UpdateMemoRequest) (*model.Memo, error) {
+func UpdateMemo(ctx context.Context, req *model.UpdateMemoRequest) (*model.MemoInfo, error) {
 	if defaultService == nil {
 		panic("调用模块方法: memo.UpdateMemo 失败，服务未注册")
 	}
@@ -63,7 +63,7 @@ func UpdateMemo(ctx context.Context, req *model.UpdateMemoRequest) (*model.Memo,
 	return v1, v2
 }
 
-func CreateMemoComment(ctx context.Context, req *model.CreateMemoCommentRequest) (*model.Memo, error) {
+func CreateMemoComment(ctx context.Context, req *model.CreateMemoCommentRequest) (*model.MemoInfo, error) {
 	if defaultService == nil {
 		panic("调用模块方法: memo.CreateMemoComment 失败，服务未注册")
 	}

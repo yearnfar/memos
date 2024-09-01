@@ -16,14 +16,18 @@ type Memo struct {
 	Content    string
 	Visibility Visibility
 	Payload    *MemoPayload `gorm:"serializer:json"`
-
-	// Composed fields
-	Pinned   bool  `gorm:"-"`
-	ParentID int32 `gorm:"-"`
 }
 
 func (Memo) TableName() string {
 	return TableMemo
+}
+
+type MemoInfo struct {
+	Memo
+
+	// Composed fields
+	Pinned   bool
+	ParentID int32
 }
 
 type MemoPayload struct {
@@ -67,6 +71,7 @@ type UpdateMemoRequest struct {
 	Content     string
 	RowStatus   RowStatus
 	Visibility  Visibility
+	Pinned      bool
 	UpdatedTime int64
 	CreatedTime int64
 	DisplayTime int64

@@ -12,7 +12,7 @@ func (dao *Dao) CreateMemo(ctx context.Context, m *model.Memo) error {
 	return db.GetDB(ctx).Create(m).Error
 }
 
-func (dao *Dao) FindMemos(ctx context.Context, req *model.FindMemoRequest) (list []*model.Memo, err error) {
+func (dao *Dao) FindMemos(ctx context.Context, req *model.FindMemoRequest) (list []*model.MemoInfo, err error) {
 	conn := db.GetDB(ctx)
 	if req.Id != 0 {
 		conn = conn.Where("id=?", req.Id)
@@ -36,7 +36,7 @@ func (dao *Dao) FindMemos(ctx context.Context, req *model.FindMemoRequest) (list
 	return
 }
 
-func (dao *Dao) FindMemo(ctx context.Context, req *model.FindMemoRequest) (*model.Memo, error) {
+func (dao *Dao) FindMemo(ctx context.Context, req *model.FindMemoRequest) (*model.MemoInfo, error) {
 	list, err := dao.FindMemos(ctx, req)
 	if err != nil {
 		return nil, err

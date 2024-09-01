@@ -16,7 +16,7 @@ import (
 	"github.com/yearnfar/memos/internal/pkg/util"
 )
 
-func (s *Service) CreateMemo(ctx context.Context, req *model.CreateMemoRequest) (memo *model.Memo, err error) {
+func (s *Service) CreateMemo(ctx context.Context, req *model.CreateMemoRequest) (memoInfo *model.MemoInfo, err error) {
 	memoRelatedSetting, err := s.getWorkspaceMemoRelatedSetting(ctx)
 	if err != nil {
 		err = errors.Errorf("failed to get workspace memo related setting")
@@ -35,7 +35,7 @@ func (s *Service) CreateMemo(ctx context.Context, req *model.CreateMemoRequest) 
 		err = errors.Errorf("failed to get memo property: %v", err)
 		return
 	}
-	memo = &model.Memo{
+	memo := &model.Memo{
 		UID:        shortuuid.New(),
 		CreatorID:  int32(req.UserId),
 		Content:    req.Content,
@@ -45,11 +45,14 @@ func (s *Service) CreateMemo(ctx context.Context, req *model.CreateMemoRequest) 
 			Property: property,
 		},
 	}
-	err = s.dao.CreateMemo(ctx, memo)
+	if err = s.dao.CreateMemo(ctx, memo); err != nil {
+		return
+	}
+	memoInfo, err = s.dao.FindMemo(ctx, &model.FindMemoRequest{Id: memo.ID})
 	return
 }
 
-func (s *Service) CreateMemoComment(ctx context.Context, req *model.CreateMemoCommentRequest) (memo *model.Memo, err error) {
+func (s *Service) CreateMemoComment(ctx context.Context, req *model.CreateMemoCommentRequest) (memo *model.MemoInfo, err error) {
 	relatedMemo, err := s.dao.FindMemo(ctx, &model.FindMemoRequest{Id: req.ID})
 	if err != nil {
 		err = errors.New("failed to get memo")
@@ -153,8 +156,8 @@ func TraverseASTNodes(nodes []ast.Node, fn func(ast.Node)) {
 	}
 }
 
-func (s *Service) UpdateMemo(ctx context.Context, req *model.UpdateMemoRequest) (memo *model.Memo, err error) {
-	memo, err = s.dao.FindMemo(ctx, &model.FindMemoRequest{Id: req.ID})
+func (s *Service) UpdateMemo(ctx context.Context, req *model.UpdateMemoRequest) (memoInfo *model.MemoInfo, err error) {
+	memoInfo, err = s.dao.FindMemo(ctx, &model.FindMemoRequest{Id: req.ID})
 	if err != nil {
 		return
 	}
@@ -196,20 +199,20 @@ func (s *Service) UpdateMemo(ctx context.Context, req *model.UpdateMemoRequest) 
 				update["created_ts"] = req.DisplayTime
 			}
 		} else if path == "pinned" {
-			// if _, err := s.Store.UpsertMemoOrganizer(ctx, &store.MemoOrganizer{
-			// 	MemoID: id,
-			// 	UserID: user.ID,
-			// 	Pinned: request.Memo.Pinned,
-			// }); err != nil {
-			// 	return nil, status.Errorf(codes.Internal, "failed to upsert memo organizer")
-			// }
+			if err := s.dao.UpsertMemoOrganizer(ctx, &model.MemoOrganizer{
+				MemoID: memoInfo.ID,
+				UserID: req.UserId,
+				Pinned: req.Pinned,
+			}); err != nil {
+				return nil, errors.New("failed to upsert memo organizer")
+			}
 		}
 	}
-	err = s.dao.UpdateMemo(ctx, memo, update)
+	err = s.dao.UpdateMemo(ctx, &memoInfo.Memo, update)
 	return
 }
 
-func (s *Service) ListMemos(ctx context.Context, req *model.ListMemosRequest) (list []*model.Memo, err error) {
+func (s *Service) ListMemos(ctx context.Context, req *model.ListMemosRequest) (list []*model.MemoInfo, err error) {
 	list, err = s.dao.FindMemos(ctx, &model.FindMemoRequest{
 		CreatorId:       req.CreatorId,
 		ExcludeComments: req.ExcludeComments,
@@ -221,7 +224,7 @@ func (s *Service) ListMemos(ctx context.Context, req *model.ListMemosRequest) (l
 	return
 }
 
-func (s *Service) GetMemo(ctx context.Context, req *model.GetMemoRequest) (*model.Memo, error) {
+func (s *Service) GetMemo(ctx context.Context, req *model.GetMemoRequest) (*model.MemoInfo, error) {
 	memo, err := s.dao.FindMemo(ctx, &model.FindMemoRequest{
 		Id:  req.Id,
 		UID: req.UID,

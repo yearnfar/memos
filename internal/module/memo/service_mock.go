@@ -36,10 +36,10 @@ func (m *MockService) EXPECT() *MockServiceMockRecorder {
 }
 
 // CreateMemo mocks base method.
-func (m *MockService) CreateMemo(ctx context.Context, req *model.CreateMemoRequest) (*model.Memo, error) {
+func (m *MockService) CreateMemo(ctx context.Context, req *model.CreateMemoRequest) (*model.MemoInfo, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreateMemo", ctx, req)
-	ret0, _ := ret[0].(*model.Memo)
+	ret0, _ := ret[0].(*model.MemoInfo)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -51,10 +51,10 @@ func (mr *MockServiceMockRecorder) CreateMemo(ctx, req interface{}) *gomock.Call
 }
 
 // CreateMemoComment mocks base method.
-func (m *MockService) CreateMemoComment(ctx context.Context, req *model.CreateMemoCommentRequest) (*model.Memo, error) {
+func (m *MockService) CreateMemoComment(ctx context.Context, req *model.CreateMemoCommentRequest) (*model.MemoInfo, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreateMemoComment", ctx, req)
-	ret0, _ := ret[0].(*model.Memo)
+	ret0, _ := ret[0].(*model.MemoInfo)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -109,10 +109,10 @@ func (mr *MockServiceMockRecorder) DeleteResource(ctx, req interface{}) *gomock.
 }
 
 // GetMemo mocks base method.
-func (m *MockService) GetMemo(ctx context.Context, req *model.GetMemoRequest) (*model.Memo, error) {
+func (m *MockService) GetMemo(ctx context.Context, req *model.GetMemoRequest) (*model.MemoInfo, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetMemo", ctx, req)
-	ret0, _ := ret[0].(*model.Memo)
+	ret0, _ := ret[0].(*model.MemoInfo)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -199,10 +199,10 @@ func (mr *MockServiceMockRecorder) ListMemoRelations(ctx, req interface{}) *gomo
 }
 
 // ListMemos mocks base method.
-func (m *MockService) ListMemos(ctx context.Context, req *model.ListMemosRequest) ([]*model.Memo, error) {
+func (m *MockService) ListMemos(ctx context.Context, req *model.ListMemosRequest) ([]*model.MemoInfo, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ListMemos", ctx, req)
-	ret0, _ := ret[0].([]*model.Memo)
+	ret0, _ := ret[0].([]*model.MemoInfo)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -287,10 +287,10 @@ func (mr *MockServiceMockRecorder) SetWorkspaceSetting(ctx, req interface{}) *go
 }
 
 // UpdateMemo mocks base method.
-func (m *MockService) UpdateMemo(ctx context.Context, req *model.UpdateMemoRequest) (*model.Memo, error) {
+func (m *MockService) UpdateMemo(ctx context.Context, req *model.UpdateMemoRequest) (*model.MemoInfo, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "UpdateMemo", ctx, req)
-	ret0, _ := ret[0].(*model.Memo)
+	ret0, _ := ret[0].(*model.MemoInfo)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

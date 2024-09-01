@@ -9,8 +9,8 @@ import (
 
 func (dao *Dao) UpsertMemoOrganizer(ctx context.Context, m *model.MemoOrganizer) (err error) {
 	err = db.GetDB(ctx).
-		Where("pinned=?", m.Pinned).
-		Assign(model.MemoOrganizer{MemoID: m.MemoID, UserID: m.UserID}).
+		Where("memo_id=? AND user_id=?", m.MemoID, m.UserID).
+		Assign(model.MemoOrganizer{Pinned: m.Pinned}).
 		FirstOrCreate(&m).Error
 	return
 }

@@ -14,8 +14,8 @@ type DAO interface {
 	CreateActivity(ctx context.Context, memo *model.Activity) error
 
 	CreateMemo(ctx context.Context, memo *model.Memo) error
-	FindMemos(ctx context.Context, req *model.FindMemoRequest) ([]*model.Memo, error)
-	FindMemo(ctx context.Context, req *model.FindMemoRequest) (*model.Memo, error)
+	FindMemos(ctx context.Context, req *model.FindMemoRequest) ([]*model.MemoInfo, error)
+	FindMemo(ctx context.Context, req *model.FindMemoRequest) (*model.MemoInfo, error)
 	UpdateMemo(ctx context.Context, memo *model.Memo, update map[string]any) error
 	DeleteMemoById(ctx context.Context, id int32) error
 
@@ -24,6 +24,8 @@ type DAO interface {
 	UpsertMemoRelation(ctx context.Context, m *model.MemoRelation) error
 
 	FindMemoOrganizers(ctx context.Context, req *model.FindMemoOrganizersRequest) ([]*model.MemoOrganizer, error)
+	UpsertMemoOrganizer(ctx context.Context, m *model.MemoOrganizer) error
+
 	FindReactions(ctx context.Context, req *model.FindReactionsRequest) ([]*model.Reaction, error)
 	CreateReaction(ctx context.Context, m *model.Reaction) error
 

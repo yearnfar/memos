@@ -10,13 +10,13 @@ import (
 
 type Service interface {
 	ListInboxes(ctx context.Context, req *model.ListInboxesRequest) ([]*model.Inbox, error)
-	GetMemo(ctx context.Context, req *model.GetMemoRequest) (*model.Memo, error)
-	ListMemos(ctx context.Context, req *model.ListMemosRequest) ([]*model.Memo, error)
-	CreateMemo(ctx context.Context, req *model.CreateMemoRequest) (*model.Memo, error)
+	GetMemo(ctx context.Context, req *model.GetMemoRequest) (*model.MemoInfo, error)
+	ListMemos(ctx context.Context, req *model.ListMemosRequest) ([]*model.MemoInfo, error)
+	CreateMemo(ctx context.Context, req *model.CreateMemoRequest) (*model.MemoInfo, error)
 	DeleteMemo(ctx context.Context, req *model.DeleteMemoRequest) error
-	UpdateMemo(ctx context.Context, req *model.UpdateMemoRequest) (*model.Memo, error)
+	UpdateMemo(ctx context.Context, req *model.UpdateMemoRequest) (*model.MemoInfo, error)
 
-	CreateMemoComment(ctx context.Context, req *model.CreateMemoCommentRequest) (*model.Memo, error)
+	CreateMemoComment(ctx context.Context, req *model.CreateMemoCommentRequest) (*model.MemoInfo, error)
 
 	CreateResource(ctx context.Context, req *model.CreateResourceRequest) (*model.Resource, error)
 	GetResource(ctx context.Context, req *model.GetResourceRequest) (*model.Resource, error)

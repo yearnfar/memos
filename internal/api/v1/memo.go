@@ -44,7 +44,7 @@ func (s *MemoService) CreateMemo(ctx context.Context, request *v1pb.CreateMemoRe
 	return s.convertMemoFromStore(ctx, memo)
 }
 
-func (s *MemoService) convertMemoFromStore(ctx context.Context, memo *model.Memo) (*v1pb.Memo, error) {
+func (s *MemoService) convertMemoFromStore(ctx context.Context, memo *model.MemoInfo) (*v1pb.Memo, error) {
 	displayTs := memo.CreatedTs
 	// workspaceMemoRelatedSetting, err := s.Store.GetWorkspaceMemoRelatedSetting(ctx)
 	// if err != nil {
@@ -105,18 +105,18 @@ func (s *MemoService) convertMemoFromStore(ctx context.Context, memo *model.Memo
 		Snippet:     snippet,
 		Nodes:       convertFromASTNodes(nodes),
 		Visibility:  convertVisibilityFromStore(memo.Visibility),
-		// Pinned:     memo.Pinned,
-		Relations: relationsList,
-		Resources: resourcesList,
-		Reactions: reactionList,
+		Pinned:      memo.Pinned,
+		Relations:   relationsList,
+		Resources:   resourcesList,
+		Reactions:   reactionList,
 	}
 	if memo.Payload != nil {
 		memoMessage.Property = convertMemoPropertyFromStore(memo.Payload.Property)
 	}
-	// if memo.ParentID != 0 {
-	// 	parent := fmt.Sprintf("%s%d", api.MemoNamePrefix, *memo.ParentID)
-	// 	memoMessage.Parent = &parent
-	// }
+	if memo.ParentID != 0 {
+		parent := fmt.Sprintf("%s%d", api.MemoNamePrefix, memo.ParentID)
+		memoMessage.Parent = &parent
+	}
 	return memoMessage, nil
 }
 
@@ -278,6 +278,7 @@ func (s *MemoService) UpdateMemo(ctx context.Context, request *v1pb.UpdateMemoRe
 		Content:     request.Memo.Content,
 		RowStatus:   s.convertRowStatusToStore(request.Memo.RowStatus),
 		Visibility:  model.Visibility(request.Memo.Visibility.String()),
+		Pinned:      request.Memo.Pinned,
 		UpdatedTime: request.Memo.UpdateTime.AsTime().Unix(),
 		CreatedTime: request.Memo.CreateTime.AsTime().Unix(),
 		DisplayTime: request.Memo.DisplayTime.AsTime().Unix(),
