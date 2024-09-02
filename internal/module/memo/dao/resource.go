@@ -39,7 +39,7 @@ func (dao *Dao) FindResource(ctx context.Context, where []string, args []any, fi
 
 func (dao *Dao) FindResourceByID(ctx context.Context, id int32, fields ...string) (*model.Resource, error) {
 	var m model.Resource
-	if err := db.GetDB(ctx).Where("id=?").First(&m).Error; err != nil {
+	if err := db.GetDB(ctx).Where("id=?", id).First(&m).Error; err != nil {
 		return nil, err
 	}
 	return &m, nil

@@ -42,7 +42,7 @@ func (dao *Dao) FindMemo(ctx context.Context, where []string, args []any, fields
 
 func (dao *Dao) FindMemoByID(ctx context.Context, id int32, fields ...string) (*model.MemoInfo, error) {
 	var m model.MemoInfo
-	if err := db.GetDB(ctx).Where("id=?").First(&m).Error; err != nil {
+	if err := db.GetDB(ctx).Where("id=?", id).First(&m).Error; err != nil {
 		return nil, err
 	}
 	return &m, nil
