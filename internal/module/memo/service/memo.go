@@ -208,8 +208,13 @@ func (s *Service) UpdateMemo(ctx context.Context, req *model.UpdateMemoRequest) 
 			}
 		}
 	}
-	err = s.dao.UpdateMemo(ctx, &memoInfo.Memo, update)
-	return
+	if len(update) > 0 {
+		err = s.dao.UpdateMemo(ctx, &memoInfo.Memo, update)
+		if err != nil {
+			return
+		}
+	}
+	return s.dao.FindMemoByID(ctx, req.ID)
 }
 
 func (s *Service) ListMemos(ctx context.Context, req *model.ListMemosRequest) (list []*model.MemoInfo, err error) {
