@@ -100,7 +100,7 @@ func (s *Service) GetResourceBinary(ctx context.Context, req *model.GetResourceB
 	// Check the related memo visibility.
 	if resource.MemoID != 0 {
 		var memo *model.MemoInfo
-		memo, err = s.GetMemo(ctx, &model.GetMemoRequest{Id: resource.MemoID})
+		memo, err = s.dao.FindMemoByID(ctx, resource.MemoID)
 		if err != nil {
 			err = errors.Errorf("failed to find memo by ID: %v", resource.MemoID)
 			return

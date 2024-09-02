@@ -213,7 +213,12 @@ func (s *Service) UpdateMemo(ctx context.Context, req *model.UpdateMemoRequest) 
 }
 
 func (s *Service) ListMemos(ctx context.Context, req *model.ListMemosRequest) (list []*model.MemoInfo, err error) {
-	list, err = s.dao.FindMemos(ctx, []string{"creator_id=?", "exclude_comments=?"}, []any{req.CreatorId, req.ExcludeComments})
+	where := []string{"creator_id=?"}
+	args := []any{req.CreatorId}
+	if req.ExcludeComments {
+		where = append(where, "mr.memo_id is null")
+	}
+	list, err = s.dao.FindMemos(ctx, where, args)
 	if err != nil {
 		return
 	}
