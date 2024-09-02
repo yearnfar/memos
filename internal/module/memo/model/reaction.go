@@ -14,12 +14,6 @@ func (Reaction) TableName() string {
 	return TableReaction
 }
 
-type FindReactionsRequest struct {
-	Id        int
-	CreatorId int
-	ContentId string
-}
-
 type DeleteMemoRequest struct {
 	Id            int32
 	CurrentUserId int32

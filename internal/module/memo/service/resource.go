@@ -61,9 +61,7 @@ func (s *Service) CreateResource(ctx context.Context, req *model.CreateResourceR
 }
 
 func (s *Service) ListResources(ctx context.Context, req *model.ListResourcesRequest) (list []*model.Resource, err error) {
-	list, err = s.dao.FindResources(ctx, &model.FindResourceRequest{
-		MemoID: req.MemoID,
-	})
+	list, err = s.dao.FindResources(ctx, []string{"memo_id=?"}, []any{req.MemoID})
 	return
 }
 
@@ -72,7 +70,7 @@ func (s *Service) GetResource(ctx context.Context, req *model.GetResourceRequest
 }
 
 func (s *Service) DeleteResource(ctx context.Context, req *model.DeleteResourceRequest) (err error) {
-	resource, err := s.dao.FindResource(ctx, &model.FindResourceRequest{ID: req.ID})
+	resource, err := s.dao.FindResourceByID(ctx, req.ID)
 	if err != nil {
 		return errors.Wrap(err, "failed to get resource")
 	}
@@ -94,7 +92,7 @@ func (s *Service) DeleteResource(ctx context.Context, req *model.DeleteResourceR
 }
 
 func (s *Service) GetResourceBinary(ctx context.Context, req *model.GetResourceBinaryRequest) (rb *model.ResourceBinary, err error) {
-	resource, err := s.dao.FindResource(ctx, &model.FindResourceRequest{ID: req.Id})
+	resource, err := s.dao.FindResourceByID(ctx, req.Id)
 	if err != nil {
 		err = errors.Errorf("failed to get resource: %v", err)
 		return

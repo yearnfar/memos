@@ -14,7 +14,3 @@ const (
 	IdpUnspecified IdpType = "UNSPECIFIED"
 	IdpOAuth2      IdpType = "OAUTH2"
 )
-
-type FindIdentityProviderRequest struct {
-	ID int32
-}

@@ -69,20 +69,6 @@ type SetMemoResourcesRequest struct {
 	Resources []*MemoResource
 }
 
-type FindResourceRequest struct {
-	ID             int32
-	MemoID         int32
-	GetBlob        bool
-	UID            string
-	CreatorID      int32
-	Filename       string
-	FilenameSearch string
-	HasRelatedMemo bool
-	StorageType    StorageType
-	Limit          int
-	Offset         int
-}
-
 type CreateResourceRequest struct {
 	UserId       int32
 	Name         string `json:"name"`

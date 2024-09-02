@@ -147,139 +147,364 @@ func (mr *MockDAOMockRecorder) DeleteResourceById(ctx, id interface{}) *gomock.C
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteResourceById", reflect.TypeOf((*MockDAO)(nil).DeleteResourceById), ctx, id)
 }
 
-// FindInboxes mocks base method.
-func (m *MockDAO) FindInboxes(ctx context.Context, req *model.FindInboxRequest) ([]*model.Inbox, error) {
+// FindActivities mocks base method.
+func (m *MockDAO) FindActivities(ctx context.Context, where []string, args []any, fields ...string) ([]*model.Activity, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "FindInboxes", ctx, req)
+	varargs := []interface{}{ctx, where, args}
+	for _, a := range fields {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "FindActivities", varargs...)
+	ret0, _ := ret[0].([]*model.Activity)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// FindActivities indicates an expected call of FindActivities.
+func (mr *MockDAOMockRecorder) FindActivities(ctx, where, args interface{}, fields ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, where, args}, fields...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindActivities", reflect.TypeOf((*MockDAO)(nil).FindActivities), varargs...)
+}
+
+// FindActivity mocks base method.
+func (m *MockDAO) FindActivity(ctx context.Context, where []string, args []any, fields ...string) (*model.Activity, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, where, args}
+	for _, a := range fields {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "FindActivity", varargs...)
+	ret0, _ := ret[0].(*model.Activity)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// FindActivity indicates an expected call of FindActivity.
+func (mr *MockDAOMockRecorder) FindActivity(ctx, where, args interface{}, fields ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, where, args}, fields...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindActivity", reflect.TypeOf((*MockDAO)(nil).FindActivity), varargs...)
+}
+
+// FindInbox mocks base method.
+func (m *MockDAO) FindInbox(ctx context.Context, where []string, args []any, fields ...string) (*model.Inbox, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, where, args}
+	for _, a := range fields {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "FindInbox", varargs...)
+	ret0, _ := ret[0].(*model.Inbox)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// FindInbox indicates an expected call of FindInbox.
+func (mr *MockDAOMockRecorder) FindInbox(ctx, where, args interface{}, fields ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, where, args}, fields...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindInbox", reflect.TypeOf((*MockDAO)(nil).FindInbox), varargs...)
+}
+
+// FindInboxes mocks base method.
+func (m *MockDAO) FindInboxes(ctx context.Context, where []string, args []any, fields ...string) ([]*model.Inbox, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, where, args}
+	for _, a := range fields {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "FindInboxes", varargs...)
 	ret0, _ := ret[0].([]*model.Inbox)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // FindInboxes indicates an expected call of FindInboxes.
-func (mr *MockDAOMockRecorder) FindInboxes(ctx, req interface{}) *gomock.Call {
+func (mr *MockDAOMockRecorder) FindInboxes(ctx, where, args interface{}, fields ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindInboxes", reflect.TypeOf((*MockDAO)(nil).FindInboxes), ctx, req)
+	varargs := append([]interface{}{ctx, where, args}, fields...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindInboxes", reflect.TypeOf((*MockDAO)(nil).FindInboxes), varargs...)
 }
 
 // FindMemo mocks base method.
-func (m *MockDAO) FindMemo(ctx context.Context, req *model.FindMemoRequest) (*model.MemoInfo, error) {
+func (m *MockDAO) FindMemo(ctx context.Context, where []string, args []any, fields ...string) (*model.MemoInfo, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "FindMemo", ctx, req)
+	varargs := []interface{}{ctx, where, args}
+	for _, a := range fields {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "FindMemo", varargs...)
 	ret0, _ := ret[0].(*model.MemoInfo)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // FindMemo indicates an expected call of FindMemo.
-func (mr *MockDAOMockRecorder) FindMemo(ctx, req interface{}) *gomock.Call {
+func (mr *MockDAOMockRecorder) FindMemo(ctx, where, args interface{}, fields ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindMemo", reflect.TypeOf((*MockDAO)(nil).FindMemo), ctx, req)
+	varargs := append([]interface{}{ctx, where, args}, fields...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindMemo", reflect.TypeOf((*MockDAO)(nil).FindMemo), varargs...)
+}
+
+// FindMemoByID mocks base method.
+func (m *MockDAO) FindMemoByID(ctx context.Context, id int32, fields ...string) (*model.MemoInfo, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, id}
+	for _, a := range fields {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "FindMemoByID", varargs...)
+	ret0, _ := ret[0].(*model.MemoInfo)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// FindMemoByID indicates an expected call of FindMemoByID.
+func (mr *MockDAOMockRecorder) FindMemoByID(ctx, id interface{}, fields ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, id}, fields...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindMemoByID", reflect.TypeOf((*MockDAO)(nil).FindMemoByID), varargs...)
+}
+
+// FindMemoOrganizer mocks base method.
+func (m *MockDAO) FindMemoOrganizer(ctx context.Context, where []string, args []any, fields ...string) (*model.MemoOrganizer, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, where, args}
+	for _, a := range fields {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "FindMemoOrganizer", varargs...)
+	ret0, _ := ret[0].(*model.MemoOrganizer)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// FindMemoOrganizer indicates an expected call of FindMemoOrganizer.
+func (mr *MockDAOMockRecorder) FindMemoOrganizer(ctx, where, args interface{}, fields ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, where, args}, fields...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindMemoOrganizer", reflect.TypeOf((*MockDAO)(nil).FindMemoOrganizer), varargs...)
 }
 
 // FindMemoOrganizers mocks base method.
-func (m *MockDAO) FindMemoOrganizers(ctx context.Context, req *model.FindMemoOrganizersRequest) ([]*model.MemoOrganizer, error) {
+func (m *MockDAO) FindMemoOrganizers(ctx context.Context, where []string, args []any, fields ...string) ([]*model.MemoOrganizer, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "FindMemoOrganizers", ctx, req)
+	varargs := []interface{}{ctx, where, args}
+	for _, a := range fields {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "FindMemoOrganizers", varargs...)
 	ret0, _ := ret[0].([]*model.MemoOrganizer)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // FindMemoOrganizers indicates an expected call of FindMemoOrganizers.
-func (mr *MockDAOMockRecorder) FindMemoOrganizers(ctx, req interface{}) *gomock.Call {
+func (mr *MockDAOMockRecorder) FindMemoOrganizers(ctx, where, args interface{}, fields ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindMemoOrganizers", reflect.TypeOf((*MockDAO)(nil).FindMemoOrganizers), ctx, req)
+	varargs := append([]interface{}{ctx, where, args}, fields...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindMemoOrganizers", reflect.TypeOf((*MockDAO)(nil).FindMemoOrganizers), varargs...)
+}
+
+// FindMemoRelation mocks base method.
+func (m *MockDAO) FindMemoRelation(ctx context.Context, where []string, args []any, fields ...string) (*model.MemoRelation, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, where, args}
+	for _, a := range fields {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "FindMemoRelation", varargs...)
+	ret0, _ := ret[0].(*model.MemoRelation)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// FindMemoRelation indicates an expected call of FindMemoRelation.
+func (mr *MockDAOMockRecorder) FindMemoRelation(ctx, where, args interface{}, fields ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, where, args}, fields...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindMemoRelation", reflect.TypeOf((*MockDAO)(nil).FindMemoRelation), varargs...)
 }
 
 // FindMemoRelations mocks base method.
-func (m *MockDAO) FindMemoRelations(ctx context.Context, req *model.FindMemoRelationsRequest) ([]*model.MemoRelation, error) {
+func (m *MockDAO) FindMemoRelations(ctx context.Context, where []string, args []any, fields ...string) ([]*model.MemoRelation, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "FindMemoRelations", ctx, req)
+	varargs := []interface{}{ctx, where, args}
+	for _, a := range fields {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "FindMemoRelations", varargs...)
 	ret0, _ := ret[0].([]*model.MemoRelation)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // FindMemoRelations indicates an expected call of FindMemoRelations.
-func (mr *MockDAOMockRecorder) FindMemoRelations(ctx, req interface{}) *gomock.Call {
+func (mr *MockDAOMockRecorder) FindMemoRelations(ctx, where, args interface{}, fields ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindMemoRelations", reflect.TypeOf((*MockDAO)(nil).FindMemoRelations), ctx, req)
+	varargs := append([]interface{}{ctx, where, args}, fields...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindMemoRelations", reflect.TypeOf((*MockDAO)(nil).FindMemoRelations), varargs...)
 }
 
 // FindMemos mocks base method.
-func (m *MockDAO) FindMemos(ctx context.Context, req *model.FindMemoRequest) ([]*model.MemoInfo, error) {
+func (m *MockDAO) FindMemos(ctx context.Context, where []string, args []any, fields ...string) ([]*model.MemoInfo, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "FindMemos", ctx, req)
+	varargs := []interface{}{ctx, where, args}
+	for _, a := range fields {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "FindMemos", varargs...)
 	ret0, _ := ret[0].([]*model.MemoInfo)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // FindMemos indicates an expected call of FindMemos.
-func (mr *MockDAOMockRecorder) FindMemos(ctx, req interface{}) *gomock.Call {
+func (mr *MockDAOMockRecorder) FindMemos(ctx, where, args interface{}, fields ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindMemos", reflect.TypeOf((*MockDAO)(nil).FindMemos), ctx, req)
+	varargs := append([]interface{}{ctx, where, args}, fields...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindMemos", reflect.TypeOf((*MockDAO)(nil).FindMemos), varargs...)
+}
+
+// FindReaction mocks base method.
+func (m *MockDAO) FindReaction(ctx context.Context, where []string, args []any, fields ...string) (*model.Reaction, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, where, args}
+	for _, a := range fields {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "FindReaction", varargs...)
+	ret0, _ := ret[0].(*model.Reaction)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// FindReaction indicates an expected call of FindReaction.
+func (mr *MockDAOMockRecorder) FindReaction(ctx, where, args interface{}, fields ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, where, args}, fields...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindReaction", reflect.TypeOf((*MockDAO)(nil).FindReaction), varargs...)
 }
 
 // FindReactions mocks base method.
-func (m *MockDAO) FindReactions(ctx context.Context, req *model.FindReactionsRequest) ([]*model.Reaction, error) {
+func (m *MockDAO) FindReactions(ctx context.Context, where []string, args []any, fields ...string) ([]*model.Reaction, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "FindReactions", ctx, req)
+	varargs := []interface{}{ctx, where, args}
+	for _, a := range fields {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "FindReactions", varargs...)
 	ret0, _ := ret[0].([]*model.Reaction)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // FindReactions indicates an expected call of FindReactions.
-func (mr *MockDAOMockRecorder) FindReactions(ctx, req interface{}) *gomock.Call {
+func (mr *MockDAOMockRecorder) FindReactions(ctx, where, args interface{}, fields ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindReactions", reflect.TypeOf((*MockDAO)(nil).FindReactions), ctx, req)
+	varargs := append([]interface{}{ctx, where, args}, fields...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindReactions", reflect.TypeOf((*MockDAO)(nil).FindReactions), varargs...)
 }
 
 // FindResource mocks base method.
-func (m *MockDAO) FindResource(ctx context.Context, req *model.FindResourceRequest) (*model.Resource, error) {
+func (m *MockDAO) FindResource(ctx context.Context, where []string, args []any, fields ...string) (*model.Resource, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "FindResource", ctx, req)
+	varargs := []interface{}{ctx, where, args}
+	for _, a := range fields {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "FindResource", varargs...)
 	ret0, _ := ret[0].(*model.Resource)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // FindResource indicates an expected call of FindResource.
-func (mr *MockDAOMockRecorder) FindResource(ctx, req interface{}) *gomock.Call {
+func (mr *MockDAOMockRecorder) FindResource(ctx, where, args interface{}, fields ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindResource", reflect.TypeOf((*MockDAO)(nil).FindResource), ctx, req)
+	varargs := append([]interface{}{ctx, where, args}, fields...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindResource", reflect.TypeOf((*MockDAO)(nil).FindResource), varargs...)
+}
+
+// FindResourceByID mocks base method.
+func (m *MockDAO) FindResourceByID(ctx context.Context, id int32, fields ...string) (*model.Resource, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, id}
+	for _, a := range fields {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "FindResourceByID", varargs...)
+	ret0, _ := ret[0].(*model.Resource)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// FindResourceByID indicates an expected call of FindResourceByID.
+func (mr *MockDAOMockRecorder) FindResourceByID(ctx, id interface{}, fields ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, id}, fields...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindResourceByID", reflect.TypeOf((*MockDAO)(nil).FindResourceByID), varargs...)
 }
 
 // FindResources mocks base method.
-func (m *MockDAO) FindResources(ctx context.Context, req *model.FindResourceRequest) ([]*model.Resource, error) {
+func (m *MockDAO) FindResources(ctx context.Context, where []string, args []any, fields ...string) ([]*model.Resource, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "FindResources", ctx, req)
+	varargs := []interface{}{ctx, where, args}
+	for _, a := range fields {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "FindResources", varargs...)
 	ret0, _ := ret[0].([]*model.Resource)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // FindResources indicates an expected call of FindResources.
-func (mr *MockDAOMockRecorder) FindResources(ctx, req interface{}) *gomock.Call {
+func (mr *MockDAOMockRecorder) FindResources(ctx, where, args interface{}, fields ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindResources", reflect.TypeOf((*MockDAO)(nil).FindResources), ctx, req)
+	varargs := append([]interface{}{ctx, where, args}, fields...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindResources", reflect.TypeOf((*MockDAO)(nil).FindResources), varargs...)
+}
+
+// FindWorkspaceSetting mocks base method.
+func (m *MockDAO) FindWorkspaceSetting(ctx context.Context, where []string, args []any, fields ...string) (*model.WorkspaceSetting, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, where, args}
+	for _, a := range fields {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "FindWorkspaceSetting", varargs...)
+	ret0, _ := ret[0].(*model.WorkspaceSetting)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// FindWorkspaceSetting indicates an expected call of FindWorkspaceSetting.
+func (mr *MockDAOMockRecorder) FindWorkspaceSetting(ctx, where, args interface{}, fields ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, where, args}, fields...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindWorkspaceSetting", reflect.TypeOf((*MockDAO)(nil).FindWorkspaceSetting), varargs...)
 }
 
 // FindWorkspaceSettings mocks base method.
-func (m *MockDAO) FindWorkspaceSettings(ctx context.Context, req *model.FindWorkspaceSettingsRequest) ([]*model.WorkspaceSetting, error) {
+func (m *MockDAO) FindWorkspaceSettings(ctx context.Context, where []string, args []any, fields ...string) ([]*model.WorkspaceSetting, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "FindWorkspaceSettings", ctx, req)
+	varargs := []interface{}{ctx, where, args}
+	for _, a := range fields {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "FindWorkspaceSettings", varargs...)
 	ret0, _ := ret[0].([]*model.WorkspaceSetting)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // FindWorkspaceSettings indicates an expected call of FindWorkspaceSettings.
-func (mr *MockDAOMockRecorder) FindWorkspaceSettings(ctx, req interface{}) *gomock.Call {
+func (mr *MockDAOMockRecorder) FindWorkspaceSettings(ctx, where, args interface{}, fields ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindWorkspaceSettings", reflect.TypeOf((*MockDAO)(nil).FindWorkspaceSettings), ctx, req)
+	varargs := append([]interface{}{ctx, where, args}, fields...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindWorkspaceSettings", reflect.TypeOf((*MockDAO)(nil).FindWorkspaceSettings), varargs...)
 }
 
 // ReadLocalFile mocks base method.

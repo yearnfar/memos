@@ -71,14 +71,6 @@ type WorkspaceMemoRelatedSetting struct {
 	EnableLinkPreview bool `json:"enable_link_preview"`
 }
 
-type FindWorkspaceSettingsRequest struct {
-	Name string
-}
-
-type FindWorkspaceSettingRequest struct {
-	Name string
-}
-
 type SetWorkspaceSettingRequest struct {
 	Name        string
 	Description string

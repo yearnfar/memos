@@ -8,13 +8,13 @@ import (
 )
 
 func (s *Service) ListMemoRelations(ctx context.Context, req *model.ListMemoRelationsRequest) (list []*model.MemoRelation, err error) {
-	list, err = s.dao.FindMemoRelations(ctx, &model.FindMemoRelationsRequest{MemoID: req.MemoID})
+	list, err = s.dao.FindMemoRelations(ctx, []string{"memo_id=?"}, []any{req.MemoID})
 	if err != nil {
 		return nil, err
 	}
-	tempList, err := s.dao.FindMemoRelations(ctx, &model.FindMemoRelationsRequest{
-		RelatedMemoID: req.MemoID,
-	})
+	where := []string{"related_memo_id=?"}
+	args := []any{req.MemoID}
+	tempList, err := s.dao.FindMemoRelations(ctx, where, args)
 	if err != nil {
 		return nil, err
 	}

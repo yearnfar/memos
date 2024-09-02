@@ -103,7 +103,7 @@ func (s *Service) getWorkspaceSettingCache(ctx context.Context, key model.Worksp
 			return workspaceSetting, nil
 		}
 	}
-	list, err := s.dao.FindWorkspaceSettings(ctx, &model.FindWorkspaceSettingsRequest{Name: string(key)})
+	list, err := s.dao.FindWorkspaceSettings(ctx, []string{"name=?"}, []any{key})
 	if err != nil {
 		return nil, err
 	}

@@ -13,8 +13,3 @@ type Webhook struct {
 func (Webhook) TableName() string {
 	return TableWebhook
 }
-
-type FindWebhookRequest struct {
-	ID        int32
-	CreatorID int32
-}

@@ -18,13 +18,6 @@ type InboxMessage struct {
 	ActivityId int32
 }
 
-type FindInboxRequest struct {
-	Id         int
-	SenderId   int32
-	ReceiverId int32
-	Status     InboxStatus
-}
-
 type ListInboxesRequest struct {
 	ReceiverId int32
 }

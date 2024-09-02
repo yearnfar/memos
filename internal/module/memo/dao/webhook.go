@@ -2,8 +2,7 @@ package dao
 
 import (
 	"context"
-
-	"gorm.io/gorm"
+	"strings"
 
 	"github.com/yearnfar/memos/internal/module/memo/model"
 	"github.com/yearnfar/memos/internal/pkg/db"
@@ -14,27 +13,23 @@ func (dao *Dao) CreateWebhook(ctx context.Context, m *model.Webhook) error {
 	return err
 }
 
-func (dao *Dao) FindWebhooks(ctx context.Context, req *model.FindWebhookRequest) (list []*model.Webhook, err error) {
-	conn := db.GetDB(ctx)
-	if req.ID != 0 {
-		conn = conn.Where("id=?", req.ID)
+func (dao *Dao) FindWebhooks(ctx context.Context, where []string, args []any, fields ...string) (list []*model.Webhook, err error) {
+	if len(where) == 0 {
+		where, args = []string{"1"}, []any{}
 	}
-	if req.CreatorID != 0 {
-		conn = conn.Where("creator_id=?", req.CreatorID)
-	}
-	err = conn.Find(&list).Error
-	return list, err
+	err = db.GetDB(ctx).Where(strings.Join(where, " and "), args...).Find(&list).Error
+	return
 }
 
-func (dao *Dao) FindWebhook(ctx context.Context, find *model.FindWebhookRequest) (*model.Webhook, error) {
-	list, err := dao.FindWebhooks(ctx, find)
-	if err != nil {
+func (dao *Dao) FindWebhook(ctx context.Context, where []string, args []any, fields ...string) (*model.Webhook, error) {
+	if len(where) == 0 {
+		where, args = []string{"1"}, []any{}
+	}
+	var m model.Webhook
+	if err := db.GetDB(ctx).Where(strings.Join(where, " and "), args...).First(&m).Error; err != nil {
 		return nil, err
 	}
-	if len(list) == 0 {
-		return nil, gorm.ErrRecordNotFound
-	}
-	return list[0], nil
+	return &m, nil
 }
 
 func (dao *Dao) UpdateWebhook(ctx context.Context, m *model.Webhook, update map[string]any) (err error) {

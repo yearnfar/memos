@@ -48,12 +48,12 @@ func (s *Service) CreateMemo(ctx context.Context, req *model.CreateMemoRequest) 
 	if err = s.dao.CreateMemo(ctx, memo); err != nil {
 		return
 	}
-	memoInfo, err = s.dao.FindMemo(ctx, &model.FindMemoRequest{Id: memo.ID})
+	memoInfo, err = s.dao.FindMemoByID(ctx, memo.ID)
 	return
 }
 
 func (s *Service) CreateMemoComment(ctx context.Context, req *model.CreateMemoCommentRequest) (memo *model.MemoInfo, err error) {
-	relatedMemo, err := s.dao.FindMemo(ctx, &model.FindMemoRequest{Id: req.ID})
+	relatedMemo, err := s.dao.FindMemoByID(ctx, req.ID)
 	if err != nil {
 		err = errors.New("failed to get memo")
 		return
@@ -157,7 +157,7 @@ func TraverseASTNodes(nodes []ast.Node, fn func(ast.Node)) {
 }
 
 func (s *Service) UpdateMemo(ctx context.Context, req *model.UpdateMemoRequest) (memoInfo *model.MemoInfo, err error) {
-	memoInfo, err = s.dao.FindMemo(ctx, &model.FindMemoRequest{Id: req.ID})
+	memoInfo, err = s.dao.FindMemoByID(ctx, req.ID)
 	if err != nil {
 		return
 	}
@@ -213,22 +213,15 @@ func (s *Service) UpdateMemo(ctx context.Context, req *model.UpdateMemoRequest) 
 }
 
 func (s *Service) ListMemos(ctx context.Context, req *model.ListMemosRequest) (list []*model.MemoInfo, err error) {
-	list, err = s.dao.FindMemos(ctx, &model.FindMemoRequest{
-		CreatorId:       req.CreatorId,
-		ExcludeComments: req.ExcludeComments,
-	})
+	list, err = s.dao.FindMemos(ctx, []string{"creator_id=?", "exclude_comments=?"}, []any{req.CreatorId, req.ExcludeComments})
 	if err != nil {
 		return
 	}
-
 	return
 }
 
 func (s *Service) GetMemo(ctx context.Context, req *model.GetMemoRequest) (*model.MemoInfo, error) {
-	memo, err := s.dao.FindMemo(ctx, &model.FindMemoRequest{
-		Id:  req.Id,
-		UID: req.UID,
-	})
+	memo, err := s.dao.FindMemo(ctx, []string{"id=?", "uid=?"}, []any{req.Id, req.UID})
 	if err != nil {
 		return nil, err
 	}
@@ -241,7 +234,7 @@ func (s *Service) GetMemo(ctx context.Context, req *model.GetMemoRequest) (*mode
 }
 
 func (s *Service) DeleteMemo(ctx context.Context, req *model.DeleteMemoRequest) (err error) {
-	memo, err := s.dao.FindMemo(ctx, &model.FindMemoRequest{Id: req.Id})
+	memo, err := s.dao.FindMemoByID(ctx, req.Id)
 	if err != nil {
 		return
 	}
@@ -274,9 +267,7 @@ func (s *Service) UpsertReaction(ctx context.Context, req *model.UpsertReactionR
 }
 
 func (s *Service) SetMemoResources(ctx context.Context, req *model.SetMemoResourcesRequest) (err error) {
-	resources, err := s.dao.FindResources(ctx, &model.FindResourceRequest{
-		MemoID: req.MemoID,
-	})
+	resources, err := s.dao.FindResources(ctx, []string{"memo_id=?"}, []any{req.MemoID})
 	if err != nil {
 		err = errors.New("failed to list resources")
 		return
@@ -304,7 +295,7 @@ func (s *Service) SetMemoResources(ctx context.Context, req *model.SetMemoResour
 	// Update resources' memo_id in the request.
 	for index, resource := range req.Resources {
 		var res *model.Resource
-		res, err = s.dao.FindResource(ctx, &model.FindResourceRequest{ID: resource.ID})
+		res, err = s.dao.FindResourceByID(ctx, resource.ID)
 		if err != nil {
 			continue
 		}

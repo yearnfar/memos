@@ -5,57 +5,44 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/pkg/errors"
 	"github.com/yearnfar/gokit/fsutil"
 	"github.com/yearnfar/memos/internal/module/memo/model"
 	"github.com/yearnfar/memos/internal/pkg/db"
-	"gorm.io/gorm"
 )
-
-func (dao *Dao) FindResources(ctx context.Context, req *model.FindResourceRequest) (list []*model.Resource, err error) {
-	conn := db.GetDB(ctx)
-	if req.ID != 0 {
-		conn = conn.Where("id=?", req.ID)
-	}
-	if req.MemoID != 0 {
-		conn = conn.Where("memo_id=?", req.MemoID)
-	}
-	if req.UID != "" {
-		conn = conn.Where("uid=?", req.UID)
-	}
-	if req.CreatorID != 0 {
-		conn = conn.Where("creator_id=?", req.CreatorID)
-	}
-	if req.Filename != "" {
-		conn = conn.Where("file_name=?", req.Filename)
-	}
-	if req.FilenameSearch != "" {
-		conn = conn.Where("filename like ?", "%s"+req.FilenameSearch+"%")
-	}
-	if req.HasRelatedMemo {
-		conn = conn.Where("memo_id is not null")
-	}
-	if req.StorageType != "" {
-		conn = conn.Where("storage_type=?", req.StorageType)
-	}
-	err = conn.Find(&list).Error
-	return
-}
-
-func (dao *Dao) FindResource(ctx context.Context, req *model.FindResourceRequest) (*model.Resource, error) {
-	list, err := dao.FindResources(ctx, req)
-	if err != nil {
-		return nil, err
-	} else if len(list) == 0 {
-		return nil, gorm.ErrRecordNotFound
-	}
-	return list[0], nil
-}
 
 func (dao *Dao) CreateResource(ctx context.Context, m *model.Resource) (err error) {
 	err = db.GetDB(ctx).Create(m).Error
 	return
+}
+
+func (dao *Dao) FindResources(ctx context.Context, where []string, args []any, fields ...string) (list []*model.Resource, err error) {
+	if len(where) == 0 {
+		where, args = []string{"1"}, []any{}
+	}
+	err = db.GetDB(ctx).Where(strings.Join(where, " and "), args...).Find(&list).Error
+	return
+}
+
+func (dao *Dao) FindResource(ctx context.Context, where []string, args []any, fields ...string) (*model.Resource, error) {
+	if len(where) == 0 {
+		where, args = []string{"1"}, []any{}
+	}
+	var m model.Resource
+	if err := db.GetDB(ctx).Where(strings.Join(where, " and "), args...).First(&m).Error; err != nil {
+		return nil, err
+	}
+	return &m, nil
+}
+
+func (dao *Dao) FindResourceByID(ctx context.Context, id int32, fields ...string) (*model.Resource, error) {
+	var m model.Resource
+	if err := db.GetDB(ctx).Where("id=?").First(&m).Error; err != nil {
+		return nil, err
+	}
+	return &m, nil
 }
 
 func (dao *Dao) DeleteResourceById(ctx context.Context, id int32) (err error) {

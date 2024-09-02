@@ -2,35 +2,29 @@ package dao
 
 import (
 	"context"
+	"strings"
 
 	"github.com/yearnfar/memos/internal/module/memo/model"
 	"github.com/yearnfar/memos/internal/pkg/db"
-	"gorm.io/gorm"
 )
 
-func (dao *Dao) FindReactions(ctx context.Context, req *model.FindReactionsRequest) (list []*model.Reaction, err error) {
-	conn := db.GetDB(ctx)
-	if req.Id != 0 {
-		conn = conn.Where("id=?", req.Id)
+func (dao *Dao) FindReactions(ctx context.Context, where []string, args []any, fields ...string) (list []*model.Reaction, err error) {
+	if len(where) == 0 {
+		where, args = []string{"1"}, []any{}
 	}
-	if req.CreatorId != 0 {
-		conn = conn.Where("creator_id=?", req.CreatorId)
-	}
-	if req.ContentId != "" {
-		conn = conn.Where("content_id=?", req.ContentId)
-	}
-	err = conn.Find(&list).Error
+	err = db.GetDB(ctx).Where(strings.Join(where, " and "), args...).Find(&list).Error
 	return
 }
 
-func (dao *Dao) FindReaction(ctx context.Context, req *model.FindReactionsRequest) (*model.Reaction, error) {
-	list, err := dao.FindReactions(ctx, req)
-	if err != nil {
-		return nil, err
-	} else if len(list) == 0 {
-		return nil, gorm.ErrRecordNotFound
+func (dao *Dao) FindReaction(ctx context.Context, where []string, args []any, fields ...string) (*model.Reaction, error) {
+	if len(where) == 0 {
+		where, args = []string{"1"}, []any{}
 	}
-	return list[0], nil
+	var m model.Reaction
+	if err := db.GetDB(ctx).Where(strings.Join(where, " and "), args...).First(&m).Error; err != nil {
+		return nil, err
+	}
+	return &m, nil
 }
 
 func (dao *Dao) CreateReaction(ctx context.Context, m *model.Reaction) (err error) {
