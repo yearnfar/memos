@@ -120,17 +120,17 @@ func (mr *MockDAOMockRecorder) DeleteMemoById(ctx, id interface{}) *gomock.Call 
 }
 
 // DeleteMemoRelations mocks base method.
-func (m *MockDAO) DeleteMemoRelations(ctx context.Context, req *model.DeleteMemoRelationsRequest) error {
+func (m *MockDAO) DeleteMemoRelations(ctx context.Context, where []string, args []any) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "DeleteMemoRelations", ctx, req)
+	ret := m.ctrl.Call(m, "DeleteMemoRelations", ctx, where, args)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
 // DeleteMemoRelations indicates an expected call of DeleteMemoRelations.
-func (mr *MockDAOMockRecorder) DeleteMemoRelations(ctx, req interface{}) *gomock.Call {
+func (mr *MockDAOMockRecorder) DeleteMemoRelations(ctx, where, args interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteMemoRelations", reflect.TypeOf((*MockDAO)(nil).DeleteMemoRelations), ctx, req)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteMemoRelations", reflect.TypeOf((*MockDAO)(nil).DeleteMemoRelations), ctx, where, args)
 }
 
 // DeleteResourceById mocks base method.

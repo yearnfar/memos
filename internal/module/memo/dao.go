@@ -26,7 +26,7 @@ type DAO interface {
 	UpsertMemoRelation(ctx context.Context, m *model.MemoRelation) error
 	FindMemoRelations(ctx context.Context, where []string, args []any, fields ...string) ([]*model.MemoRelation, error)
 	FindMemoRelation(ctx context.Context, where []string, args []any, fields ...string) (*model.MemoRelation, error)
-	DeleteMemoRelations(ctx context.Context, req *model.DeleteMemoRelationsRequest) error
+	DeleteMemoRelations(ctx context.Context, where []string, args []any) error
 
 	FindMemoOrganizers(ctx context.Context, where []string, args []any, fields ...string) ([]*model.MemoOrganizer, error)
 	FindMemoOrganizer(ctx context.Context, where []string, args []any, fields ...string) (*model.MemoOrganizer, error)

@@ -24,10 +24,7 @@ func (s *Service) ListMemoRelations(ctx context.Context, req *model.ListMemoRela
 
 func (s *Service) SetMemoRelations(ctx context.Context, req *model.SetMemoRelationsRequest) (err error) {
 	referenceType := model.MemoRelationReference
-	if err = s.dao.DeleteMemoRelations(ctx, &model.DeleteMemoRelationsRequest{
-		MemoID: req.MemoID,
-		Type:   referenceType,
-	}); err != nil {
+	if err = s.dao.DeleteMemoRelations(ctx, []string{"memo_id=?", "type=?"}, []any{req.MemoID, referenceType}); err != nil {
 		err = errors.New("failed to delete memo relation")
 		return
 	}

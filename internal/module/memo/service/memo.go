@@ -259,7 +259,7 @@ func (s *Service) DeleteMemo(ctx context.Context, req *model.DeleteMemoRequest) 
 	if err = s.dao.DeleteMemoById(ctx, req.Id); err != nil {
 		return
 	}
-	err = s.dao.DeleteMemoRelations(ctx, &model.DeleteMemoRelationsRequest{MemoID: req.Id})
+	err = s.dao.DeleteMemoRelations(ctx, []string{"memo_id=?"}, []any{req.Id})
 	if err != nil {
 		return
 	}

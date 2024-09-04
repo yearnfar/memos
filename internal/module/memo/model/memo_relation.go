@@ -24,12 +24,6 @@ type ListMemoRelationsRequest struct {
 	MemoID int32
 }
 
-type DeleteMemoRelationsRequest struct {
-	MemoID        int32
-	RelatedMemoID int32
-	Type          MemoRelationType
-}
-
 type SetMemoRelationsRequest struct {
 	MemoID    int32
 	Relations []*MemoRelation
