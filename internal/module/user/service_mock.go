@@ -108,19 +108,19 @@ func (mr *MockServiceMockRecorder) GetAccessTokens(ctx, userId interface{}) *gom
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAccessTokens", reflect.TypeOf((*MockService)(nil).GetAccessTokens), ctx, userId)
 }
 
-// GetInstanceOwner mocks base method.
-func (m *MockService) GetInstanceOwner(ctx context.Context) (*model.User, error) {
+// GetUser mocks base method.
+func (m *MockService) GetUser(ctx context.Context, req *model.GetUserRequest) (*model.User, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetInstanceOwner", ctx)
+	ret := m.ctrl.Call(m, "GetUser", ctx, req)
 	ret0, _ := ret[0].(*model.User)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// GetInstanceOwner indicates an expected call of GetInstanceOwner.
-func (mr *MockServiceMockRecorder) GetInstanceOwner(ctx interface{}) *gomock.Call {
+// GetUser indicates an expected call of GetUser.
+func (mr *MockServiceMockRecorder) GetUser(ctx, req interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetInstanceOwner", reflect.TypeOf((*MockService)(nil).GetInstanceOwner), ctx)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetUser", reflect.TypeOf((*MockService)(nil).GetUser), ctx, req)
 }
 
 // GetUserById mocks base method.

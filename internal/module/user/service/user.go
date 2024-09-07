@@ -135,6 +135,18 @@ func (s *Service) GetUserByUsername(ctx context.Context, username string) (*mode
 	return s.dao.FindUserByUsername(ctx, username)
 }
 
+func (s *Service) GetUser(ctx context.Context, req *model.GetUserRequest) (*model.User, error) {
+	var (
+		where []string
+		args  []any
+	)
+	if req.Role != "" {
+		where = append(where, "role=?")
+		args = append(args, req.Role)
+	}
+	return s.dao.FindUser(ctx, where, args)
+}
+
 func (s *Service) DeleteUserById(ctx context.Context, userId int32) (err error) {
 	user, err := s.dao.FindUserById(ctx, userId)
 	if err != nil {

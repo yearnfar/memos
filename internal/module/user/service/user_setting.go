@@ -56,7 +56,9 @@ func (s *Service) DeleteAccessToken(ctx context.Context, userId int32, accessTok
 		err = errors.Wrap(err, "failed to get user access tokens")
 		return
 	}
-	var val *model.UserSettingValue
+	val := &model.UserSettingValue{
+		AccessTokens: []*model.AccessToken{},
+	}
 	for _, token := range tokens {
 		if accessToken != token.Token {
 			val.AccessTokens = append(val.AccessTokens, token)

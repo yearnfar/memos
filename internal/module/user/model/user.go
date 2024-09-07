@@ -48,6 +48,9 @@ type UpdateUserRequest struct {
 	Password    string
 	Description string
 }
+type GetUserRequest struct {
+	Role Role
+}
 
 type ListUsersRequest struct {
 }
@@ -55,8 +58,4 @@ type ListUsersRequest struct {
 type SignUpRequest struct {
 	Username string
 	Password string
-}
-type FindUsersRequest struct {
-	UserId int
-	Role   Role
 }

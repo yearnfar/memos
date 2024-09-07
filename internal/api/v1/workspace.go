@@ -4,6 +4,8 @@ import (
 	"context"
 
 	"github.com/yearnfar/memos/internal/api"
+	usermod "github.com/yearnfar/memos/internal/module/user"
+	"github.com/yearnfar/memos/internal/module/user/model"
 
 	v1pb "github.com/yearnfar/memos/internal/proto/api/v1"
 )
@@ -37,25 +39,10 @@ func (s *WorkspaceService) GetWorkspaceProfile(ctx context.Context, _ *v1pb.GetW
 }
 
 func (s *WorkspaceService) GetInstanceOwner(ctx context.Context) (response *v1pb.User, err error) {
+	user, err := usermod.GetUser(ctx, &model.GetUserRequest{Role: model.RoleHost})
+	if err != nil {
+		return
+	}
+	response = convertUserFromStore(user)
 	return
 }
-
-// func (s *WorkspaceService) GetInstanceOwner(ctx context.Context) (*v1pb.User, error) {
-// 	if ownerCache != nil {
-// 		return ownerCache, nil
-// 	}
-
-// 	hostUserType := store.RoleHost
-// 	user, err := s.Store.GetUser(ctx, &store.FindUser{
-// 		Role: &hostUserType,
-// 	})
-// 	if err != nil {
-// 		return nil, errors.Wrapf(err, "failed to find owner")
-// 	}
-// 	if user == nil {
-// 		return nil, nil
-// 	}
-
-// 	ownerCache = convertUserFromStore(user)
-// 	return ownerCache, nil
-// }

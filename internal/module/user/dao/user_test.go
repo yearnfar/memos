@@ -58,7 +58,7 @@ func TestDao_GetUser(t *testing.T) {
 	db.Init()
 
 	ctx := context.Background()
-	user, err := New().FindUser(ctx, &model.FindUserRequest{Username: "yearnfar"})
+	user, err := New().FindUser(ctx, []string{"username=?"}, []any{"yearnfar"})
 	if err != nil {
 		t.Fatal(err)
 	}

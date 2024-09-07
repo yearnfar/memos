@@ -31,6 +31,14 @@ func SignUp(ctx context.Context, req *model.SignUpRequest) (*model.User, error) 
 	return v1, v2
 }
 
+func GetUser(ctx context.Context, req *model.GetUserRequest) (*model.User, error) {
+	if defaultService == nil {
+		panic("调用模块方法: user.GetUser 失败，服务未注册")
+	}
+	v1, v2 := defaultService.GetUser(ctx, req)
+	return v1, v2
+}
+
 func GetUserByUsername(ctx context.Context, username string) (*model.User, error) {
 	if defaultService == nil {
 		panic("调用模块方法: user.GetUserByUsername 失败，服务未注册")
@@ -39,19 +47,19 @@ func GetUserByUsername(ctx context.Context, username string) (*model.User, error
 	return v1, v2
 }
 
-func GetInstanceOwner(ctx context.Context) (*model.User, error) {
-	if defaultService == nil {
-		panic("调用模块方法: user.GetInstanceOwner 失败，服务未注册")
-	}
-	v1, v2 := defaultService.GetInstanceOwner(ctx)
-	return v1, v2
-}
-
 func GetUserById(ctx context.Context, id int32) (*model.User, error) {
 	if defaultService == nil {
 		panic("调用模块方法: user.GetUserById 失败，服务未注册")
 	}
 	v1, v2 := defaultService.GetUserById(ctx, id)
+	return v1, v2
+}
+
+func ListUsers(ctx context.Context, req *model.ListUsersRequest) ([]*model.User, error) {
+	if defaultService == nil {
+		panic("调用模块方法: user.ListUsers 失败，服务未注册")
+	}
+	v1, v2 := defaultService.ListUsers(ctx, req)
 	return v1, v2
 }
 
@@ -69,14 +77,6 @@ func DeleteUserById(ctx context.Context, userId int32) error {
 	}
 	v1 := defaultService.DeleteUserById(ctx, userId)
 	return v1
-}
-
-func ListUsers(ctx context.Context, req *model.ListUsersRequest) ([]*model.User, error) {
-	if defaultService == nil {
-		panic("调用模块方法: user.ListUsers 失败，服务未注册")
-	}
-	v1, v2 := defaultService.ListUsers(ctx, req)
-	return v1, v2
 }
 
 func UpsertAccessToken(ctx context.Context, userId int32, token *model.AccessToken) error {
