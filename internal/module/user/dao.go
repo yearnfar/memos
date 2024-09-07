@@ -12,11 +12,11 @@ type DAO interface {
 	FindUserById(ctx context.Context, id int32) (*model.User, error)
 	DeleteUserById(ctx context.Context, userId int32) error
 	FindUserByUsername(ctx context.Context, username string) (*model.User, error)
-	FindUser(ctx context.Context, req *model.FindUserRequest) (*model.User, error)
-	FindUsers(ctx context.Context, req *model.FindUsersRequest) ([]*model.User, error)
+	FindUser(ctx context.Context, where []string, args []any, fields ...string) (*model.User, error)
+	FindUsers(ctx context.Context, where []string, args []any, fields ...string) ([]*model.User, error)
 	UpdateUser(ctx context.Context, user *model.User, update map[string]any) error
 
-	FindUserSettings(ctx context.Context, req *model.FindUserSettingsRequest) ([]*model.UserSetting, error)
+	FindUserSettings(ctx context.Context, where []string, args []any, fields ...string) ([]*model.UserSetting, error)
 	UpsertUserSetting(ctx context.Context, m *model.UserSetting) (err error)
 	FindUserAccessTokens(ctx context.Context, userId int32) ([]*model.AccessToken, error)
 }

@@ -64,18 +64,23 @@ func (mr *MockDAOMockRecorder) DeleteUserById(ctx, userId interface{}) *gomock.C
 }
 
 // FindUser mocks base method.
-func (m *MockDAO) FindUser(ctx context.Context, req *model.FindUserRequest) (*model.User, error) {
+func (m *MockDAO) FindUser(ctx context.Context, where []string, args []any, fields ...string) (*model.User, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "FindUser", ctx, req)
+	varargs := []interface{}{ctx, where, args}
+	for _, a := range fields {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "FindUser", varargs...)
 	ret0, _ := ret[0].(*model.User)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // FindUser indicates an expected call of FindUser.
-func (mr *MockDAOMockRecorder) FindUser(ctx, req interface{}) *gomock.Call {
+func (mr *MockDAOMockRecorder) FindUser(ctx, where, args interface{}, fields ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindUser", reflect.TypeOf((*MockDAO)(nil).FindUser), ctx, req)
+	varargs := append([]interface{}{ctx, where, args}, fields...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindUser", reflect.TypeOf((*MockDAO)(nil).FindUser), varargs...)
 }
 
 // FindUserAccessTokens mocks base method.
@@ -124,33 +129,43 @@ func (mr *MockDAOMockRecorder) FindUserByUsername(ctx, username interface{}) *go
 }
 
 // FindUserSettings mocks base method.
-func (m *MockDAO) FindUserSettings(ctx context.Context, req *model.FindUserSettingsRequest) ([]*model.UserSetting, error) {
+func (m *MockDAO) FindUserSettings(ctx context.Context, where []string, args []any, fields ...string) ([]*model.UserSetting, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "FindUserSettings", ctx, req)
+	varargs := []interface{}{ctx, where, args}
+	for _, a := range fields {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "FindUserSettings", varargs...)
 	ret0, _ := ret[0].([]*model.UserSetting)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // FindUserSettings indicates an expected call of FindUserSettings.
-func (mr *MockDAOMockRecorder) FindUserSettings(ctx, req interface{}) *gomock.Call {
+func (mr *MockDAOMockRecorder) FindUserSettings(ctx, where, args interface{}, fields ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindUserSettings", reflect.TypeOf((*MockDAO)(nil).FindUserSettings), ctx, req)
+	varargs := append([]interface{}{ctx, where, args}, fields...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindUserSettings", reflect.TypeOf((*MockDAO)(nil).FindUserSettings), varargs...)
 }
 
 // FindUsers mocks base method.
-func (m *MockDAO) FindUsers(ctx context.Context, req *model.FindUsersRequest) ([]*model.User, error) {
+func (m *MockDAO) FindUsers(ctx context.Context, where []string, args []any, fields ...string) ([]*model.User, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "FindUsers", ctx, req)
+	varargs := []interface{}{ctx, where, args}
+	for _, a := range fields {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "FindUsers", varargs...)
 	ret0, _ := ret[0].([]*model.User)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // FindUsers indicates an expected call of FindUsers.
-func (mr *MockDAOMockRecorder) FindUsers(ctx, req interface{}) *gomock.Call {
+func (mr *MockDAOMockRecorder) FindUsers(ctx, where, args interface{}, fields ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindUsers", reflect.TypeOf((*MockDAO)(nil).FindUsers), ctx, req)
+	varargs := append([]interface{}{ctx, where, args}, fields...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindUsers", reflect.TypeOf((*MockDAO)(nil).FindUsers), varargs...)
 }
 
 // UpdateUser mocks base method.

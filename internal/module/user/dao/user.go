@@ -2,6 +2,7 @@ package dao
 
 import (
 	"context"
+	"strings"
 
 	"github.com/yearnfar/memos/internal/module/user/model"
 	"github.com/yearnfar/memos/internal/pkg/db"
@@ -23,17 +24,16 @@ func (Dao) FindUserByUsername(ctx context.Context, username string) (user *model
 	return
 }
 
-func (Dao) FindUser(ctx context.Context, req *model.FindUserRequest) (user *model.User, err error) {
-	conn := db.GetDB(ctx)
-	if req.Id != 0 {
-		conn = conn.Where("id=?", req.Id)
+func (Dao) FindUser(ctx context.Context, where []string, args []any, fields ...string) (*model.User, error) {
+	if len(where) == 0 {
+		where, args = []string{"1"}, []any{}
 	}
-	if req.Username != "" {
-		conn = conn.Where("username=?", req.Username)
+	var user model.User
+	err := db.GetDB(ctx).Where(strings.Join(where, " and "), args...).First(&user).Error
+	if err != nil {
+		return nil, err
 	}
-	user = &model.User{}
-	err = conn.First(&user).Error
-	return
+	return &user, nil
 }
 
 func (Dao) UpdateUser(ctx context.Context, user *model.User, update map[string]any) (err error) {
@@ -46,11 +46,10 @@ func (Dao) DeleteUserById(ctx context.Context, id int32) (err error) {
 	return
 }
 
-func (Dao) FindUsers(ctx context.Context, req *model.FindUsersRequest) (list []*model.User, err error) {
-	conn := db.GetDB(ctx)
-	if req.Role != "" {
-		conn = conn.Where("role=?", req.Role)
+func (Dao) FindUsers(ctx context.Context, where []string, args []any, fields ...string) (list []*model.User, err error) {
+	if len(where) == 0 {
+		where, args = []string{"1"}, []any{}
 	}
-	err = conn.Find(&list).Error
+	err = db.GetDB(ctx).Where(strings.Join(where, " and "), args...).Find(&list).Error
 	return
 }

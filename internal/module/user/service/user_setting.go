@@ -79,7 +79,9 @@ func (s *Service) DeleteAccessToken(ctx context.Context, userId int32, accessTok
 }
 
 func (s *Service) GetUserSettings(ctx context.Context, userId int32) ([]*model.UserSetting, error) {
-	return s.dao.FindUserSettings(ctx, &model.FindUserSettingsRequest{UserId: userId})
+	where := []string{"user_id=?"}
+	args := []any{userId}
+	return s.dao.FindUserSettings(ctx, where, args)
 }
 
 func (s *Service) UpdateUserSetting(ctx context.Context, req *model.UpdateUserSettingRequest) (err error) {

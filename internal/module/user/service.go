@@ -12,6 +12,7 @@ type Service interface {
 	CreateUser(ctx context.Context, req *model.CreateUserRequest) (*model.User, error)
 	SignUp(ctx context.Context, req *model.SignUpRequest) (*model.User, error)
 	GetUserByUsername(ctx context.Context, username string) (*model.User, error)
+	GetInstanceOwner(ctx context.Context) (*model.User, error)
 	GetUserById(ctx context.Context, id int32) (*model.User, error)
 	UpdateUser(ctx context.Context, req *model.UpdateUserRequest) (*model.User, error)
 	DeleteUserById(ctx context.Context, userId int32) error

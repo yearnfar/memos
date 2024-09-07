@@ -3,28 +3,29 @@ package dao
 import (
 	"context"
 	"encoding/json"
+	"strings"
 
 	"github.com/yearnfar/memos/internal/module/user/model"
 	"github.com/yearnfar/memos/internal/pkg/db"
 	"gorm.io/gorm"
 )
 
-func (Dao) GetUserSetting(ctx context.Context, req *model.FindUserSettingRequest) (setting *model.UserSetting, err error) {
-	conn := db.GetDB(ctx)
-	if req.Id != 0 {
-		conn = conn.Where("id=?", req.Id)
+func (Dao) GetUserSetting(ctx context.Context, where []string, args []any, fields ...string) (*model.UserSetting, error) {
+	if len(where) == 0 {
+		where, args = []string{"1"}, []any{}
 	}
-	setting = &model.UserSetting{}
-	err = conn.First(&setting).Error
-	return
+	var setting model.UserSetting
+	if err := db.GetDB(ctx).Where(strings.Join(where, " and "), args...).First(&setting).Error; err != nil {
+		return nil, err
+	}
+	return &setting, nil
 }
 
-func (Dao) FindUserSettings(ctx context.Context, req *model.FindUserSettingsRequest) (list []*model.UserSetting, err error) {
-	conn := db.GetDB(ctx)
-	if req.UserId != 0 {
-		conn = conn.Where("user_id=?", req.UserId)
+func (Dao) FindUserSettings(ctx context.Context, where []string, args []any, fields ...string) (list []*model.UserSetting, err error) {
+	if len(where) == 0 {
+		where, args = []string{"1"}, []any{}
 	}
-	err = conn.Find(&list).Error
+	err = db.GetDB(ctx).Where(strings.Join(where, " and "), args...).Find(&list).Error
 	return
 }
 

@@ -36,6 +36,10 @@ func (s *WorkspaceService) GetWorkspaceProfile(ctx context.Context, _ *v1pb.GetW
 	return workspaceProfile, nil
 }
 
+func (s *WorkspaceService) GetInstanceOwner(ctx context.Context) (response *v1pb.User, err error) {
+	return
+}
+
 // func (s *WorkspaceService) GetInstanceOwner(ctx context.Context) (*v1pb.User, error) {
 // 	if ownerCache != nil {
 // 		return ownerCache, nil

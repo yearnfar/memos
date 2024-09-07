@@ -20,10 +20,7 @@ func (s *Service) SignUp(ctx context.Context, req *model.SignUpRequest) (user *m
 		err = errors.Errorf("failed to generate password hash: %v", err)
 		return
 	}
-	hostUserType := model.RoleHost
-	existedHostUsers, err := s.dao.FindUsers(ctx, &model.FindUsersRequest{
-		Role: hostUserType,
-	})
+	existedHostUsers, err := s.dao.FindUsers(ctx, []string{"role=?"}, []any{model.RoleHost})
 	if err != nil {
 		err = errors.Errorf("failed to list users, err: %s", err)
 		return
@@ -123,7 +120,11 @@ func (s *Service) UpdateUser(ctx context.Context, req *model.UpdateUserRequest) 
 }
 
 func (s *Service) ListUsers(ctx context.Context, req *model.ListUsersRequest) ([]*model.User, error) {
-	return s.dao.FindUsers(ctx, &model.FindUsersRequest{})
+	var (
+		where []string
+		args  []any
+	)
+	return s.dao.FindUsers(ctx, where, args)
 }
 
 func (s *Service) GetUserById(ctx context.Context, id int32) (*model.User, error) {
@@ -145,4 +146,8 @@ func (s *Service) DeleteUserById(ctx context.Context, userId int32) (err error) 
 	}
 	// s.userCache.Delete(delete.ID)
 	return
+}
+
+func (s *Service) GetInstanceOwner(ctx context.Context) (*model.User, error) {
+	return nil, nil
 }
