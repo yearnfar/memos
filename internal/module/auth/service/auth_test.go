@@ -5,11 +5,12 @@ import (
 	"testing"
 
 	"github.com/golang/mock/gomock"
+	"golang.org/x/crypto/bcrypt"
+
 	"github.com/yearnfar/memos/internal/config"
 	"github.com/yearnfar/memos/internal/module/auth/model"
-	userMod "github.com/yearnfar/memos/internal/module/user"
-	userModel "github.com/yearnfar/memos/internal/module/user/model"
-	"golang.org/x/crypto/bcrypt"
+	usermod "github.com/yearnfar/memos/internal/module/user"
+	usermodel "github.com/yearnfar/memos/internal/module/user/model"
 )
 
 func TestService_SignIn(t *testing.T) {
@@ -22,11 +23,11 @@ func TestService_SignIn(t *testing.T) {
 		return
 	}
 	ctl := gomock.NewController(t)
-	userSvc := userMod.NewMockService(ctl)
+	userSvc := usermod.NewMockService(ctl)
 	userSvc.
 		EXPECT().
-		GetUserByUsername(ctx, "yearnfar").
-		Return(&userModel.User{
+		GetUser(ctx, &usermodel.GetUserRequest{Username: "yearnfar"}).
+		Return(&usermodel.User{
 			Username:     "yearnfar",
 			PasswordHash: string(passwordHash)}, nil)
 
@@ -35,7 +36,7 @@ func TestService_SignIn(t *testing.T) {
 		UpsertAccessToken(ctx, gomock.Any(), gomock.Any()).
 		Return(nil)
 
-	userMod.Register(userSvc)
+	usermod.Register(userSvc)
 
 	req := &model.SignInRequest{
 		Username:    "yearnfar",
