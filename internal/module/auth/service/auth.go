@@ -33,7 +33,7 @@ func (s *Service) SignIn(ctx context.Context, req *model.SignInRequest) (resp *m
 		// Set the expire time to 100 years.
 		expireTime = time.Now().Add(100 * 365 * 24 * time.Hour)
 	}
-	tokenStr, err := s.doSignIn(ctx, user, expireTime)
+	tokenStr, err := s.doSignIn(ctx, user, req.Audience, req.KeyID, expireTime)
 	if err != nil {
 		err = errors.Errorf("failed to sign in, err: %s", err)
 		return
@@ -45,8 +45,8 @@ func (s *Service) SignIn(ctx context.Context, req *model.SignInRequest) (resp *m
 	return
 }
 
-func (s *Service) doSignIn(ctx context.Context, user *usermodel.User, expireTime time.Time) (tokenStr string, err error) {
-	accessToken, err := s.GenerateAccessToken(ctx, user.ID, expireTime)
+func (s *Service) doSignIn(ctx context.Context, user *usermodel.User, audience, keyId string, expireTime time.Time) (tokenStr string, err error) {
+	accessToken, err := s.GenerateAccessToken(ctx, user.ID, audience, keyId, expireTime)
 	if err != nil {
 		err = errors.Errorf("failed to generate tokens, err: %s", err)
 		return

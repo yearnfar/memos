@@ -39,7 +39,7 @@ func (in *GRPCAuthInterceptor) AuthenticationInterceptor(ctx context.Context, re
 	if err != nil {
 		return nil, status.Errorf(codes.Unauthenticated, err.Error())
 	}
-	accessToken, err := authmod.Authenticate(ctx, tokenStr)
+	accessToken, err := authmod.Authenticate(ctx, tokenStr, api.KeyID)
 	if err != nil {
 		if isUnauthorizeAllowedMethod(serverInfo.FullMethod) {
 			return handler(ctx, request)

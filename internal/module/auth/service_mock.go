@@ -37,33 +37,33 @@ func (m *MockService) EXPECT() *MockServiceMockRecorder {
 }
 
 // Authenticate mocks base method.
-func (m *MockService) Authenticate(ctx context.Context, tokenStr string) (*model.AccessToken, error) {
+func (m *MockService) Authenticate(ctx context.Context, tokenStr, keyId string) (*model.AccessToken, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Authenticate", ctx, tokenStr)
+	ret := m.ctrl.Call(m, "Authenticate", ctx, tokenStr, keyId)
 	ret0, _ := ret[0].(*model.AccessToken)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // Authenticate indicates an expected call of Authenticate.
-func (mr *MockServiceMockRecorder) Authenticate(ctx, tokenStr interface{}) *gomock.Call {
+func (mr *MockServiceMockRecorder) Authenticate(ctx, tokenStr, keyId interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Authenticate", reflect.TypeOf((*MockService)(nil).Authenticate), ctx, tokenStr)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Authenticate", reflect.TypeOf((*MockService)(nil).Authenticate), ctx, tokenStr, keyId)
 }
 
 // GenerateAccessToken mocks base method.
-func (m *MockService) GenerateAccessToken(ctx context.Context, userId int32, expirationTime time.Time) (*model.AccessToken, error) {
+func (m *MockService) GenerateAccessToken(ctx context.Context, userId int32, audience, keyId string, expirationTime time.Time) (*model.AccessToken, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GenerateAccessToken", ctx, userId, expirationTime)
+	ret := m.ctrl.Call(m, "GenerateAccessToken", ctx, userId, audience, keyId, expirationTime)
 	ret0, _ := ret[0].(*model.AccessToken)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // GenerateAccessToken indicates an expected call of GenerateAccessToken.
-func (mr *MockServiceMockRecorder) GenerateAccessToken(ctx, userId, expirationTime interface{}) *gomock.Call {
+func (mr *MockServiceMockRecorder) GenerateAccessToken(ctx, userId, audience, keyId, expirationTime interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GenerateAccessToken", reflect.TypeOf((*MockService)(nil).GenerateAccessToken), ctx, userId, expirationTime)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GenerateAccessToken", reflect.TypeOf((*MockService)(nil).GenerateAccessToken), ctx, userId, audience, keyId, expirationTime)
 }
 
 // SignIn mocks base method.

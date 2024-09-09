@@ -11,6 +11,6 @@ import (
 
 type Service interface {
 	SignIn(ctx context.Context, req *model.SignInRequest) (*model.SignInResponse, error)
-	GenerateAccessToken(ctx context.Context, userId int32, expirationTime time.Time) (*model.AccessToken, error)
-	Authenticate(ctx context.Context, tokenStr string) (*model.AccessToken, error)
+	GenerateAccessToken(ctx context.Context, userId int32, audience, keyId string, expirationTime time.Time) (*model.AccessToken, error)
+	Authenticate(ctx context.Context, tokenStr, keyId string) (*model.AccessToken, error)
 }

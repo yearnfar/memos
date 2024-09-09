@@ -36,6 +36,8 @@ type CreateUserAccessTokenRequest struct {
 	UserID      int32
 	Description string
 	ExpiresAt   time.Time
+	Audience    string
+	KeyID       string
 }
 
 type UpdateUserSettingRequest struct {

@@ -5,6 +5,8 @@ import "time"
 type SignInRequest struct {
 	Username    string
 	Password    string
+	Audience    string
+	KeyID       string
 	NeverExpire bool
 }
 

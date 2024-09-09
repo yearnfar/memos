@@ -200,7 +200,7 @@ func (s *UserService) CreateUserAccessToken(ctx context.Context, request *v1pb.C
 	if err != nil {
 		return
 	}
-	authToken, err := authmod.Authenticate(ctx, accessToken.Token)
+	authToken, err := authmod.Authenticate(ctx, accessToken.Token, api.KeyID)
 	if err != nil {
 		return
 	}
@@ -234,7 +234,7 @@ func (s *UserService) ListUserAccessTokens(ctx context.Context, request *v1pb.Li
 	}
 	var userAccessTokens []*v1pb.UserAccessToken
 	for _, accessToken := range accessTokens {
-		authToken, err2 := authmod.Authenticate(ctx, accessToken.Token)
+		authToken, err2 := authmod.Authenticate(ctx, accessToken.Token, api.KeyID)
 		if err2 != nil {
 			continue
 		}

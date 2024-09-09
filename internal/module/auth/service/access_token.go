@@ -14,22 +14,9 @@ import (
 )
 
 // GenerateAccessToken generates an access token.
-func (s *Service) GenerateAccessToken(_ context.Context, userID int32, expirationTime time.Time) (*model.AccessToken, error) {
+func (s *Service) GenerateAccessToken(_ context.Context, userID int32, audience, keyId string, expirationTime time.Time) (accessToken *model.AccessToken, err error) {
 	cfg := config.GetApp().JWT
-	tokenStr, issuedAt, err := s.generateToken(userID, model.AccessTokenAudienceName, expirationTime, []byte(cfg.Key))
-	if err != nil {
-		return nil, err
-	}
-	return &model.AccessToken{
-		UserId:    userID,
-		Token:     tokenStr,
-		ExpiresAt: expirationTime.Unix(),
-		IssuedAt:  issuedAt.Unix(),
-	}, nil
-}
 
-// generateToken generates a jwt token.
-func (s *Service) generateToken(userID int32, audience string, expirationTime time.Time, secret []byte) (string, time.Time, error) {
 	issuedAt := time.Now()
 	registeredClaims := jwt.RegisteredClaims{
 		Issuer:   model.Issuer,
@@ -43,17 +30,23 @@ func (s *Service) generateToken(userID int32, audience string, expirationTime ti
 
 	// Declare the token with the HS256 algorithm used for signing, and the claims.
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, registeredClaims)
-	token.Header["kid"] = model.KeyID
+	token.Header["kid"] = keyId
 
 	// Create the JWT string.
-	tokenStr, err := token.SignedString(secret)
+	tokenStr, err := token.SignedString(cfg.Key)
 	if err != nil {
-		return "", time.Time{}, err
+		return
 	}
-	return tokenStr, issuedAt, nil
+	accessToken = &model.AccessToken{
+		UserId:    userID,
+		Token:     tokenStr,
+		ExpiresAt: expirationTime.Unix(),
+		IssuedAt:  issuedAt.Unix(),
+	}
+	return
 }
 
-func (in *Service) Authenticate(ctx context.Context, tokenStr string) (accessToken *model.AccessToken, err error) {
+func (in *Service) Authenticate(ctx context.Context, tokenStr, keyId string) (accessToken *model.AccessToken, err error) {
 	if tokenStr == "" {
 		err = errors.New("access token not found")
 		return
@@ -65,7 +58,7 @@ func (in *Service) Authenticate(ctx context.Context, tokenStr string) (accessTok
 			return nil, errors.Errorf("unexpected access token signing method=%v, expect %v", t.Header["alg"], jwt.SigningMethodHS256)
 		}
 		if kid, ok := t.Header["kid"].(string); ok {
-			if kid == "v1" {
+			if kid == keyId {
 				return []byte(cfg.Key), nil
 			}
 		}
@@ -84,7 +77,7 @@ func (in *Service) Authenticate(ctx context.Context, tokenStr string) (accessTok
 		Token:  tokenStr,
 	}
 	if claims.IssuedAt != nil {
-		accessToken.IssuedAt = claims.ExpiresAt.Unix()
+		accessToken.IssuedAt = claims.IssuedAt.Unix()
 	}
 	if claims.ExpiresAt != nil {
 		accessToken.ExpiresAt = claims.ExpiresAt.Unix()

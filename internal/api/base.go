@@ -68,6 +68,8 @@ func (s *BaseService) ClearAccessTokenCookie(ctx context.Context) error {
 
 func (s *BaseService) DoSignIn(ctx context.Context, username, password string) (err error) {
 	resp, err := authmod.SignIn(ctx, &authmodel.SignInRequest{
+		Audience: AccessTokenAudienceName,
+		KeyID:    KeyID,
 		Username: username,
 		Password: password,
 	})

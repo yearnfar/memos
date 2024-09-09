@@ -24,18 +24,18 @@ func SignIn(ctx context.Context, req *model.SignInRequest) (*model.SignInRespons
 	return v1, v2
 }
 
-func GenerateAccessToken(ctx context.Context, userId int32, expirationTime time.Time) (*model.AccessToken, error) {
+func GenerateAccessToken(ctx context.Context, userId int32, audience, keyId string, expirationTime time.Time) (*model.AccessToken, error) {
 	if defaultService == nil {
 		panic("调用模块方法: auth.GenerateAccessToken 失败，服务未注册")
 	}
-	v1, v2 := defaultService.GenerateAccessToken(ctx, userId, expirationTime)
+	v1, v2 := defaultService.GenerateAccessToken(ctx, userId, audience, keyId, expirationTime)
 	return v1, v2
 }
 
-func Authenticate(ctx context.Context, tokenStr string) (*model.AccessToken, error) {
+func Authenticate(ctx context.Context, tokenStr, keyId string) (*model.AccessToken, error) {
 	if defaultService == nil {
 		panic("调用模块方法: auth.Authenticate 失败，服务未注册")
 	}
-	v1, v2 := defaultService.Authenticate(ctx, tokenStr)
+	v1, v2 := defaultService.Authenticate(ctx, tokenStr, keyId)
 	return v1, v2
 }

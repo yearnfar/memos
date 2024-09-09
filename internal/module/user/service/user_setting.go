@@ -15,7 +15,7 @@ func (s *Service) GetAccessTokens(ctx context.Context, userId int32) (tokens []*
 }
 
 func (s *Service) CreateUserAccessToken(ctx context.Context, req *model.CreateUserAccessTokenRequest) (token *model.AccessToken, err error) {
-	authToken, err := authmod.GenerateAccessToken(ctx, req.UserID, req.ExpiresAt)
+	authToken, err := authmod.GenerateAccessToken(ctx, req.UserID, req.Audience, req.KeyID, req.ExpiresAt)
 	if err != nil {
 		err = errors.Errorf("failed to generate access token: %v", err)
 		return
