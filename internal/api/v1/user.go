@@ -7,7 +7,6 @@ import (
 	"slices"
 	"time"
 
-	"github.com/pkg/errors"
 	"github.com/yearnfar/memos/internal/api"
 	authmod "github.com/yearnfar/memos/internal/module/auth"
 	usermod "github.com/yearnfar/memos/internal/module/user"
@@ -181,16 +180,16 @@ func (s *UserService) UpdateUserSetting(ctx context.Context, request *v1pb.Updat
 func (s *UserService) CreateUserAccessToken(ctx context.Context, request *v1pb.CreateUserAccessTokenRequest) (response *v1pb.UserAccessToken, err error) {
 	userID, err := api.ExtractUserIDFromName(request.Name)
 	if err != nil {
-		err = errors.Errorf("invalid user name: %v", err)
+		err = status.Errorf(codes.InvalidArgument, "invalid user name: %v", err)
 		return
 	}
 	currentUser, err := s.GetCurrentUser(ctx)
 	if err != nil {
-		err = errors.Errorf("failed to get user: %v", err)
+		err = status.Errorf(codes.Internal, "failed to get current user: %v", err)
 		return
 	}
 	if currentUser == nil || currentUser.ID != userID {
-		err = errors.New("permission denied")
+		err = status.Errorf(codes.PermissionDenied, "permission denied")
 		return
 	}
 	accessToken, err := usermod.CreateUserAccessToken(ctx, &model.CreateUserAccessTokenRequest{
@@ -217,16 +216,16 @@ func (s *UserService) CreateUserAccessToken(ctx context.Context, request *v1pb.C
 func (s *UserService) ListUserAccessTokens(ctx context.Context, request *v1pb.ListUserAccessTokensRequest) (response *v1pb.ListUserAccessTokensResponse, err error) {
 	userID, err := api.ExtractUserIDFromName(request.Name)
 	if err != nil {
-		err = errors.Errorf("invalid user name: %v", err)
+		err = status.Errorf(codes.InvalidArgument, "invalid user name: %v", err)
 		return
 	}
-	currentUser, err := s.GetCurrentUser(ctx)
+	user, err := s.GetCurrentUser(ctx)
 	if err != nil {
-		err = errors.Errorf("failed to get current user: %v", err)
+		err = status.Errorf(codes.Internal, "failed to get current user: %v", err)
 		return
 	}
-	if currentUser == nil || currentUser.ID != userID {
-		err = errors.New("permission denied")
+	if user == nil || user.ID != userID {
+		err = status.Errorf(codes.PermissionDenied, "permission denied")
 		return
 	}
 	accessTokens, err := usermod.GetAccessTokens(ctx, userID)
@@ -259,16 +258,16 @@ func (s *UserService) ListUserAccessTokens(ctx context.Context, request *v1pb.Li
 func (s *UserService) DeleteUserAccessToken(ctx context.Context, request *v1pb.DeleteUserAccessTokenRequest) (response *emptypb.Empty, err error) {
 	userID, err := api.ExtractUserIDFromName(request.Name)
 	if err != nil {
-		err = errors.Errorf("invalid user name: %v", err)
+		err = status.Errorf(codes.InvalidArgument, "invalid user name: %v", err)
 		return
 	}
 	currentUser, err := s.GetCurrentUser(ctx)
 	if err != nil {
-		err = errors.Errorf("failed to get current user: %v", err)
+		err = status.Errorf(codes.Internal, "failed to get current user: %v", err)
 		return
 	}
 	if currentUser == nil || currentUser.ID != userID {
-		err = errors.New("permission denied")
+		err = status.Errorf(codes.PermissionDenied, "permission denied")
 		return
 	}
 	err = usermod.DeleteAccessToken(ctx, userID, request.AccessToken)

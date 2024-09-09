@@ -30,7 +30,7 @@ type MemoService struct {
 func (s *MemoService) CreateMemo(ctx context.Context, request *v1pb.CreateMemoRequest) (response *v1pb.Memo, err error) {
 	user, err := s.GetCurrentUser(ctx)
 	if err != nil {
-		err = errors.Errorf("failed to get current user: %v", err)
+		err = status.Errorf(codes.Internal, "failed to get current user: %v", err)
 		return
 	}
 	memo, err := memomod.CreateMemo(ctx, &model.CreateMemoRequest{
@@ -184,7 +184,7 @@ func (s *MemoService) SetMemoRelations(ctx context.Context, request *v1pb.SetMem
 func (s *MemoService) ListMemos(ctx context.Context, req *v1pb.ListMemosRequest) (response *v1pb.ListMemosResponse, err error) {
 	user, err := s.GetCurrentUser(ctx)
 	if err != nil {
-		err = errors.Errorf("failed to get current user: %v", err)
+		err = status.Errorf(codes.Internal, "failed to get current user: %v", err)
 		return
 	}
 
@@ -240,7 +240,7 @@ func (s *MemoService) GetMemoByUid(ctx context.Context, request *v1pb.GetMemoByU
 func (s *MemoService) UpsertMemoReaction(ctx context.Context, request *v1pb.UpsertMemoReactionRequest) (response *v1pb.Reaction, err error) {
 	user, err := s.GetCurrentUser(ctx)
 	if err != nil {
-		err = status.Errorf(codes.Internal, "failed to get current user")
+		err = status.Errorf(codes.Internal, "failed to get current user: %v", err)
 		return
 	}
 	reaction, err := memomod.UpsertReaction(ctx, &model.UpsertReactionRequest{
@@ -267,7 +267,8 @@ func (s *MemoService) UpdateMemo(ctx context.Context, request *v1pb.UpdateMemoRe
 	}
 	user, err := s.GetCurrentUser(ctx)
 	if err != nil {
-		return nil, status.Errorf(codes.Internal, "failed to get current user")
+		err = status.Errorf(codes.Internal, "failed to get current user: %v", err)
+		return
 	}
 
 	memo, err := memomod.UpdateMemo(ctx, &model.UpdateMemoRequest{
@@ -300,7 +301,7 @@ func (s *MemoService) DeleteMemo(ctx context.Context, request *v1pb.DeleteMemoRe
 	}
 	user, err := s.GetCurrentUser(ctx)
 	if err != nil {
-		err = status.Errorf(codes.Internal, "failed to get current user")
+		err = status.Errorf(codes.Internal, "failed to get current user: %v", err)
 		return
 	}
 	err = memomod.DeleteMemo(ctx, &model.DeleteMemoRequest{
@@ -317,7 +318,7 @@ func (s *MemoService) CreateMemoComment(ctx context.Context, request *v1pb.Creat
 	}
 	user, err := s.GetCurrentUser(ctx)
 	if err != nil {
-		err = errors.Errorf("failed to get current user: %v", err)
+		err = status.Errorf(codes.Internal, "failed to get current user")
 		return
 	}
 
@@ -344,7 +345,7 @@ func (s *MemoService) CreateMemoComment(ctx context.Context, request *v1pb.Creat
 func (s *MemoService) ListMemoTags(ctx context.Context, request *v1pb.ListMemoTagsRequest) (response *v1pb.ListMemoTagsResponse, err error) {
 	user, err := s.GetCurrentUser(ctx)
 	if err != nil {
-		err = errors.Errorf("failed to get current user: %v", err)
+		err = status.Errorf(codes.Internal, "failed to get current user: %v", err)
 		return
 	}
 
@@ -355,7 +356,7 @@ func (s *MemoService) ListMemoTags(ctx context.Context, request *v1pb.ListMemoTa
 func (s *MemoService) ListMemoProperties(ctx context.Context, request *v1pb.ListMemoPropertiesRequest) (response *v1pb.ListMemoPropertiesResponse, err error) {
 	user, err := s.GetCurrentUser(ctx)
 	if err != nil {
-		err = errors.Errorf("failed to get current user: %v", err)
+		err = status.Errorf(codes.Internal, "failed to get current user")
 		return
 	}
 

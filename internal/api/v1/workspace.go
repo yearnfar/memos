@@ -2,10 +2,14 @@ package v1
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/yearnfar/memos/internal/api"
 	usermod "github.com/yearnfar/memos/internal/module/user"
 	"github.com/yearnfar/memos/internal/module/user/model"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
+	"gorm.io/gorm"
 
 	v1pb "github.com/yearnfar/memos/internal/proto/api/v1"
 )
@@ -21,28 +25,17 @@ func (s *WorkspaceService) GetWorkspaceProfile(ctx context.Context, _ *v1pb.GetW
 		Mode:         "",
 		Public:       true,
 		PasswordAuth: true,
-		// InstanceUrl:  "",
 	}
-	// owner, err := s.GetInstanceOwner(ctx)
-	// if err != nil {
-	// 	return nil, status.Errorf(codes.Internal, "failed to get instance owner: %v", err)
-	// }
-	// if owner != nil {
-	// workspaceProfile.Owner = owner.Name
-	// } else {
-	// If owner is not found, set Public/PasswordAuth to true.
-	workspaceProfile.Owner = "yearnfar"
-	workspaceProfile.Public = true
-	workspaceProfile.PasswordAuth = true
-	// }
-	return workspaceProfile, nil
-}
-
-func (s *WorkspaceService) GetInstanceOwner(ctx context.Context) (response *v1pb.User, err error) {
 	user, err := usermod.GetUser(ctx, &model.GetUserRequest{Role: model.RoleHost})
-	if err != nil {
-		return
+	if err != nil && err != gorm.ErrRecordNotFound {
+		return nil, status.Errorf(codes.Internal, "failed to get instance owner: %v", err)
 	}
-	response = convertUserFromStore(user)
-	return
+	if user != nil {
+		workspaceProfile.Owner = fmt.Sprintf("%s%d", api.UserNamePrefix, user.ID)
+	} else {
+		// If owner is not found, set Public/PasswordAuth to true.
+		workspaceProfile.Public = true
+		workspaceProfile.PasswordAuth = true
+	}
+	return workspaceProfile, nil
 }

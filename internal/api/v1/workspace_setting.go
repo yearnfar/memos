@@ -23,9 +23,7 @@ func (s *WorkspaceSettingService) GetWorkspaceSetting(ctx context.Context, reque
 	if err != nil {
 		return nil, status.Errorf(codes.InvalidArgument, "invalid workspace setting name: %v", err)
 	}
-	wsSetting, err := memomod.GetWorkspaceSetting(ctx, &model.GetWorkspaceSettingRequest{
-		Name: key,
-	})
+	wsSetting, err := memomod.GetWorkspaceSetting(ctx, &model.GetWorkspaceSettingRequest{Name: key})
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to get workspace setting: %v", err)
 	}

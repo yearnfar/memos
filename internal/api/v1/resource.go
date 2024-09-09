@@ -23,7 +23,8 @@ type ResourceService struct {
 func (s *ResourceService) CreateResource(ctx context.Context, request *v1pb.CreateResourceRequest) (response *v1pb.Resource, err error) {
 	user, err := s.GetCurrentUser(ctx)
 	if err != nil {
-		return nil, status.Errorf(codes.Internal, "failed to get current user: %v", err)
+		err = status.Errorf(codes.Internal, "failed to get current user: %v", err)
+		return
 	}
 
 	var memoId int32
@@ -71,17 +72,17 @@ func (s *ResourceService) GetResourceBinary(ctx context.Context, request *v1pb.G
 		contentType += "; charset=utf-8"
 	}
 
-	httpBody := &httpbody.HttpBody{
+	return &httpbody.HttpBody{
 		ContentType: contentType,
 		Data:        rb.Blob,
-	}
-	return httpBody, nil
+	}, nil
 }
 
 func (s *ResourceService) ListResources(ctx context.Context, _ *v1pb.ListResourcesRequest) (response *v1pb.ListResourcesResponse, err error) {
 	user, err := s.GetCurrentUser(ctx)
 	if err != nil {
-		return nil, status.Errorf(codes.Internal, "failed to get current user: %v", err)
+		err = status.Errorf(codes.Internal, "failed to get current user: %v", err)
+		return
 	}
 	list, err := memomod.ListResources(ctx, &model.ListResourcesRequest{CreatorID: user.ID})
 	if err != nil {

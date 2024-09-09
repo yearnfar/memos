@@ -4,6 +4,8 @@ import (
 	"context"
 
 	"github.com/pkg/errors"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 
 	"github.com/yearnfar/memos/internal/api"
 	memomod "github.com/yearnfar/memos/internal/module/memo"
@@ -19,7 +21,7 @@ type InboxService struct {
 func (s *InboxService) ListInboxes(ctx context.Context, req *v1pb.ListInboxesRequest) (response *v1pb.ListInboxesResponse, err error) {
 	user, err := s.GetCurrentUser(ctx)
 	if err != nil {
-		err = errors.Errorf("failed to get current user: %v", err)
+		err = status.Errorf(codes.Internal, "failed to get current user: %v", err)
 		return
 	}
 	inboxes, err := memomod.ListInboxes(ctx, &model.ListInboxesRequest{ReceiverId: user.ID})
