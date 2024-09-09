@@ -2,12 +2,15 @@ package v1
 
 import (
 	"context"
+	"fmt"
 	"strings"
+	"time"
 
 	"google.golang.org/genproto/googleapis/api/httpbody"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/emptypb"
+	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 
 	"github.com/yearnfar/memos/internal/api"
 	memomod "github.com/yearnfar/memos/internal/module/memo"
@@ -114,4 +117,27 @@ func (s *ResourceService) DeleteResource(ctx context.Context, request *v1pb.Dele
 		return nil, status.Errorf(codes.Internal, "failed to delete resource: %v", err)
 	}
 	return &emptypb.Empty{}, nil
+}
+
+func convertResourceFromStore(ctx context.Context, resource *model.Resource) *v1pb.Resource {
+	resourceMessage := &v1pb.Resource{
+		Name:       fmt.Sprintf("%s%d", api.ResourceNamePrefix, resource.ID),
+		Uid:        resource.UID,
+		CreateTime: timestamppb.New(time.Unix(resource.CreatedTs, 0)),
+		Filename:   resource.Filename,
+		Type:       resource.Type,
+		Size:       resource.Size,
+	}
+	if resource.StorageType == model.ResourceStorageTypeExternal || resource.StorageType == model.ResourceStorageTypeS3 {
+		resourceMessage.ExternalLink = resource.Reference
+	}
+	if resource.MemoID != 0 {
+		memo, _ := memomod.GetMemo(ctx, &model.GetMemoRequest{Id: resource.MemoID})
+		if memo != nil {
+			memoName := fmt.Sprintf("%s%d", api.MemoNamePrefix, memo.ID)
+			resourceMessage.Memo = &memoName
+		}
+	}
+
+	return resourceMessage
 }

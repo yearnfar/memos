@@ -396,3 +396,63 @@ func convertMemoRelationTypeToStore(relationType v1pb.MemoRelation_Type) model.M
 		return model.MemoRelationReference
 	}
 }
+
+func convertMemoRelationFromStore(memoRelation *model.MemoRelation) *v1pb.MemoRelation {
+	return &v1pb.MemoRelation{
+		Memo:        fmt.Sprintf("%s%d", api.MemoNamePrefix, memoRelation.MemoID),
+		RelatedMemo: fmt.Sprintf("%s%d", api.MemoNamePrefix, memoRelation.RelatedMemoID),
+		Type:        convertMemoRelationTypeFromStore(memoRelation.Type),
+	}
+}
+
+func convertMemoRelationTypeFromStore(relationType model.MemoRelationType) v1pb.MemoRelation_Type {
+	switch relationType {
+	case model.MemoRelationReference:
+		return v1pb.MemoRelation_REFERENCE
+	case model.MemoRelationComment:
+		return v1pb.MemoRelation_COMMENT
+	default:
+		return v1pb.MemoRelation_TYPE_UNSPECIFIED
+	}
+}
+
+func convertVisibilityFromStore(visibility model.Visibility) v1pb.Visibility {
+	switch visibility {
+	case model.Private:
+		return v1pb.Visibility_PRIVATE
+	case model.Protected:
+		return v1pb.Visibility_PROTECTED
+	case model.Public:
+		return v1pb.Visibility_PUBLIC
+	default:
+		return v1pb.Visibility_VISIBILITY_UNSPECIFIED
+	}
+}
+
+func convertMemoPropertyFromStore(property *model.MemoPayloadProperty) *v1pb.MemoProperty {
+	if property == nil {
+		return nil
+	}
+	return &v1pb.MemoProperty{
+		Tags:               property.Tags,
+		HasLink:            property.HasLink,
+		HasTaskList:        property.HasTaskList,
+		HasCode:            property.HasCode,
+		HasIncompleteTasks: property.HasIncompleteTasks,
+	}
+}
+
+func convertReactionFromStore(ctx context.Context, reaction *model.Reaction) (*v1pb.Reaction, error) {
+	// creator, err := s.Store.GetUser(ctx, &model.FindUser{
+	// 	ID: &reaction.CreatorID,
+	// })
+	// if err != nil {
+	// 	return nil, err
+	// }
+	return &v1pb.Reaction{
+		Id:           reaction.ID,
+		Creator:      fmt.Sprintf("%s%d", api.UserNamePrefix, reaction.CreatorID),
+		ContentId:    reaction.ContentID,
+		ReactionType: v1pb.Reaction_Type(v1pb.Reaction_Type_value[string(reaction.ReactionType)]),
+	}, nil
+}

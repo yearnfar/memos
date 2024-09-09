@@ -7,15 +7,16 @@ import (
 	"slices"
 	"time"
 
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/types/known/emptypb"
+	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
+
 	"github.com/yearnfar/memos/internal/api"
 	authmod "github.com/yearnfar/memos/internal/module/auth"
 	usermod "github.com/yearnfar/memos/internal/module/user"
 	"github.com/yearnfar/memos/internal/module/user/model"
 	v1pb "github.com/yearnfar/memos/internal/proto/api/v1"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
-	"google.golang.org/protobuf/types/known/emptypb"
-	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 )
 
 type UserService struct {
@@ -98,7 +99,7 @@ func (s *UserService) UpdateUser(ctx context.Context, req *v1pb.UpdateUserReques
 		err = status.Errorf(codes.Internal, "update user error: %v", err)
 		return
 	}
-	userInfo = s.convertUserFromStore(user)
+	userInfo = convertUserFromStore(user)
 	return
 }
 func (s *UserService) DeleteUser(ctx context.Context, request *v1pb.DeleteUserRequest) (response *emptypb.Empty, err error) {
@@ -276,10 +277,10 @@ func (s *UserService) DeleteUserAccessToken(ctx context.Context, request *v1pb.D
 	return
 }
 
-func (s *UserService) convertUserFromStore(user *model.User) *v1pb.User {
+func convertUserFromStore(user *model.User) *v1pb.User {
 	userpb := &v1pb.User{
 		Name:        fmt.Sprintf("%s%d", api.UserNamePrefix, user.ID),
-		Id:          user.ID,
+		Id:          int32(user.ID),
 		RowStatus:   convertRowStatusFromStore(user.RowStatus),
 		CreateTime:  timestamppb.New(time.Unix(user.CreatedTs, 0)),
 		UpdateTime:  timestamppb.New(time.Unix(user.UpdatedTs, 0)),
@@ -295,4 +296,39 @@ func (s *UserService) convertUserFromStore(user *model.User) *v1pb.User {
 		userpb.AvatarUrl = fmt.Sprintf("/file/%s/avatar", userpb.Name)
 	}
 	return userpb
+}
+
+func convertRowStatusFromStore(rowStatus model.RowStatus) v1pb.RowStatus {
+	switch rowStatus {
+	case model.Normal:
+		return v1pb.RowStatus_ACTIVE
+	case model.Archived:
+		return v1pb.RowStatus_ARCHIVED
+	default:
+		return v1pb.RowStatus_ROW_STATUS_UNSPECIFIED
+	}
+}
+
+func convertRowStatusToStore(rowStatus v1pb.RowStatus) model.RowStatus {
+	switch rowStatus {
+	case v1pb.RowStatus_ACTIVE:
+		return model.Normal
+	case v1pb.RowStatus_ARCHIVED:
+		return model.Archived
+	default:
+		return model.Normal
+	}
+}
+
+func convertUserRoleFromStore(role model.Role) v1pb.User_Role {
+	switch role {
+	case model.RoleHost:
+		return v1pb.User_HOST
+	case model.RoleAdmin:
+		return v1pb.User_ADMIN
+	case model.RoleUser:
+		return v1pb.User_USER
+	default:
+		return v1pb.User_ROLE_UNSPECIFIED
+	}
 }
