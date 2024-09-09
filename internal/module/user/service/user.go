@@ -11,15 +11,6 @@ import (
 )
 
 func (s *Service) SignUp(ctx context.Context, req *model.SignUpRequest) (user *model.User, err error) {
-	if !util.UIDMatcher.MatchString(strings.ToLower(req.Username)) {
-		err = errors.Errorf("invalid username: %s", req.Username)
-		return
-	}
-	passwordHash, err := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
-	if err != nil {
-		err = errors.Errorf("failed to generate password hash: %v", err)
-		return
-	}
 	existedHostUsers, err := s.dao.FindUsers(ctx, []string{"role=?"}, []any{model.RoleHost})
 	if err != nil {
 		err = errors.Errorf("failed to list users, err: %s", err)
@@ -29,16 +20,15 @@ func (s *Service) SignUp(ctx context.Context, req *model.SignUpRequest) (user *m
 	if len(existedHostUsers) == 0 {
 		role = model.RoleHost
 	}
-
-	user = &model.User{
-		Username:     req.Username,
-		Role:         role,
-		Nickname:     req.Username,
-		PasswordHash: string(passwordHash),
-		RowStatus:    model.Normal,
-	}
-	if err = s.dao.CreateUser(ctx, user); err != nil {
-		err = errors.Errorf("failed to create user: %v", err)
+	user, err = s.CreateUser(ctx, &model.CreateUserRequest{
+		Username:  req.Username,
+		Role:      role,
+		RowStatus: model.Normal,
+		// Email:     req.Email,
+		// Nickname: req.Username,
+		Password: req.Password,
+	})
+	if err != nil {
 		return
 	}
 	return user, nil
@@ -156,8 +146,4 @@ func (s *Service) DeleteUserById(ctx context.Context, userId int32) (err error) 
 	}
 	// s.userCache.Delete(delete.ID)
 	return
-}
-
-func (s *Service) GetInstanceOwner(ctx context.Context) (*model.User, error) {
-	return nil, nil
 }

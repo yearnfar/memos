@@ -28,11 +28,12 @@ type FindUserRequest struct {
 }
 
 type CreateUserRequest struct {
-	Username string
-	Role     Role
-	Email    string
-	Nickname string
-	Password string
+	Username  string
+	Role      Role
+	RowStatus RowStatus
+	Email     string
+	Nickname  string
+	Password  string
 }
 
 type UpdateUserRequest struct {
