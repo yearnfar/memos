@@ -196,6 +196,8 @@ func (s *UserService) CreateUserAccessToken(ctx context.Context, request *v1pb.C
 		UserID:      userID,
 		Description: request.Description,
 		ExpiresAt:   request.ExpiresAt.AsTime(),
+		Audience:    api.AccessTokenAudienceName,
+		KeyID:       api.KeyID,
 	})
 	if err != nil {
 		return
