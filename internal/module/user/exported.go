@@ -39,14 +39,6 @@ func GetUser(ctx context.Context, req *model.GetUserRequest) (*model.User, error
 	return v1, v2
 }
 
-func GetUserByUsername(ctx context.Context, username string) (*model.User, error) {
-	if defaultService == nil {
-		panic("调用模块方法: user.GetUserByUsername 失败，服务未注册")
-	}
-	v1, v2 := defaultService.GetUserByUsername(ctx, username)
-	return v1, v2
-}
-
 func GetUserById(ctx context.Context, id int32) (*model.User, error) {
 	if defaultService == nil {
 		panic("调用模块方法: user.GetUserById 失败，服务未注册")

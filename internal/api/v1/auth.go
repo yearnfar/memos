@@ -9,6 +9,7 @@ import (
 
 	"github.com/yearnfar/memos/internal/api"
 	usermod "github.com/yearnfar/memos/internal/module/user"
+	"github.com/yearnfar/memos/internal/module/user/model"
 	usermodel "github.com/yearnfar/memos/internal/module/user/model"
 	v1pb "github.com/yearnfar/memos/internal/proto/api/v1"
 )
@@ -39,7 +40,7 @@ func (s *AuthService) SignIn(ctx context.Context, request *v1pb.SignInRequest) (
 	if err = s.DoSignIn(ctx, request.Username, request.Password); err != nil {
 		return
 	}
-	user, err := usermod.GetUserByUsername(ctx, request.Username)
+	user, err := usermod.GetUser(ctx, &model.GetUserRequest{Username: request.Username})
 	if err != nil {
 		return
 	}

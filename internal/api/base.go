@@ -60,9 +60,7 @@ func (s *BaseService) ClearAccessTokenCookie(ctx context.Context) error {
 	if err != nil {
 		return errors.Wrap(err, "failed to build access token cookie")
 	}
-	if err := grpc.SetHeader(ctx, metadata.New(map[string]string{
-		"Set-Cookie": cookie,
-	})); err != nil {
+	if err := grpc.SetHeader(ctx, metadata.New(map[string]string{"Set-Cookie": cookie})); err != nil {
 		return errors.Wrap(err, "failed to set grpc header")
 	}
 	return nil
@@ -81,9 +79,7 @@ func (s *BaseService) DoSignIn(ctx context.Context, username, password string) (
 		err = errors.Errorf("failed to build access token cookie, err: %s", err)
 		return
 	}
-	if err = grpc.SetHeader(ctx, metadata.New(map[string]string{
-		"Set-Cookie": cookie,
-	})); err != nil {
+	if err = grpc.SetHeader(ctx, metadata.New(map[string]string{"Set-Cookie": cookie})); err != nil {
 		err = errors.Errorf("failed to set grpc header, error: %v", err)
 		return
 	}
@@ -110,8 +106,7 @@ func (s *BaseService) buildAccessTokenCookie(ctx context.Context, accessToken st
 	for _, v := range md.Get("origin") {
 		origin = v
 	}
-	isHTTPS := strings.HasPrefix(origin, "https://")
-	if isHTTPS {
+	if strings.HasPrefix(origin, "https://") {
 		attrs = append(attrs, "SameSite=None")
 		attrs = append(attrs, "Secure")
 	} else {

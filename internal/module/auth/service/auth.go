@@ -14,7 +14,7 @@ import (
 
 // SignIn 登录
 func (s *Service) SignIn(ctx context.Context, req *model.SignInRequest) (resp *model.SignInResponse, err error) {
-	user, err := usermod.GetUserByUsername(ctx, req.Username)
+	user, err := usermod.GetUser(ctx, &usermodel.GetUserRequest{Username: req.Username})
 	if err != nil {
 		err = errors.Errorf("failed to find user by username %s", req.Username)
 		return

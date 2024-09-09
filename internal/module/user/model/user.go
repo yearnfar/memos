@@ -49,7 +49,8 @@ type UpdateUserRequest struct {
 	Description string
 }
 type GetUserRequest struct {
-	Role Role
+	Username string
+	Role     Role
 }
 
 type ListUsersRequest struct {

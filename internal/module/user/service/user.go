@@ -131,15 +131,13 @@ func (s *Service) GetUserById(ctx context.Context, id int32) (*model.User, error
 	return s.dao.FindUserById(ctx, id)
 }
 
-func (s *Service) GetUserByUsername(ctx context.Context, username string) (*model.User, error) {
-	return s.dao.FindUserByUsername(ctx, username)
-}
-
 func (s *Service) GetUser(ctx context.Context, req *model.GetUserRequest) (*model.User, error) {
-	var (
-		where []string
-		args  []any
-	)
+	where := []string{}
+	args := []any{}
+	if req.Username != "" {
+		where = append(where, "username=?")
+		args = append(args, req.Username)
+	}
 	if req.Role != "" {
 		where = append(where, "role=?")
 		args = append(args, req.Role)
