@@ -4,13 +4,13 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/yearnfar/memos/internal/api"
-	usermod "github.com/yearnfar/memos/internal/module/user"
-	"github.com/yearnfar/memos/internal/module/user/model"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"gorm.io/gorm"
 
+	"github.com/yearnfar/memos/internal/api"
+	usermod "github.com/yearnfar/memos/internal/module/user"
+	"github.com/yearnfar/memos/internal/module/user/model"
 	v1pb "github.com/yearnfar/memos/internal/proto/api/v1"
 )
 

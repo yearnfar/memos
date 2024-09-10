@@ -9,8 +9,8 @@ import (
 	"github.com/usememos/gomark/parser/tokenizer"
 	"github.com/usememos/gomark/renderer"
 	"github.com/usememos/gomark/restore"
-	"github.com/yearnfar/memos/internal/api"
 
+	"github.com/yearnfar/memos/internal/api"
 	"github.com/yearnfar/memos/internal/pkg/httpgetter"
 	v1pb "github.com/yearnfar/memos/internal/proto/api/v1"
 )
