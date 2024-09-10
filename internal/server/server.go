@@ -16,7 +16,7 @@ import (
 	"google.golang.org/grpc"
 
 	"github.com/yearnfar/memos/internal/config"
-	"github.com/yearnfar/memos/server/interceptor"
+	"github.com/yearnfar/memos/internal/server/interceptor"
 )
 
 type Server struct {

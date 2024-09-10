@@ -12,7 +12,7 @@ import (
 	"github.com/yearnfar/memos/internal/api"
 	"github.com/yearnfar/memos/internal/config"
 	"github.com/yearnfar/memos/internal/pkg/db"
-	"github.com/yearnfar/memos/server"
+	"github.com/yearnfar/memos/internal/server"
 )
 
 // 版本信息，在编译时自动生成
