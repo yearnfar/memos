@@ -21,10 +21,8 @@ type WorkspaceService struct {
 
 func (s *WorkspaceService) GetWorkspaceProfile(ctx context.Context, _ *v1pb.GetWorkspaceProfileRequest) (*v1pb.WorkspaceProfile, error) {
 	workspaceProfile := &v1pb.WorkspaceProfile{
-		Version:      "",
-		Mode:         "",
-		Public:       true,
-		PasswordAuth: true,
+		Version: "",
+		Mode:    "",
 	}
 	user, err := usermod.GetUser(ctx, &model.GetUserRequest{Role: model.RoleHost})
 	if err != nil && err != gorm.ErrRecordNotFound {
@@ -32,10 +30,6 @@ func (s *WorkspaceService) GetWorkspaceProfile(ctx context.Context, _ *v1pb.GetW
 	}
 	if user != nil {
 		workspaceProfile.Owner = fmt.Sprintf("%s%d", api.UserNamePrefix, user.ID)
-	} else {
-		// If owner is not found, set Public/PasswordAuth to true.
-		workspaceProfile.Public = true
-		workspaceProfile.PasswordAuth = true
 	}
 	return workspaceProfile, nil
 }

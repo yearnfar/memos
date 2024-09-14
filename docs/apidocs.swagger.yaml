@@ -356,27 +356,6 @@ paths:
           type: string
       tags:
         - MemoService
-  /api/v1/memos:export:
-    post:
-      summary: ExportMemos exports memos.
-      operationId: MemoService_ExportMemos
-      responses:
-        "200":
-          description: A successful response.
-          schema:
-            $ref: '#/definitions/v1ExportMemosResponse'
-        default:
-          description: An unexpected error response.
-          schema:
-            $ref: '#/definitions/googlerpcStatus'
-      parameters:
-        - name: body
-          in: body
-          required: true
-          schema:
-            $ref: '#/definitions/v1ExportMemosRequest'
-      tags:
-        - MemoService
   /api/v1/reactions/{reactionId}:
     delete:
       summary: DeleteMemoReaction deletes a reaction for a memo.
@@ -1820,6 +1799,11 @@ paths:
           in: path
           required: true
           type: string
+        - name: thumbnail
+          description: A flag indicating if the thumbnail version of the resource should be returned
+          in: query
+          required: false
+          type: boolean
       tags:
         - ResourceService
 definitions:
@@ -2066,6 +2050,12 @@ definitions:
   apiv1WorkspaceGeneralSetting:
     type: object
     properties:
+      disallowUserRegistration:
+        type: boolean
+        description: disallow_user_registration disallows user registration.
+      disallowPasswordAuth:
+        type: boolean
+        description: disallow_password_auth disallows password authentication.
       additionalScript:
         type: string
         description: additional_script is the additional script.
@@ -2075,6 +2065,13 @@ definitions:
       customProfile:
         $ref: '#/definitions/apiv1WorkspaceCustomProfile'
         description: custom_profile is the custom profile.
+      weekStartDayOffset:
+        type: integer
+        format: int32
+        description: |-
+          week_start_day_offset is the week start day offset from Sunday.
+          0: Sunday, 1: Monday, 2: Tuesday, 3: Wednesday, 4: Thursday, 5: Friday, 6: Saturday
+          Default is Sunday.
   apiv1WorkspaceMemoRelatedSetting:
     type: object
     properties:
@@ -2097,6 +2094,9 @@ definitions:
       enableLinkPreview:
         type: boolean
         description: enable_link_preview enables links preview.
+      enableComment:
+        type: boolean
+        description: enable_comment enables comment.
   apiv1WorkspaceSetting:
     type: object
     properties:
@@ -2371,18 +2371,6 @@ definitions:
     properties:
       symbol:
         type: string
-  v1ExportMemosRequest:
-    type: object
-    properties:
-      filter:
-        type: string
-        title: Same as ListMemosRequest.filter
-  v1ExportMemosResponse:
-    type: object
-    properties:
-      content:
-        type: string
-        format: byte
   v1HTMLElementNode:
     type: object
     properties:
@@ -3148,9 +3136,6 @@ definitions:
       mode:
         type: string
         description: mode is the instance mode (e.g. "prod", "dev" or "demo").
-      public:
-        type: boolean
-        description: public is a flag that the instance is open for other users.
-      passwordAuth:
-        type: boolean
-        description: password_auth is a flag whether the instance allows password authentication.
+      instanceUrl:
+        type: string
+        description: instance_url is the URL of the instance.
