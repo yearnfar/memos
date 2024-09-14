@@ -16,23 +16,6 @@ import (
 	usermodel "github.com/yearnfar/memos/internal/module/user/model"
 )
 
-const (
-	// issuer is the issuer of the jwt token.
-	Issuer = "memos"
-	// Signing key section. For now, this is only used for signing, not for verifying since we only
-	// have 1 version. But it will be used to maintain backward compatibility if we change the signing mechanism.
-	KeyID = "v1"
-	// AccessTokenAudienceName is the audience name of the access token.
-	AccessTokenAudienceName = "user.access-token"
-	AccessTokenDuration     = 7 * 24 * time.Hour
-
-	// CookieExpDuration expires slightly earlier than the jwt expiration. Client would be logged out if the user
-	// cookie expires, thus the client would always logout first before attempting to make a request with the expired jwt.
-	CookieExpDuration = AccessTokenDuration - 1*time.Minute
-	// AccessTokenCookieName is the cookie name of access token.
-	AccessTokenCookieName = "memos.access-token"
-)
-
 // ContextKey is the key type of context value.
 type ContextKey int
 
@@ -68,8 +51,8 @@ func (s *BaseService) ClearAccessTokenCookie(ctx context.Context) error {
 
 func (s *BaseService) DoSignIn(ctx context.Context, username, password string) (err error) {
 	resp, err := authmod.SignIn(ctx, &authmodel.SignInRequest{
-		Audience: AccessTokenAudienceName,
-		KeyID:    KeyID,
+		Audience: authmodel.AccessTokenAudienceName,
+		KeyID:    authmodel.KeyID,
 		Username: username,
 		Password: password,
 	})
@@ -90,7 +73,7 @@ func (s *BaseService) DoSignIn(ctx context.Context, username, password string) (
 
 func (s *BaseService) buildAccessTokenCookie(ctx context.Context, accessToken string, expireTime time.Time) (string, error) {
 	attrs := []string{
-		fmt.Sprintf("%s=%s", AccessTokenCookieName, accessToken),
+		fmt.Sprintf("%s=%s", authmodel.AccessTokenCookieName, accessToken),
 		"Path=/",
 		"HttpOnly",
 	}

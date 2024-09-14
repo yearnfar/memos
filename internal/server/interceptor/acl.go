@@ -13,6 +13,7 @@ import (
 
 	"github.com/yearnfar/memos/internal/api"
 	authmod "github.com/yearnfar/memos/internal/module/auth"
+	authmodel "github.com/yearnfar/memos/internal/module/auth/model"
 	usermod "github.com/yearnfar/memos/internal/module/user"
 	usermodel "github.com/yearnfar/memos/internal/module/user/model"
 )
@@ -39,7 +40,7 @@ func (in *GRPCAuthInterceptor) AuthenticationInterceptor(ctx context.Context, re
 	if err != nil {
 		return nil, status.Errorf(codes.Unauthenticated, err.Error())
 	}
-	accessToken, err := authmod.Authenticate(ctx, tokenStr, api.KeyID)
+	accessToken, err := authmod.Authenticate(ctx, tokenStr, authmodel.KeyID)
 	if err != nil {
 		if isUnauthorizeAllowedMethod(serverInfo.FullMethod) {
 			return handler(ctx, request)
@@ -74,7 +75,7 @@ func getTokenFromMetadata(md metadata.MD) (string, error) {
 		header := http.Header{}
 		header.Add("Cookie", t)
 		request := http.Request{Header: header}
-		if v, _ := request.Cookie(api.AccessTokenCookieName); v != nil {
+		if v, _ := request.Cookie(authmodel.AccessTokenCookieName); v != nil {
 			accessToken = v.Value
 		}
 	}
