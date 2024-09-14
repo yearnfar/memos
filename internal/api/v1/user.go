@@ -14,7 +14,7 @@ import (
 
 	"github.com/yearnfar/memos/internal/api"
 	authmod "github.com/yearnfar/memos/internal/module/auth"
-	authmodel "github.com/yearnfar/memos/internal/module/auth/model"
+	authmdl "github.com/yearnfar/memos/internal/module/auth/model"
 	usermod "github.com/yearnfar/memos/internal/module/user"
 	"github.com/yearnfar/memos/internal/module/user/model"
 	v1pb "github.com/yearnfar/memos/internal/proto/api/v1"
@@ -198,13 +198,13 @@ func (s *UserService) CreateUserAccessToken(ctx context.Context, request *v1pb.C
 		UserID:      userID,
 		Description: request.Description,
 		ExpiresAt:   request.ExpiresAt.AsTime(),
-		Audience:    authmodel.AccessTokenAudienceName,
-		KeyID:       authmodel.KeyID,
+		Audience:    authmdl.AccessTokenAudienceName,
+		KeyID:       authmdl.KeyID,
 	})
 	if err != nil {
 		return
 	}
-	authToken, err := authmod.Authenticate(ctx, accessToken.Token, authmodel.KeyID)
+	authToken, err := authmod.Authenticate(ctx, accessToken.Token, authmdl.KeyID)
 	if err != nil {
 		return
 	}
@@ -238,7 +238,7 @@ func (s *UserService) ListUserAccessTokens(ctx context.Context, request *v1pb.Li
 	}
 	var userAccessTokens []*v1pb.UserAccessToken
 	for _, accessToken := range accessTokens {
-		authToken, err2 := authmod.Authenticate(ctx, accessToken.Token, authmodel.KeyID)
+		authToken, err2 := authmod.Authenticate(ctx, accessToken.Token, authmdl.KeyID)
 		if err2 != nil {
 			continue
 		}

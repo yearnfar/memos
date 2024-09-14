@@ -10,7 +10,7 @@ import (
 	"github.com/yearnfar/memos/internal/api"
 	memomod "github.com/yearnfar/memos/internal/module/memo"
 	"github.com/yearnfar/memos/internal/module/memo/model"
-	usermodel "github.com/yearnfar/memos/internal/module/user/model"
+	usermdl "github.com/yearnfar/memos/internal/module/user/model"
 	v1pb "github.com/yearnfar/memos/internal/proto/api/v1"
 )
 
@@ -37,7 +37,7 @@ func (s *WorkspaceSettingService) GetWorkspaceSetting(ctx context.Context, reque
 		if err != nil {
 			return nil, status.Errorf(codes.Internal, "failed to get current user: %v", err)
 		}
-		if user == nil || user.Role != usermodel.RoleHost {
+		if user == nil || user.Role != usermdl.RoleHost {
 			return nil, status.Errorf(codes.PermissionDenied, "permission denied")
 		}
 	}
@@ -51,7 +51,7 @@ func (s *WorkspaceSettingService) SetWorkspaceSetting(ctx context.Context, reque
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to get current user: %v", err)
 	}
-	if user.Role != usermodel.RoleHost {
+	if user.Role != usermdl.RoleHost {
 		return nil, status.Errorf(codes.PermissionDenied, "permission denied")
 	}
 	req := &model.SetWorkspaceSettingRequest{Name: key}

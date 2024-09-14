@@ -13,9 +13,9 @@ import (
 
 	"github.com/yearnfar/memos/internal/api"
 	authmod "github.com/yearnfar/memos/internal/module/auth"
-	authmodel "github.com/yearnfar/memos/internal/module/auth/model"
+	authmdl "github.com/yearnfar/memos/internal/module/auth/model"
 	usermod "github.com/yearnfar/memos/internal/module/user"
-	usermodel "github.com/yearnfar/memos/internal/module/user/model"
+	usermdl "github.com/yearnfar/memos/internal/module/user/model"
 )
 
 // GRPCAuthInterceptor is the auth interceptor for gRPC server.
@@ -40,7 +40,7 @@ func (in *GRPCAuthInterceptor) AuthenticationInterceptor(ctx context.Context, re
 	if err != nil {
 		return nil, status.Errorf(codes.Unauthenticated, err.Error())
 	}
-	accessToken, err := authmod.Authenticate(ctx, tokenStr, authmodel.KeyID)
+	accessToken, err := authmod.Authenticate(ctx, tokenStr, authmdl.KeyID)
 	if err != nil {
 		if isUnauthorizeAllowedMethod(serverInfo.FullMethod) {
 			return handler(ctx, request)
@@ -51,7 +51,7 @@ func (in *GRPCAuthInterceptor) AuthenticationInterceptor(ctx context.Context, re
 	if err != nil {
 		return nil, err
 	}
-	if isOnlyForAdminAllowedMethod(serverInfo.FullMethod) && user.Role != usermodel.RoleHost && user.Role != usermodel.RoleAdmin {
+	if isOnlyForAdminAllowedMethod(serverInfo.FullMethod) && user.Role != usermdl.RoleHost && user.Role != usermdl.RoleAdmin {
 		return nil, errors.Errorf("user %d is not admin", user.ID)
 	}
 
@@ -75,7 +75,7 @@ func getTokenFromMetadata(md metadata.MD) (string, error) {
 		header := http.Header{}
 		header.Add("Cookie", t)
 		request := http.Request{Header: header}
-		if v, _ := request.Cookie(authmodel.AccessTokenCookieName); v != nil {
+		if v, _ := request.Cookie(authmdl.AccessTokenCookieName); v != nil {
 			accessToken = v.Value
 		}
 	}

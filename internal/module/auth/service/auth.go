@@ -9,17 +9,17 @@ import (
 
 	"github.com/yearnfar/memos/internal/module/auth/model"
 	usermod "github.com/yearnfar/memos/internal/module/user"
-	usermodel "github.com/yearnfar/memos/internal/module/user/model"
+	usermdl "github.com/yearnfar/memos/internal/module/user/model"
 )
 
 // SignIn 登录
 func (s *Service) SignIn(ctx context.Context, req *model.SignInRequest) (resp *model.SignInResponse, err error) {
-	user, err := usermod.GetUser(ctx, &usermodel.GetUserRequest{Username: req.Username})
+	user, err := usermod.GetUser(ctx, &usermdl.GetUserRequest{Username: req.Username})
 	if err != nil {
 		err = errors.Errorf("failed to find user by username %s", req.Username)
 		return
 	}
-	if user.RowStatus == usermodel.Archived {
+	if user.RowStatus == usermdl.Archived {
 		err = errors.Errorf("user has been archived with username %s", req.Username)
 		return
 	}
@@ -45,13 +45,13 @@ func (s *Service) SignIn(ctx context.Context, req *model.SignInRequest) (resp *m
 	return
 }
 
-func (s *Service) doSignIn(ctx context.Context, user *usermodel.User, audience, keyId string, expireTime time.Time) (tokenStr string, err error) {
+func (s *Service) doSignIn(ctx context.Context, user *usermdl.User, audience, keyId string, expireTime time.Time) (tokenStr string, err error) {
 	accessToken, err := s.GenerateAccessToken(ctx, user.ID, audience, keyId, expireTime)
 	if err != nil {
 		err = errors.Errorf("failed to generate tokens, err: %s", err)
 		return
 	}
-	token := &usermodel.AccessToken{
+	token := &usermdl.AccessToken{
 		Token:       accessToken.Token,
 		Description: "user login",
 	}

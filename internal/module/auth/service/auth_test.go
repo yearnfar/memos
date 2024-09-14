@@ -10,7 +10,7 @@ import (
 	"github.com/yearnfar/memos/internal/config"
 	"github.com/yearnfar/memos/internal/module/auth/model"
 	usermod "github.com/yearnfar/memos/internal/module/user"
-	usermodel "github.com/yearnfar/memos/internal/module/user/model"
+	usermdl "github.com/yearnfar/memos/internal/module/user/model"
 )
 
 func TestService_SignIn(t *testing.T) {
@@ -26,8 +26,8 @@ func TestService_SignIn(t *testing.T) {
 	userSvc := usermod.NewMockService(ctl)
 	userSvc.
 		EXPECT().
-		GetUser(ctx, &usermodel.GetUserRequest{Username: "yearnfar"}).
-		Return(&usermodel.User{
+		GetUser(ctx, &usermdl.GetUserRequest{Username: "yearnfar"}).
+		Return(&usermdl.User{
 			Username:     "yearnfar",
 			PasswordHash: string(passwordHash)}, nil)
 

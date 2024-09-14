@@ -10,7 +10,7 @@ import (
 	"github.com/yearnfar/memos/internal/api"
 	usermod "github.com/yearnfar/memos/internal/module/user"
 	"github.com/yearnfar/memos/internal/module/user/model"
-	usermodel "github.com/yearnfar/memos/internal/module/user/model"
+	usermdl "github.com/yearnfar/memos/internal/module/user/model"
 	v1pb "github.com/yearnfar/memos/internal/proto/api/v1"
 )
 
@@ -52,7 +52,7 @@ func (s *AuthService) SignInWithSSO(ctx context.Context, request *v1pb.SignInWit
 }
 
 func (s *AuthService) SignUp(ctx context.Context, request *v1pb.SignUpRequest) (userInfo *v1pb.User, err error) {
-	req := &usermodel.SignUpRequest{
+	req := &usermdl.SignUpRequest{
 		Username: request.Username,
 		Password: request.Password,
 	}

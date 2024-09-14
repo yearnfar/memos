@@ -11,9 +11,9 @@ import (
 	"google.golang.org/grpc/metadata"
 
 	authmod "github.com/yearnfar/memos/internal/module/auth"
-	authmodel "github.com/yearnfar/memos/internal/module/auth/model"
+	authmdl "github.com/yearnfar/memos/internal/module/auth/model"
 	usermod "github.com/yearnfar/memos/internal/module/user"
-	usermodel "github.com/yearnfar/memos/internal/module/user/model"
+	usermdl "github.com/yearnfar/memos/internal/module/user/model"
 )
 
 // ContextKey is the key type of context value.
@@ -29,7 +29,7 @@ const (
 type BaseService struct {
 }
 
-func (s *BaseService) GetCurrentUser(ctx context.Context) (userInfo *usermodel.User, err error) {
+func (s *BaseService) GetCurrentUser(ctx context.Context) (userInfo *usermdl.User, err error) {
 	userId, ok := ctx.Value(userContextKey).(int32)
 	if !ok {
 		return nil, nil
@@ -50,9 +50,9 @@ func (s *BaseService) ClearAccessTokenCookie(ctx context.Context) error {
 }
 
 func (s *BaseService) DoSignIn(ctx context.Context, username, password string) (err error) {
-	resp, err := authmod.SignIn(ctx, &authmodel.SignInRequest{
-		Audience: authmodel.AccessTokenAudienceName,
-		KeyID:    authmodel.KeyID,
+	resp, err := authmod.SignIn(ctx, &authmdl.SignInRequest{
+		Audience: authmdl.AccessTokenAudienceName,
+		KeyID:    authmdl.KeyID,
 		Username: username,
 		Password: password,
 	})
@@ -73,7 +73,7 @@ func (s *BaseService) DoSignIn(ctx context.Context, username, password string) (
 
 func (s *BaseService) buildAccessTokenCookie(ctx context.Context, accessToken string, expireTime time.Time) (string, error) {
 	attrs := []string{
-		fmt.Sprintf("%s=%s", authmodel.AccessTokenCookieName, accessToken),
+		fmt.Sprintf("%s=%s", authmdl.AccessTokenCookieName, accessToken),
 		"Path=/",
 		"HttpOnly",
 	}
