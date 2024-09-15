@@ -33,7 +33,7 @@ func (s *Service) GenerateAccessToken(_ context.Context, userID int32, audience,
 	token.Header["kid"] = keyId
 
 	// Create the JWT string.
-	tokenStr, err := token.SignedString(cfg.Key)
+	tokenStr, err := token.SignedString([]byte(cfg.Key))
 	if err != nil {
 		return
 	}
