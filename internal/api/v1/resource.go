@@ -89,7 +89,8 @@ func (s *ResourceService) ListResources(ctx context.Context, _ *v1pb.ListResourc
 	}
 	list, err := memomod.ListResources(ctx, &model.ListResourcesRequest{CreatorID: user.ID})
 	if err != nil {
-		return nil, status.Errorf(codes.Internal, "failed to list resources: %v", err)
+		err = status.Errorf(codes.Internal, "failed to list resources: %v", err)
+		return
 	}
 
 	var resources []*v1pb.Resource
@@ -128,7 +129,8 @@ func convertResourceFromStore(ctx context.Context, resource *model.Resource) *v1
 		Type:       resource.Type,
 		Size:       resource.Size,
 	}
-	if resource.StorageType == model.ResourceStorageTypeExternal || resource.StorageType == model.ResourceStorageTypeS3 {
+	if resource.StorageType == model.ResourceStorageTypeExternal ||
+		resource.StorageType == model.ResourceStorageTypeS3 {
 		resourceMessage.ExternalLink = resource.Reference
 	}
 	if resource.MemoID != 0 {
@@ -138,6 +140,5 @@ func convertResourceFromStore(ctx context.Context, resource *model.Resource) *v1
 			resourceMessage.Memo = &memoName
 		}
 	}
-
 	return resourceMessage
 }

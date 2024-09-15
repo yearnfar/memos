@@ -61,7 +61,7 @@ func (s *Service) CreateResource(ctx context.Context, req *model.CreateResourceR
 }
 
 func (s *Service) ListResources(ctx context.Context, req *model.ListResourcesRequest) (list []*model.Resource, err error) {
-	list, err = s.dao.FindResources(ctx, []string{"memo_id=?"}, []any{req.MemoID})
+	list, err = s.dao.FindResources(ctx, []string{"creator_id=?"}, []any{req.CreatorID})
 	return
 }
 
