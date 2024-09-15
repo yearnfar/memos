@@ -189,7 +189,7 @@ func (s *MemoService) ListMemos(ctx context.Context, req *v1pb.ListMemosRequest)
 	}
 
 	memos, err := memomod.ListMemos(ctx, &model.ListMemosRequest{
-		CreatorId:       user.ID,
+		CreatorID:       user.ID,
 		ExcludeComments: true,
 	})
 	if err != nil {
@@ -360,7 +360,55 @@ func (s *MemoService) ListMemoProperties(ctx context.Context, request *v1pb.List
 		return
 	}
 
-	slog.Info("user", user)
+	memoFind := &model.ListMemosRequest{
+		CreatorID:       user.ID,
+		RowStatus:       model.Normal,
+		ExcludeComments: true,
+		// Default exclude content for performance.
+		ExcludeContent: true,
+	}
+	if request.Name != "memos/-" {
+		memoID, err := api.ExtractMemoIDFromName(request.Name)
+		if err != nil {
+			return nil, status.Errorf(codes.InvalidArgument, "invalid memo name: %v", err)
+		}
+		memoFind.ID = memoID
+	}
+
+	memos, err := memomod.ListMemos(ctx, memoFind)
+	if err != nil {
+		err = status.Errorf(codes.Internal, "failed to list memos")
+		return
+	}
+
+	wsSetting, err := memomod.GetWorkspaceSetting(ctx, &model.GetWorkspaceSettingRequest{Name: string(model.WorkspaceSettingKeyMemoRelated)})
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to get workspace setting: %v", err)
+	}
+
+	memoRelatedSetting, ok := wsSetting.Value.(*model.WorkspaceMemoRelatedSetting)
+	if !ok {
+		return nil, status.Errorf(codes.Internal, "failed to get workspace setting: %v", err)
+	}
+
+	entities := []*v1pb.MemoPropertyEntity{}
+	for _, memo := range memos {
+		displayTs := memo.CreatedTs
+		if memoRelatedSetting.DisplayWithUpdateTime {
+			displayTs = memo.UpdatedTs
+		}
+		entity := &v1pb.MemoPropertyEntity{
+			Name:        fmt.Sprintf("%s%d", api.MemoNamePrefix, memo.ID),
+			DisplayTime: timestamppb.New(time.Unix(displayTs, 0)),
+		}
+		if memo.Payload.Property != nil {
+			entity.Property = convertMemoPropertyFromStore(memo.Payload.Property)
+		}
+		entities = append(entities, entity)
+	}
+	response = &v1pb.ListMemoPropertiesResponse{
+		Entities: entities,
+	}
 	return
 }
 

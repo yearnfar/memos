@@ -44,8 +44,11 @@ type MemoPayloadProperty struct {
 }
 
 type ListMemosRequest struct {
-	CreatorId       int32
+	ID              int32
+	CreatorID       int32
+	RowStatus       RowStatus
 	ExcludeComments bool
+	ExcludeContent  bool
 }
 
 type UpdateMemoRequest struct {

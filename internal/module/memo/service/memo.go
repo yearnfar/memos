@@ -219,7 +219,7 @@ func (s *Service) UpdateMemo(ctx context.Context, req *model.UpdateMemoRequest) 
 
 func (s *Service) ListMemos(ctx context.Context, req *model.ListMemosRequest) (list []*model.MemoInfo, err error) {
 	where := []string{"creator_id=?"}
-	args := []any{req.CreatorId}
+	args := []any{req.CreatorID}
 	if req.ExcludeComments {
 		where = append(where, "mr.memo_id is null")
 	}
