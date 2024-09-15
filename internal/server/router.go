@@ -8,12 +8,13 @@ import (
 	"github.com/improbable-eng/grpc-web/go/grpcweb"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
-	v1 "github.com/yearnfar/memos/internal/api/v1"
-	"github.com/yearnfar/memos/internal/config"
-	v1pb "github.com/yearnfar/memos/internal/proto/api/v1"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/reflection"
+
+	v1 "github.com/yearnfar/memos/internal/api/v1"
+	"github.com/yearnfar/memos/internal/config"
+	v1pb "github.com/yearnfar/memos/internal/proto/api/v1"
 )
 
 func registerGRPC(s *Server) {

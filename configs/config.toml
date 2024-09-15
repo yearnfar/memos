@@ -1,6 +1,6 @@
 
 [server]
-host = "localhost"
+host = ""
 port = 8081 
 secret = "asdfa"
 
