@@ -3,7 +3,6 @@ package v1
 import (
 	"context"
 	"fmt"
-	"log/slog"
 	"time"
 
 	"github.com/pkg/errors"
@@ -343,13 +342,37 @@ func (s *MemoService) CreateMemoComment(ctx context.Context, request *v1pb.Creat
 }
 
 func (s *MemoService) ListMemoTags(ctx context.Context, request *v1pb.ListMemoTagsRequest) (response *v1pb.ListMemoTagsResponse, err error) {
-	user, err := s.GetCurrentUser(ctx)
+	req := &model.ListMemosRequest{
+		RowStatus:       model.Normal,
+		ExcludeComments: true,
+		// Default exclude content for performance.
+		ExcludeContent: true,
+	}
+	if (request.Parent) != "memos/-" {
+		var memoID int32
+		memoID, err = api.ExtractMemoIDFromName(request.Parent)
+		if err != nil {
+			err = status.Errorf(codes.InvalidArgument, "invalid memo name: %v", err)
+			return
+		}
+		req.ID = memoID
+	}
+	memos, err := memomod.ListMemos(ctx, req)
 	if err != nil {
-		err = status.Errorf(codes.Internal, "failed to get current user: %v", err)
+		err = status.Errorf(codes.Internal, "failed to list memos")
 		return
 	}
-
-	slog.Info("user", user)
+	tagAmounts := map[string]int32{}
+	for _, memo := range memos {
+		if memo.Payload.Property != nil {
+			for _, tag := range memo.Payload.Property.Tags {
+				tagAmounts[tag]++
+			}
+		}
+	}
+	response = &v1pb.ListMemoTagsResponse{
+		TagAmounts: tagAmounts,
+	}
 	return
 }
 
