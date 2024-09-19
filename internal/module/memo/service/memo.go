@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"slices"
 	"time"
 
@@ -222,6 +223,28 @@ func (s *Service) ListMemos(ctx context.Context, req *model.ListMemosRequest) (l
 	args := []any{req.CreatorID}
 	if req.ExcludeComments {
 		where = append(where, "mr.memo_id is null")
+	}
+	if v := req.PayloadFind; v != nil {
+		if v.Raw != "" {
+			where, args = append(where, "`memo`.`payload` = ?"), append(args, v.Raw)
+		}
+		if len(v.TagSearch) != 0 {
+			for _, tag := range v.TagSearch {
+				where, args = append(where, "JSON_CONTAINS(JSON_EXTRACT(`memo`.`payload`, '$.property.tags'), ?)"), append(args, fmt.Sprintf(`"%s"`, tag))
+			}
+		}
+		if v.HasLink {
+			where = append(where, "JSON_EXTRACT(`memo`.`payload`, '$.property.hasLink') IS TRUE")
+		}
+		if v.HasTaskList {
+			where = append(where, "JSON_EXTRACT(`memo`.`payload`, '$.property.hasTaskList') IS TRUE")
+		}
+		if v.HasCode {
+			where = append(where, "JSON_EXTRACT(`memo`.`payload`, '$.property.hasCode') IS TRUE")
+		}
+		if v.HasIncompleteTasks {
+			where = append(where, "JSON_EXTRACT(`memo`.`payload`, '$.property.hasIncompleteTasks') IS TRUE")
+		}
 	}
 	list, err = s.dao.FindMemos(ctx, where, args)
 	if err != nil {

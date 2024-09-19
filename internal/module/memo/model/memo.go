@@ -44,11 +44,41 @@ type MemoPayloadProperty struct {
 }
 
 type ListMemosRequest struct {
-	ID              int32
-	CreatorID       int32
-	RowStatus       RowStatus
-	ExcludeComments bool
+	ID        int32
+	UID       string
+	CreatorID int32
+	RowStatus RowStatus
+
+	// Domain specific fields
+	ContentSearch   []string
+	VisibilityList  []Visibility
+	PayloadFind     *FindMemoPayload
 	ExcludeContent  bool
+	ExcludeComments bool
+	Random          bool
+
+	CreatedTsAfter  int64
+	CreatedTsBefore int64
+	UpdatedTsAfter  int64
+	UpdatedTsBefore int64
+
+	// Pagination
+	Limit  int
+	Offset int
+
+	// Ordering
+	OrderByUpdatedTs bool
+	OrderByPinned    bool
+	OrderByTimeAsc   bool
+}
+
+type FindMemoPayload struct {
+	Raw                string
+	TagSearch          []string
+	HasLink            bool
+	HasTaskList        bool
+	HasCode            bool
+	HasIncompleteTasks bool
 }
 
 type UpdateMemoRequest struct {

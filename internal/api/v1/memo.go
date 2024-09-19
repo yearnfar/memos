@@ -186,10 +186,21 @@ func (s *MemoService) ListMemos(ctx context.Context, req *v1pb.ListMemosRequest)
 		err = status.Errorf(codes.Internal, "failed to get current user: %v", err)
 		return
 	}
-
+	filter, err := parseMemoFilter(req.Filter)
+	if err != nil {
+		err = status.Errorf(codes.InvalidArgument, "invalid filter: %v", err)
+		return
+	}
 	memos, err := memomod.ListMemos(ctx, &model.ListMemosRequest{
 		CreatorID:       user.ID,
 		ExcludeComments: true,
+		PayloadFind: &model.FindMemoPayload{
+			HasLink:            filter.HasLink,
+			HasTaskList:        filter.HasTaskList,
+			HasCode:            filter.HasCode,
+			HasIncompleteTasks: filter.HasIncompleteTasks,
+			TagSearch:          filter.TagSearch,
+		},
 	})
 	if err != nil {
 		return
